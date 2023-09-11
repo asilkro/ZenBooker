@@ -15,7 +15,7 @@ namespace ZenBooker.Classes
         public int CustomerId { get; set; } // PK, auto_increment, not_null
         public string First { get; set; } // VARCHAR(32), PK, not_null
         public string Last { get; set; } // VARCHAR(32) PK, not_null
-        public int Phone { get; set; } // int
+        public int Phone { get; set; } // int, not_null
         public string Email { get; set; } // VARCHAR(48) PK, not_null
         public int PreferredOffice { get; set; } // int, FK
 
@@ -26,6 +26,16 @@ namespace ZenBooker.Classes
         public Customer()
         {
 
+        }
+
+        public Customer(int customerId, string first, string last, int phone, string email, int preferredOffice)
+        {
+            CustomerId = customerId;
+            First = first;
+            Last = last;
+            Phone = phone;
+            Email = email;
+            PreferredOffice = preferredOffice;
         }
 
         #endregion

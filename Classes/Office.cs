@@ -24,6 +24,15 @@ namespace ZenBooker.Classes
 
         }
 
+        public Office(int officeId, string officeName, string city, string state, string country)
+        {
+            OfficeId = officeId;
+            OfficeName = officeName;
+            City = city;
+            State = state;
+            Country = country;
+        }
+
         #endregion
     }
 }

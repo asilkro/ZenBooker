@@ -10,12 +10,12 @@ namespace ZenBooker.Classes
     {
         #region Properties / Fields
 
-        public int StaffId { get; set; } //
-        public string Name { get; set; }
-        public int Phone { get; set; }
-        public string Email { get; set; } // can be null
-        public int OfficeId { get; set; }
-        private int LoginId { get; set; }
+        public int StaffId { get; set; } // PK, auto_increment, not_null
+        public string Name { get; set; } // PK, VARCHAR(32), not_null
+        public int Phone { get; set; } // PK, not_null
+        public string Email { get; set; } // VARCHAR(32)
+        public int OfficeId { get; set; } // FK, Office.OfficeId
+        public int LoginId { get; set; } // FK, Users.UserId
         // TODO: Do I want to use this?
 
         #endregion
@@ -25,6 +25,16 @@ namespace ZenBooker.Classes
         public Staff()
         {
 
+        }
+
+        public Staff(int staffId, string name, int phone, string email, int officeId, int loginId)
+        {
+            StaffId = staffId;
+            Name = name;
+            Phone = phone;
+            Email = email;
+            OfficeId = officeId;
+            LoginId = loginId;
         }
 
         #endregion

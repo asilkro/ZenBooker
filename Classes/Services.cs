@@ -23,6 +23,12 @@ namespace ZenBooker.Classes
 
         }
 
+        public Services(int serviceId, string serviceName, string serviceDesc)
+        {
+        ServiceId = serviceId;
+        ServiceName = serviceName;
+        ServiceDesc = serviceDesc;
+        }
         #endregion
     }
 }
