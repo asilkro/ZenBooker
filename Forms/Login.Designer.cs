@@ -1,4 +1,4 @@
-﻿namespace ZenBooker
+﻿namespace ZenoBook
 {
     partial class Login
     {
@@ -28,10 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            SuspendLayout();
+            // 
+            // Login
+            // 
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Text = "Login";
+            Name = "Login";
+            Text = "ZenoBook - Login";
+            ResumeLayout(false);
         }
 
         #endregion

@@ -1,3 +1,8 @@
-# ZenBooker
+# ZenoBook
 
-This application is for the exclusive use of Zenobia Total Health LLC.
+This application is for the exclusive use of Zenobia Total Health LLC (ZTH).
+
+--
+ZenoBook is the software application which will help ZTH by giving a consistent, stable platform to do appointment booking management and customer data entry. One of the areas that the business had experienced challenges in was changing and updating customer information from a rolodex and bookings from a paper notebook and calendar. These manual, non-digital methods of data collection and modification are prone to all the typical human errors. Data integrity and preservation are also challenges – these manual items cannot be easily duplicated in the event of a business disaster- a pipe leak in the wrong location could ruin all the cataloged scheduling and destroy customer goodwill towards the business. While the issues experienced so far were limited to sporadic data entry errors and missed appointment modifications, a disaster could endanger the ZTH business/brand by shaking customer confidence.
+
+By using ZenoBook, the entries for appointment scheduling are preserved in a relational (MySQL) database. The database structure and application are built from the ground up to support multiple logins for better access management and security. The application and database are designed with multiple locations to support business expansion and provide a normalized data structure. By using a MySQL database, ZTH is free to employ any chosen backup or data recovery process they would like in conjunction with ZenoBook, including free or commercial solutions. The flexibility of the application-relational database model means that updating or migrating data is trivial- sharing amongst multiple locations could be done with a cloud server or a simple VPN connection, though the initial version of the ZenoBook delivered is built for the database to be run locally off existing computer hardware to avoid incurring unnecessary expenses for a small business.

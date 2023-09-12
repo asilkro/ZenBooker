@@ -1,4 +1,4 @@
-namespace ZenBooker
+namespace ZenoBook
 {
     public partial class Login : Form
     {

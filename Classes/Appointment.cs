@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZenBooker.Classes
+namespace ZenoBook.Classes
 {
     internal class Appointment
     {
