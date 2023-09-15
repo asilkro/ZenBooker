@@ -1,4 +1,5 @@
 using MySqlConnector.Logging;
+using RepoDb;
 
 namespace ZenoBook
 {
@@ -14,6 +15,7 @@ namespace ZenoBook
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             MySqlConnectorLogManager.Provider = new Log4netLoggerProvider();
+            GlobalConfiguration.Setup().UseMySqlConnector();
             Application.Run(new Login());
         }
     }

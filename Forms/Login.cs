@@ -6,5 +6,16 @@ namespace ZenoBook
         {
             InitializeComponent();
         }
+
+
+        #region Buttons
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        #endregion
+
     }
 }
