@@ -1,3 +1,4 @@
+using MySqlConnector;
 using MySqlConnector.Logging;
 using RepoDb;
 
