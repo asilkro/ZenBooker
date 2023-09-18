@@ -13,7 +13,7 @@ namespace ZenoBook.Classes
     {
         // These values should not be altered.
        private string username = "zthstaff";
-       private string password = "zenobook";
+       private string password = "Zenobook4zenobia";
        private string serveraddress = "localhost";
        private string database = "zth";
 
