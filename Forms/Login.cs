@@ -1,4 +1,4 @@
-namespace ZenoBook
+namespace ZenoBook.Forms
 {
     public partial class Login : Form
     {
