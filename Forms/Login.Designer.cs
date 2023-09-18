@@ -70,6 +70,7 @@
             // 
             loginTB.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             loginTB.Location = new Point(192, 459);
+            loginTB.MaxLength = 128;
             loginTB.Name = "loginTB";
             loginTB.PlaceholderText = "Login ID";
             loginTB.Size = new Size(150, 29);
