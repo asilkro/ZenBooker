@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
 
-namespace ZenoBook.Classes
+namespace ZenoBook.DataManipulation
 {
     /*
      * Using this as a reference:
@@ -15,7 +10,7 @@ namespace ZenoBook.Classes
 
     public class ProtectedData
     {
-        private static byte[] entropyArray = {9, 3, 1, 4, 12, 3, 14, 8, 0, 3};
+        private static byte[] entropyArray = {9, 3, 1, 4, 7, 3, 2, 8, 0, 3, 2, 1, 0, 3, 5, 6};
 
         public byte[] EncryptPw(string pw)
         {
@@ -33,5 +28,4 @@ namespace ZenoBook.Classes
 
     }
 
-    
 }
