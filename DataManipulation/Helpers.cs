@@ -44,9 +44,56 @@ namespace ZenoBook.DataManipulation
             return true;
         }
 
-        public void WriteSuccessful(string command, string table)
+        public void RemoveRow(string table, string row)
         {
-            //TODO: scaffold out SQL commands to do the work
+        using (var connection = new SqlConnection(connectionString))
+            {
+                var parameterValues = new
+                {
+                    Table = table,
+                    Row = row
+                };
+
+                var affectedRows = connection.ExecuteNonQuery("DELETE FROM [Table].[Row];");
+            }
+    
         }
+
+        public int RemoveRow(string table, string row, string column, string identifier)
+        {
+        using (var connection = new SqlConnection(connectionString))
+            {
+                var parameterValues = new
+                {
+                    Table = table,
+                    Row = row,
+                    Column = column,
+                    Identifier = identifier
+                };
+                
+                var affectedRows = connection.ExecuteNonQuery("DELETE FROM [Table].[Row] where [Column] IS [Identifier];");
+
+                return affectedRows;
+            }
+        }
+
+        public int InsertRow(string table, string column, string identifier)
+        {
+        using (var connection = new SqlConnection(connectionString))
+            {
+                var parameterValues = new
+                {
+                    Table = table,
+                    Column = column,
+                    Identifier = identifier
+                };
+                
+                var affectedRows = connection.ExecuteNonQuery("INSERT INTO [Table] where [Column] IS [Identifier];");
+
+                return affectedRows;
+            }
+        }
+
+
     }
 }
