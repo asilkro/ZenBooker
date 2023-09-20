@@ -8,7 +8,7 @@ namespace ZenoBook.DataManipulation
         {
             byte[] encryptedBytes = null;
 
-            byte[] saltBytes = new byte[] { 8, 3, 2, 1, 0, 2, 1, 2, 1, 2, 5, 6, 7, 9, 4};
+            byte[] saltBytes = new byte[] {9, 3, 1, 4, 7, 3, 2, 8, 0, 3, 2, 1, 0, 3, 5, 6};
 
             using (MemoryStream ms = new MemoryStream())
             {
