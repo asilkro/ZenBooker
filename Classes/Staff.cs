@@ -1,8 +1,11 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RepoDb;
+using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes
 {
@@ -35,6 +38,61 @@ namespace ZenoBook.Classes
             Email = email;
             OfficeId = officeId;
             LoginId = loginId;
+        }
+
+        #endregion
+
+        #region SQL
+
+        public bool InsertStaff(Staff staff)
+        {
+            using (var connection = new Builder().Connection())
+                try
+                {
+                    var id = connection.Insert("[zth].[staff]", entity: staff);
+                    MessageBox.Show("Staff id " + id + " created.", "Staff Created");
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger("LoggingRepo").Warn(e, e);
+                    return false;
+                }
+
+        }
+
+        public bool DeleteStaff(int staffId)
+        {
+            using (var connection = new Builder().Connection())
+                try
+                {
+                    var id = connection.Delete("[zth].[staff]", staffId);
+                    MessageBox.Show("Staff id " + id + " removed.", "Customer Removed");
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger("LoggingRepo").Warn(e, e);
+                    return false;
+                }
+        }
+
+        public bool UpdateStaff(Staff staff)
+        {
+            using (var connection = new Builder().Connection())
+                try
+                {
+                    {
+                        var updatedStaff = connection.Update("[zth].[staff]", entity: staff);
+                        MessageBox.Show("Staff id " + updatedStaff + " updated.", "Customer Updated");
+                    }
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger("LoggingRepo").Warn(e, e);
+                    return false;
+                }
         }
 
         #endregion
