@@ -46,7 +46,7 @@ namespace ZenoBook.Classes
 
         public bool InsertStaff(Staff staff)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     var id = connection.Insert("[zth].[staff]", entity: staff);
@@ -63,7 +63,7 @@ namespace ZenoBook.Classes
 
         public bool DeleteStaff(int staffId)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     var id = connection.Delete("[zth].[staff]", staffId);
@@ -79,7 +79,7 @@ namespace ZenoBook.Classes
 
         public bool UpdateStaff(Staff staff)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     {

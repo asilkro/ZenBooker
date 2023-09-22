@@ -41,7 +41,7 @@ namespace ZenoBook.Classes
 
         public bool InsertOfficeAppt(OfficeAppointment officeAppointment)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     {
@@ -61,7 +61,7 @@ namespace ZenoBook.Classes
 
         public bool RemoveOfficeAppt(int officeApptId)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     var removedAppt = connection.Delete("[zth].[appointment]", officeApptId);
@@ -77,7 +77,7 @@ namespace ZenoBook.Classes
 
         public bool UpdateOfficeAppt(OfficeAppointment officeAppointment)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     {

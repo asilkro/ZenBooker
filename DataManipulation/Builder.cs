@@ -23,7 +23,7 @@ namespace ZenoBook.DataManipulation
             return connString;
         }
 
-        public MySqlConnection Connection()
+        public MySqlConnection Connect()
         {
             return new MySqlConnection(ConnectionString());
         }

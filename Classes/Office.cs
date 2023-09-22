@@ -42,7 +42,7 @@ namespace ZenoBook.Classes
 
         public bool InsertOffice(Office office)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     var id = connection.Insert("[zth].[office]", entity: office);
@@ -59,7 +59,7 @@ namespace ZenoBook.Classes
 
         public bool DeleteOffice(int officeId)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     var id = connection.Delete("[zth].[office]", officeId);
@@ -75,7 +75,7 @@ namespace ZenoBook.Classes
 
         public bool UpdateOffice(Office office)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     {

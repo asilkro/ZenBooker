@@ -43,7 +43,7 @@ namespace ZenoBook.Classes
 
         public bool InsertHomeAppt(HomeAppointment homeAppointment)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     {
@@ -63,7 +63,7 @@ namespace ZenoBook.Classes
 
         public bool RemoveHomeAppt(int homeApptId)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     var removedAppt = connection.Delete("[zth].[appointment]", homeApptId);
@@ -79,7 +79,7 @@ namespace ZenoBook.Classes
 
         public bool UpdateHomeAppt(HomeAppointment homeAppointment)
         {
-            using (var connection = new Builder().Connection())
+            using (var connection = new Builder().Connect())
                 try
                 {
                     {

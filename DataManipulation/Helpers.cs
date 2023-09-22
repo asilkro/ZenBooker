@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MySqlConnector;
 using RepoDb;
 using RepoDb.Extensions;
+using ZenoBook.DataManipulation;
 
 
 namespace ZenoBook.DataManipulation
@@ -28,7 +29,7 @@ namespace ZenoBook.DataManipulation
 
             bool CheckLogin()
             {
-                using (new Builder().Connection())
+                using (new Builder().Connect())
                 {
                     string commandText = "SELECT * FROM users WHERE username = '@USER' AND password = '@PASS';";
                     var cmd = new MySqlCommand(commandText);
@@ -45,5 +46,12 @@ namespace ZenoBook.DataManipulation
             return true;
         }
 
+        public void searchData(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
+        {
+            using (var connection = new Builder().Connect())
+            {
+                
+            }
+        }
     }
 }
