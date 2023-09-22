@@ -5,10 +5,10 @@ namespace ZenoBook.DataManipulation
     public class Builder
     {
         // These values should not be altered.
-       private string _username = "zthstaff";
-       private string _password = "Zenobook4zenobia";
-       private string _serveraddress = "localhost";
-       private string _database = "zth";
+       private readonly string _username = "zthstaff";
+       private readonly string _password = "Zenobook4zenobia";
+       private readonly string _serveraddress = "localhost";
+       private readonly string _database = "zth";
 
         public string ConnectionString()
         {

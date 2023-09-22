@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySqlConnector;
+using RepoDb;
 using RepoDb.Extensions;
-using ZenoBook.DataManipulation;
+
 
 namespace ZenoBook.DataManipulation
 {
@@ -43,57 +44,6 @@ namespace ZenoBook.DataManipulation
             }
             return true;
         }
-
-        public void RemoveRow(string table, string row)
-        {
-        using (var connection = new SqlConnection(connectionString))
-            {
-                var parameterValues = new
-                {
-                    Table = table,
-                    Row = row
-                };
-
-                var affectedRows = connection.ExecuteNonQuery("DELETE FROM [Table].[Row];");
-            }
-    
-        }
-
-        public int RemoveRow(string table, string row, string column, string identifier)
-        {
-        using (var connection = new SqlConnection(connectionString))
-            {
-                var parameterValues = new
-                {
-                    Table = table,
-                    Row = row,
-                    Column = column,
-                    Identifier = identifier
-                };
-                
-                var affectedRows = connection.ExecuteNonQuery("DELETE FROM [Table].[Row] where [Column] IS [Identifier];");
-
-                return affectedRows;
-            }
-        }
-
-        public int InsertRow(string table, string column, string identifier)
-        {
-        using (var connection = new SqlConnection(connectionString))
-            {
-                var parameterValues = new
-                {
-                    Table = table,
-                    Column = column,
-                    Identifier = identifier
-                };
-                
-                var affectedRows = connection.ExecuteNonQuery("INSERT INTO [Table] where [Column] IS [Identifier];");
-
-                return affectedRows;
-            }
-        }
-
 
     }
 }
