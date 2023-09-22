@@ -13,7 +13,7 @@ namespace ZenoBook.Classes
         public int AppointmentId { get; set; } // PK, auto_increment, not_null
         public int CustomerId { get; set; } // FK, Customer.CustomerId
         public int StaffId { get; set; } // FK, Staff.StaffId
-        public int ServiceID { get; set; } // FK, Services.ServiceId
+        public int ServiceID { get; set; } // FK, Service.ServiceId
         public DateTime Start { get; set; } //
         public DateTime End { get; set; } //
 

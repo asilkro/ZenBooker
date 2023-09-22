@@ -52,17 +52,8 @@ namespace ZenoBook.Classes
             using (var connection = new Builder().Connection()) 
                 try 
                 { 
-                    { 
-                        var cxToAdd = new 
-                        {
-                        First = customer.First,
-                        Last = customer.Last,
-                        Phone = customer.Phone,
-                        Email = customer.Email,
-                        PreferredOffice = customer.PreferredOffice,
-                    };
-                    var id = connection.Insert("[zth].[customer]", entity: cxToAdd);
-                    }
+                    var id = connection.Insert("[zth].[customer]", entity: customer);
+                    MessageBox.Show("Customer id " + id + " created.", "Customer Created");
                     return true;
                 }
                 catch (Exception e) 
@@ -78,7 +69,8 @@ namespace ZenoBook.Classes
             using (var connection = new Builder().Connection())
                 try
                 {
-                    var deletedRow = connection.Delete("[zth].[customer]", customerId);
+                    var id = connection.Delete("[zth].[customer]", customerId);
+                    MessageBox.Show("Customer id " + id + " removed.", "Customer Removed");
                     return true;
                 }
                 catch (Exception e)
@@ -94,16 +86,8 @@ namespace ZenoBook.Classes
                 try
                 {
                     {
-                        var cxToEdit = new
-                        {
-                            customer.CustomerId,
-                            customer.First, 
-                            customer.Last,
-                            customer.Phone,
-                            customer.Email, 
-                            customer.PreferredOffice,
-                        };
-                        var updatedCx = connection.Update("[zth].[customer]", entity: cxToEdit);
+                        var updatedCx = connection.Update("[zth].[customer]", entity: customer);
+                        MessageBox.Show("Customer id " + updatedCx + " updated.", "Customer Updated");
                     }
                     return true;
                 }

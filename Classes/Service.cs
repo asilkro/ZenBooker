@@ -9,44 +9,43 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes
 {
-    internal class Office
+    internal class Service
     {
         #region Properties / Fields
-        public int OfficeId { get; set; } // // PK, auto_increment, not_null
-        public string OfficeName { get; set; } // VARCHAR(32)
-        public string City { get; set; } // VARCHAR(32)
-        public string State { get; set; } // VARCHAR(32)
-        public string Country { get; set; } // VARCHAR(32)
+
+        public int ServiceId { get; set; } // PK, auto_increment, not_null, FK ServiceId on Appt
+        public string ServiceName { get; set; } // VARCHAR(32)
+        public string ServiceDesc { get; set; } // VARCHAR (64?)
+        public bool HomeVisitService { get; set; }
 
         #endregion
 
         #region Constructors
 
-        public Office()
+        public Service()
         {
 
         }
 
-        public Office(int officeId, string officeName, string city, string state, string country)
+        public Service(int serviceId, string serviceName, string serviceDesc, bool homeVisitService)
         {
-            OfficeId = officeId;
-            OfficeName = officeName;
-            City = city;
-            State = state;
-            Country = country;
+        ServiceId = serviceId;
+        ServiceName = serviceName;
+        ServiceDesc = serviceDesc;
+        HomeVisitService = homeVisitService;
         }
 
         #endregion
 
         #region SQL
 
-        public bool InsertOffice(Office office)
+        public bool InsertService(Service service)
         {
             using (var connection = new Builder().Connection())
                 try
                 {
-                    var id = connection.Insert("[zth].[office]", entity: office);
-                    MessageBox.Show("Office id " + id + " created.", "Office Created");
+                    var id = connection.Insert("[zth].[services]", entity: service);
+                    MessageBox.Show("Service " + id + " created.", "Service Created");
                     return true;
                 }
                 catch (Exception e)
@@ -57,13 +56,13 @@ namespace ZenoBook.Classes
 
         }
 
-        public bool DeleteOffice(int officeId)
+        public bool DeleteService(int serviceId)
         {
             using (var connection = new Builder().Connection())
                 try
                 {
-                    var id = connection.Delete("[zth].[office]", officeId);
-                    MessageBox.Show("Office id " + id + " removed.", "Office Removed");
+                    var id = connection.Delete("[zth].[services]", serviceId);
+                    MessageBox.Show("Service id " + id + " removed.", "Service Removed");
                     return true;
                 }
                 catch (Exception e)
@@ -73,14 +72,14 @@ namespace ZenoBook.Classes
                 }
         }
 
-        public bool UpdateOffice(Office office)
+        public bool UpdateService(Service service)
         {
             using (var connection = new Builder().Connection())
                 try
                 {
                     {
-                        var updatedOffice = connection.Update("[zth].[office]", entity: office);
-                        MessageBox.Show("Office id " + updatedOffice + " updated.", "Office Updated");
+                        var updatedCx = connection.Update("[zth].[services]", entity: service);
+                        MessageBox.Show("Service id " + updatedCx + " updated.", "Customer Updated");
                     }
                     return true;
                 }
