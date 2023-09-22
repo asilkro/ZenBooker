@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,11 +47,18 @@ namespace ZenoBook.DataManipulation
             return true;
         }
 
-        public void searchData(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
+        public void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
         {
             using (var connection = new Builder().Connect())
             {
-                
+                var query = connection.CreateCommand();
+                query.CommandText = "SELECT * FROM @TABLE like '%\"+@SEARCHVALUE+\"%'";
+                query.Parameters.AddWithValue("@TABLE", tableToSearch);
+                query.Parameters.AddWithValue("@SEARCHVALUE", valueToSearch);
+                var da = new MySqlDataAdapter(query);
+                var dt = new DataTable("SearchResults");
+                da.Fill(dt);
+                dataGridViewToPop.DataSource = dt;
             }
         }
     }
