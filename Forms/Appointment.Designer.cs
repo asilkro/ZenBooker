@@ -55,10 +55,11 @@
             officeCityTB = new TextBox();
             officeNameTB = new TextBox();
             officeIdTB = new TextBox();
-            button1 = new Button();
+            officeSearchButton = new Button();
             officeSearchTB = new TextBox();
             officeStateTB = new TextBox();
             textBox1 = new TextBox();
+            apptIdTB = new TextBox();
             SuspendLayout();
             // 
             // removeBtn
@@ -94,7 +95,7 @@
             // 
             dateCalendar.FirstDayOfWeek = Day.Saturday;
             dateCalendar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dateCalendar.Location = new Point(525, 18);
+            dateCalendar.Location = new Point(539, 38);
             dateCalendar.MaxSelectionCount = 1;
             dateCalendar.Name = "dateCalendar";
             dateCalendar.TabIndex = 7;
@@ -105,7 +106,7 @@
             startDtPicker.CustomFormat = "HH:mm";
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             startDtPicker.Format = DateTimePickerFormat.Custom;
-            startDtPicker.Location = new Point(677, 191);
+            startDtPicker.Location = new Point(675, 202);
             startDtPicker.Name = "startDtPicker";
             startDtPicker.Size = new Size(75, 29);
             startDtPicker.TabIndex = 8;
@@ -117,7 +118,7 @@
             endDtPicker.CustomFormat = "HH:mm";
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             endDtPicker.Format = DateTimePickerFormat.Custom;
-            endDtPicker.Location = new Point(677, 226);
+            endDtPicker.Location = new Point(675, 237);
             endDtPicker.Name = "endDtPicker";
             endDtPicker.Size = new Size(75, 29);
             endDtPicker.TabIndex = 9;
@@ -140,6 +141,7 @@
             cxSearchButton.TabIndex = 15;
             cxSearchButton.Text = "Search";
             cxSearchButton.UseVisualStyleBackColor = true;
+            cxSearchButton.Click += cxSearchButton_Click;
             // 
             // cxIdTB
             // 
@@ -186,6 +188,7 @@
             staffSearchButton.TabIndex = 21;
             staffSearchButton.Text = "Search";
             staffSearchButton.UseVisualStyleBackColor = true;
+            staffSearchButton.Click += staffSearchButton_Click;
             // 
             // staffSearchTB
             // 
@@ -217,7 +220,7 @@
             // 
             startLbl.AutoSize = true;
             startLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            startLbl.Location = new Point(615, 189);
+            startLbl.Location = new Point(613, 204);
             startLbl.Name = "startLbl";
             startLbl.Size = new Size(56, 25);
             startLbl.TabIndex = 24;
@@ -227,7 +230,7 @@
             // 
             endLbl.AutoSize = true;
             endLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            endLbl.Location = new Point(625, 230);
+            endLbl.Location = new Point(623, 241);
             endLbl.Name = "endLbl";
             endLbl.Size = new Size(46, 25);
             endLbl.TabIndex = 25;
@@ -242,6 +245,7 @@
             serviceSearchButton.TabIndex = 27;
             serviceSearchButton.Text = "Search";
             serviceSearchButton.UseVisualStyleBackColor = true;
+            serviceSearchButton.Click += serviceSearchButton_Click;
             // 
             // serviceSearchTB
             // 
@@ -305,15 +309,16 @@
             officeIdTB.Size = new Size(71, 25);
             officeIdTB.TabIndex = 33;
             // 
-            // button1
+            // officeSearchButton
             // 
-            button1.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(440, 338);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 29);
-            button1.TabIndex = 32;
-            button1.Text = "Search";
-            button1.UseVisualStyleBackColor = true;
+            officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            officeSearchButton.Location = new Point(440, 338);
+            officeSearchButton.Name = "officeSearchButton";
+            officeSearchButton.Size = new Size(75, 29);
+            officeSearchButton.TabIndex = 32;
+            officeSearchButton.Text = "Search";
+            officeSearchButton.UseVisualStyleBackColor = true;
+            officeSearchButton.Click += officeSearchButton_Click;
             // 
             // officeSearchTB
             // 
@@ -341,6 +346,15 @@
             textBox1.Size = new Size(165, 25);
             textBox1.TabIndex = 37;
             // 
+            // apptIdTB
+            // 
+            apptIdTB.Location = new Point(525, 206);
+            apptIdTB.Name = "apptIdTB";
+            apptIdTB.PlaceholderText = "Appt Id";
+            apptIdTB.ReadOnly = true;
+            apptIdTB.Size = new Size(71, 25);
+            apptIdTB.TabIndex = 38;
+            // 
             // formAppointment
             // 
             AcceptButton = saveBtn;
@@ -348,12 +362,13 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
             ClientSize = new Size(784, 561);
+            Controls.Add(apptIdTB);
             Controls.Add(textBox1);
             Controls.Add(officeStateTB);
             Controls.Add(officeCityTB);
             Controls.Add(officeNameTB);
             Controls.Add(officeIdTB);
-            Controls.Add(button1);
+            Controls.Add(officeSearchButton);
             Controls.Add(officeSearchTB);
             Controls.Add(serviceDescTb);
             Controls.Add(serviceNameTb);
@@ -414,9 +429,10 @@
         private TextBox officeCityTB;
         private TextBox officeNameTB;
         private TextBox officeIdTB;
-        private Button button1;
+        private Button officeSearchButton;
         private TextBox officeSearchTB;
         private TextBox officeStateTB;
         private TextBox textBox1;
+        private TextBox apptIdTB;
     }
 }

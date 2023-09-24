@@ -11,7 +11,7 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes
 {
-    internal class Customer
+    public class Customer
     {
 
         #region Properties / Fields

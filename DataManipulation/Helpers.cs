@@ -61,5 +61,15 @@ namespace ZenoBook.DataManipulation
                 dataGridViewToPop.DataSource = dt;
             }
         }
+
+        public bool tbAreNotEmpty()
+        {
+            //TODO: FILL THIS OUT
+            if (null == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

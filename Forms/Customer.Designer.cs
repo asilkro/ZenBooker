@@ -37,6 +37,7 @@
             tbPhone = new TextBox();
             tbEmail = new TextBox();
             tbOffice = new TextBox();
+            validateBtn = new Button();
             SuspendLayout();
             // 
             // cancelBtn
@@ -113,6 +114,17 @@
             tbOffice.Size = new Size(177, 29);
             tbOffice.TabIndex = 8;
             // 
+            // validateBtn
+            // 
+            validateBtn.BackColor = Color.MintCream;
+            validateBtn.Location = new Point(525, 475);
+            validateBtn.Name = "validateBtn";
+            validateBtn.Size = new Size(100, 50);
+            validateBtn.TabIndex = 9;
+            validateBtn.Text = "Validate";
+            validateBtn.UseVisualStyleBackColor = false;
+            validateBtn.Click += validateBtn_Click;
+            // 
             // FormCustomer
             // 
             AcceptButton = saveBtn;
@@ -120,6 +132,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
             ClientSize = new Size(784, 561);
+            Controls.Add(validateBtn);
             Controls.Add(tbOffice);
             Controls.Add(tbEmail);
             Controls.Add(tbPhone);
@@ -146,5 +159,6 @@
         private TextBox tbPhone;
         private TextBox tbEmail;
         private TextBox tbOffice;
+        private Button validateBtn;
     }
 }
