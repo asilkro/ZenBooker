@@ -17,7 +17,7 @@ namespace ZenoBook.Classes
         #region Properties / Fields
 
         // All these are from the Database ERD
-        public int CustomerId { get; set; } // PK, auto_increment, not_null
+        public int Customer_Id { get; set; } // PK, auto_increment, not_null
         public string First { get; set; } // VARCHAR(32), PK, not_null
         public string Last { get; set; } // VARCHAR(32) PK, not_null
         public int Phone { get; set; } // int, not_null
@@ -35,7 +35,7 @@ namespace ZenoBook.Classes
 
         public Customer(int customerId, string first, string last, int phone, string email, int preferredOffice)
         {
-            CustomerId = customerId;
+            Customer_Id = customerId;
             First = first;
             Last = last;
             Phone = phone;

@@ -11,7 +11,7 @@ namespace ZenoBook.Classes
         #region Properties / Fields
 
         public int AppointmentId { get; set; } // PK, auto_increment, not_null
-        public int CustomerId { get; set; } // FK, Customer.CustomerId
+        public int CustomerId { get; set; } // FK, Customer.Customer_Id
         public int StaffId { get; set; } // FK, Staff.StaffId
         public int ServiceID { get; set; } // FK, Service.ServiceId
         public DateTime Start { get; set; } //

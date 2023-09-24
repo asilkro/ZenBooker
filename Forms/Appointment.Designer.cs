@@ -1,6 +1,6 @@
 ﻿namespace ZenoBook.Forms
 {
-    partial class formAppointment
+    partial class FormAppointment
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formAppointment));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAppointment));
             removeBtn = new Button();
             saveBtn = new Button();
             cancelBtn = new Button();
@@ -394,7 +394,7 @@
             Controls.Add(saveBtn);
             Controls.Add(cancelBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "formAppointment";
+            Name = "FormAppointment";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ZTH - Appointment";
             ResumeLayout(false);

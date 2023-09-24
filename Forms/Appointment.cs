@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,14 +16,14 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms
 {
-    public partial class formAppointment : Form
+    public partial class FormAppointment : Form
     {
-        public formAppointment()
+        public FormAppointment()
         {
             InitializeComponent();
         }
 
-        public formAppointment(Appointment appointment)
+        public FormAppointment(Appointment appointment)
         {
             //TODO: POPULATE FORM WITH DATA FROM QUERIES
             cxIdTB.Text = appointment.CustomerId.ToString();
@@ -36,50 +38,42 @@ namespace ZenoBook.Forms
 
         }
 
-        public void updateTbs(Appointment appt)
+        public void UpdateTbs(Appointment appt)
         {
 
         }
 
         #region SQL
-        //TODO: MAKE ROBUST
-//      public object returnCxFromSQL(TextBox textBox, string tableName)
-//      {
-//          string columnBeingChecked = null;
-//          char atSign = '@';
-//          using (MySqlConnection connection = new Builder().Connect())
-//          {
-//              var thing = textBox.Text;
-//              switch (thing)
-//              {
-//                  case var intThing when int.TryParse(thing, out var number):
-//                      columnBeingChecked = tableName +"_id";
-//                      break;
-//
-//                  case var probablyEmail when thing.Contains(atSign):
-//                      columnBeingChecked = "email";
-//                      break;
-//
-//                  Default:
-//                      columnBeingChecked = "";
-//                      break;
-//              }
-//              connection.
-//              var otherCmd = connection.CreateCommand(
-//                  "SELECT CONCAT(first, ' ', last) AS Name, customer_id, email, phone, preferred_office from customer where CONCAT(first, ' ', last) like '%\"+@SEARCHVALUE+\"%'");
-//              ;
-//              MySqlCommand? nameCmd = connection.CreateCommand("SELECT CONCAT(first, ' ', last) AS Name, customer_id, email, phone, preferred_office from customer where CONCAT(first, ' ', last) like \"@SEARCHCONTENTS\";") as MySqlCommand;
-//
-//          }
-//      }
 
-        public object returnCustomer(string searchTerm)
+        public Customer? ReturnCustomer(string searchTerm)
         {
             using (MySqlConnection connection = new Builder().Connect())
             {
-                var customer = connection.Query<Customer>("[zth].[customer]",)
-            }
+                char space = ' ';
+                char atSign = '@';
 
+                if (searchTerm.Contains(space))
+                {
+                    string[] searchTerms = searchTerm.Split(' ',2);
+                    var first = searchTerms[0];
+                    var last = searchTerms[1];
+                    var sCustomer = connection.Query<Customer>("[zth].[customer]", e => e.First == first && e.Last == last).FirstOrDefault();
+                    return sCustomer;
+                }
+
+                if (searchTerm.Contains(atSign))
+                {
+                    var aCustomer = connection.Query<Customer>("[zth].[customer]", e => e.Email == searchTerm).FirstOrDefault();
+                    return aCustomer;
+                }
+
+                if (int.TryParse(searchTerm, out var i))
+                {
+                    var iCustomer = connection.Query<Customer>("[zth].[customer]",searchTerm).FirstOrDefault();
+                    return iCustomer;
+                }
+                return null;
+            }
         }
 
         #endregion
@@ -88,7 +82,11 @@ namespace ZenoBook.Forms
         #region Event Handlers
         private void cxSearchButton_Click(object sender, EventArgs e)
         {
-
+            var cx = ReturnCustomer(cxSearchTB.Text);
+            if (cx == null)
+            {
+                
+            }
         }
 
         private void staffSearchButton_Click(object sender, EventArgs e)
