@@ -25,15 +25,51 @@ namespace ZenoBook.Forms
             InitializeComponent();
         }
 
-        public FormAppointment(Appointment appointment)
+        public FormAppointment(Appointment appt)
         {
-
-
+            UpdateTbs(appt);
         }
 
         public void UpdateTbs(Appointment appt)
         {
+            FillDt(appt);
+            FillCxFields(appt);
+            FillStaffFields(appt);
+            FillServiceFields(appt);
+            ReturnOffice(officeSearchTB.Text);
+        }
 
+        private void FillDt(Appointment appt)
+        {
+            apptIdTB.Text = appt.AppointmentId.ToString();
+            dateCalendar.SetDate(appt.Start.Date);
+            startDtPicker.Value = appt.Start;
+            endDtPicker.Value = appt.End;
+        }
+
+        private void FillServiceFields(Appointment appt)
+        {
+            var service = ReturnService(appt.ServiceID.ToString());
+            serviceIdTB.Text = appt.ServiceID.ToString();
+            serviceNameTb.Text = service.ServiceName;
+            serviceDescTb.Text = service.ServiceDesc;
+        }
+
+        private void FillStaffFields(Appointment appt)
+        {
+            var staff = ReturnStaff(appt.StaffId.ToString());
+            staffIdTB.Text = appt.StaffId.ToString();
+            staffNameTb.Text = staff.Name;
+        }
+
+        private void FillCxFields(Appointment appt)
+        {
+            var cx = ReturnCustomer(appt.CustomerId.ToString());
+            cxIdTB.Text = appt.CustomerId.ToString();
+            cxNameTb.Text = cx.First + cx.Last;
+            cxEmailTB.Text = cx.Email;
+            cxPhoneTB.Text = cx.Phone.ToString();
+            officeSearchTB.Text = cx.PreferredOffice.ToString();
         }
 
         #region SQL

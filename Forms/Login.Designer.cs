@@ -55,6 +55,7 @@
             loginBtn.TabIndex = 1;
             loginBtn.Text = "Login";
             loginBtn.UseVisualStyleBackColor = true;
+            loginBtn.Click += loginBtn_Click;
             // 
             // logo
             // 

@@ -49,7 +49,7 @@
             Controls.Add(logoutBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Main";
-            Text = "ZenoBook - Main Menu";
+            Text = "ZTH - ZenoBook";
             ResumeLayout(false);
         }
 

@@ -1,4 +1,7 @@
 ﻿using System.Security.Cryptography;
+using System.Web;
+using System.Security.Policy;
+using System.Text;
 
 namespace ZenoBook.DataManipulation
 {
@@ -33,6 +36,12 @@ namespace ZenoBook.DataManipulation
             }
 
             return encryptedBytes;
+        }
+
+
+        public string ProvideEncryptionPW()
+        {
+            string encryptionPw = Web=
         }
 
         public static byte[] AES_Decrypt(byte[] bytesToBeDecrypted, byte[] passwordBytes)

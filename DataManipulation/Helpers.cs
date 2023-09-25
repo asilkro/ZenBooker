@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using MySqlConnector;
 using RepoDb;
 using RepoDb.Extensions;
+using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
+using ZenoBook.Forms;
 
 
 namespace ZenoBook.DataManipulation
 {
-    internal class Helpers
+    public class Helpers
     {
         public bool LoginIsValid(string username, string password, string encryptionPw)
         {
@@ -20,12 +22,7 @@ namespace ZenoBook.DataManipulation
             {
                 return false;
             }
-            byte[] userBytes = Encoding.Default.GetBytes(username);
-            byte[] passBytes = Encoding.Default.GetBytes(password);
-            byte[] encryptionBytes = Encoding.Default.GetBytes(encryptionPw);
-            
-            var checkUser = Security.AES_Encrypt(userBytes, encryptionBytes);
-            var checkPass = Security.AES_Encrypt(passBytes, encryptionBytes);
+            EncryptLoginInfo(username, password, encryptionPw);
 
 
             bool CheckLogin()
@@ -47,6 +44,16 @@ namespace ZenoBook.DataManipulation
             return true;
         }
 
+        private static void EncryptLoginInfo(string username, string password, string encryptionPw)
+        {
+            byte[] userBytes = Encoding.Default.GetBytes(username);
+            byte[] passBytes = Encoding.Default.GetBytes(password);
+            byte[] encryptionBytes = Encoding.Default.GetBytes(encryptionPw);
+
+            var checkUser = Security.AES_Encrypt(userBytes, encryptionBytes);
+            var checkPass = Security.AES_Encrypt(passBytes, encryptionBytes);
+        }
+
         public void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
         {
             using (var connection = new Builder().Connect())
@@ -62,14 +69,18 @@ namespace ZenoBook.DataManipulation
             }
         }
 
-        public bool tbAreNotEmpty()
+        public void ExistingAppointment(string apptId)
         {
-            //TODO: FILL THIS OUT
-            if (null == null)
+            int.TryParse(apptId, out int i);
+            using (MySqlConnection connection = new Builder().Connect())
             {
-                return false;
+                var query = connection.Query<Appointment>("[zth].[appointment]", e => e.AppointmentId == i).FirstOrDefault();
+                if (query != null)
+                {
+                    var formToReturn = new FormAppointment(query);
+                    formToReturn.Activate();
+                }
             }
-            return true;
         }
     }
 }
