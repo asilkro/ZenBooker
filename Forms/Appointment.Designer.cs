@@ -58,7 +58,7 @@
             officeSearchButton = new Button();
             officeSearchTB = new TextBox();
             officeStateTB = new TextBox();
-            textBox1 = new TextBox();
+            officeCountryTB = new TextBox();
             apptIdTB = new TextBox();
             SuspendLayout();
             // 
@@ -337,14 +337,14 @@
             officeStateTB.Size = new Size(95, 25);
             officeStateTB.TabIndex = 36;
             // 
-            // textBox1
+            // officeCountryTB
             // 
-            textBox1.Location = new Point(350, 404);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Office Country";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(165, 25);
-            textBox1.TabIndex = 37;
+            officeCountryTB.Location = new Point(350, 404);
+            officeCountryTB.Name = "officeCountryTB";
+            officeCountryTB.PlaceholderText = "Office Country";
+            officeCountryTB.ReadOnly = true;
+            officeCountryTB.Size = new Size(165, 25);
+            officeCountryTB.TabIndex = 37;
             // 
             // apptIdTB
             // 
@@ -355,7 +355,7 @@
             apptIdTB.Size = new Size(71, 25);
             apptIdTB.TabIndex = 38;
             // 
-            // formAppointment
+            // FormAppointment
             // 
             AcceptButton = saveBtn;
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -363,7 +363,7 @@
             CancelButton = cancelBtn;
             ClientSize = new Size(784, 561);
             Controls.Add(apptIdTB);
-            Controls.Add(textBox1);
+            Controls.Add(officeCountryTB);
             Controls.Add(officeStateTB);
             Controls.Add(officeCityTB);
             Controls.Add(officeNameTB);
@@ -432,7 +432,7 @@
         private Button officeSearchButton;
         private TextBox officeSearchTB;
         private TextBox officeStateTB;
-        private TextBox textBox1;
+        private TextBox officeCountryTB;
         private TextBox apptIdTB;
     }
 }

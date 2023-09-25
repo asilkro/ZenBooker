@@ -9,7 +9,7 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes
 {
-    internal class Staff
+    public class Staff
     {
         #region Properties / Fields
 

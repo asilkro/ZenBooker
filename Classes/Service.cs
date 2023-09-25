@@ -9,11 +9,11 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes
 {
-    internal class Service
+    public class Service
     {
         #region Properties / Fields
 
-        public int ServiceId { get; set; } // PK, auto_increment, not_null, FK ServiceId on Appt
+        public int Service_Id { get; set; } // PK, auto_increment, not_null, FK Service_Id on Appt
         public string ServiceName { get; set; } // VARCHAR(32)
         public string ServiceDesc { get; set; } // VARCHAR (64?)
         public bool HomeVisitService { get; set; }
@@ -29,7 +29,7 @@ namespace ZenoBook.Classes
 
         public Service(int serviceId, string serviceName, string serviceDesc, bool homeVisitService)
         {
-        ServiceId = serviceId;
+        Service_Id = serviceId;
         ServiceName = serviceName;
         ServiceDesc = serviceDesc;
         HomeVisitService = homeVisitService;

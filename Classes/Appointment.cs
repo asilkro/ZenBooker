@@ -9,11 +9,11 @@ namespace ZenoBook.Classes
     public abstract class Appointment
     {
         #region Properties / Fields
-
+        //TODO: make lowercase?
         public int AppointmentId { get; set; } // PK, auto_increment, not_null
         public int CustomerId { get; set; } // FK, Customer.Customer_Id
         public int StaffId { get; set; } // FK, Staff.StaffId
-        public int ServiceID { get; set; } // FK, Service.ServiceId
+        public int ServiceID { get; set; } // FK, Service.Service_Id
         public DateTime Start { get; set; } //
         public DateTime End { get; set; } //
 

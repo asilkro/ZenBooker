@@ -9,7 +9,7 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes
 {
-    internal class Office
+    public class Office
     {
         #region Properties / Fields
         public int OfficeId { get; set; } // // PK, auto_increment, not_null
