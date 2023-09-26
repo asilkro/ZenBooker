@@ -22,7 +22,8 @@ namespace ZenoBook.Forms
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            if (!new Helpers().LoginIsValid(loginTB.Text,pwTB.Text,System.Web))
+            var pwe = Security.GenerateEncryptionPw();
+            if (!new Helpers().LoginIsValid(loginTB.Text,pwTB.Text,pwe))
             {
                 MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
             }

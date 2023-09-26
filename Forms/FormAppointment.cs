@@ -31,8 +31,7 @@ namespace ZenoBook.Forms
         }
 
         public void UpdateTbs(Appointment appt)
-        {
-            FillDt(appt);
+        {   FillDt(appt);
             FillCxFields(appt);
             FillStaffFields(appt);
             FillServiceFields(appt);

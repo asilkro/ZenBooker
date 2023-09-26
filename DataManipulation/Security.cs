@@ -38,10 +38,22 @@ namespace ZenoBook.DataManipulation
             return encryptedBytes;
         }
 
+        private static IEnumerable<char> charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-        public string ProvideEncryptionPW()
+        public static string GenerateRandomString(int length, IEnumerable<char> charSet)
         {
-            string encryptionPw = Web=
+            var charArray = charSet.Distinct().ToArray();
+            char[] result = new char[length];
+            for (int i = 0; i < length; i++)
+                result[i] = charArray[RandomNumberGenerator.GetInt32(charArray.Length)];
+            return new string(result);
+        }
+
+        public static string GenerateEncryptionPw()
+        {
+            var length = 8;
+            string encryptionPw = GenerateRandomString(length, charSet);
+            return encryptionPw;
         }
 
         public static byte[] AES_Decrypt(byte[] bytesToBeDecrypted, byte[] passwordBytes)

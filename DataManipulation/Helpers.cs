@@ -22,36 +22,39 @@ namespace ZenoBook.DataManipulation
             {
                 return false;
             }
-            EncryptLoginInfo(username, password, encryptionPw);
+            var enteredLogin = EncryptLogin(username, encryptionPw);
+            var enteredPass = EncryptPw(password, encryptionPw);
 
-
-            bool CheckLogin()
+            using (var connection = new Builder().Connect())
             {
-                using (new Builder().Connect())
-                {
-                    string commandText = "SELECT * FROM users WHERE username = '@USER' AND password = '@PASS';";
-                    var cmd = new MySqlCommand(commandText);
-                    cmd.Parameters.AddWithValue("@USER", username);
-                    cmd.Parameters.AddWithValue("@PASS", password);
-                    if (cmd.ExecuteNonQuery() != 1)
-                    {
-                        return false;
-                    }
+                var s1 = EncryptLogin(connection.Query<User>(e => e.Login == username).First().Login, encryptionPw);
+                var s2 = EncryptPw(connection.Query<User>(e => e.Login == username).First().Password, encryptionPw);
 
-                    return true;
+                if (s2 != enteredPass)
+                {
+                    return false;
                 }
             }
+
             return true;
         }
 
-        private static void EncryptLoginInfo(string username, string password, string encryptionPw)
+        private static byte[] EncryptLogin(string username, string encryptionPw)
         {
             byte[] userBytes = Encoding.Default.GetBytes(username);
-            byte[] passBytes = Encoding.Default.GetBytes(password);
             byte[] encryptionBytes = Encoding.Default.GetBytes(encryptionPw);
 
             var checkUser = Security.AES_Encrypt(userBytes, encryptionBytes);
+            return checkUser;
+        }
+
+        private static byte[] EncryptPw(string password, string encryptionPw)
+        {
+            byte[] passBytes = Encoding.Default.GetBytes(password);
+            byte[] encryptionBytes = Encoding.Default.GetBytes(encryptionPw);
+
             var checkPass = Security.AES_Encrypt(passBytes, encryptionBytes);
+            return checkPass;
         }
 
         public void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
