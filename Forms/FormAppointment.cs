@@ -31,7 +31,8 @@ namespace ZenoBook.Forms
         }
 
         public void UpdateTbs(Appointment appt)
-        {   FillDt(appt);
+        {
+            FillDt(appt);
             FillCxFields(appt);
             FillStaffFields(appt);
             FillServiceFields(appt);
@@ -113,10 +114,10 @@ namespace ZenoBook.Forms
                 {
                     var eStaff = connection.Query<Staff>("[zth].[staff]", e => e.Email == searchTerm).FirstOrDefault();
                     return eStaff;
-                } 
+                }
                 var staff = connection.Query<Staff>("[zth].[staff]", e => e.Name == searchTerm).FirstOrDefault();
                 return staff;
-                
+
             }
         }
 
@@ -143,11 +144,11 @@ namespace ZenoBook.Forms
                 {
                     var iOffice = connection.Query<Office>("[zth].[office]", e => e.OfficeId == int.Parse(searchTerm)).FirstOrDefault();
                     return iOffice;
-                } 
+                }
                 var cOffice = connection.Query<Office>("[zth].[office]", e => e.City.Contains(searchTerm)).FirstOrDefault();
                 var nOffice = connection.Query<Office>("[zth].[office]", e => e.OfficeName.Contains(searchTerm)).FirstOrDefault();
-                if (cOffice != nOffice) 
-                { 
+                if (cOffice != nOffice)
+                {
                     MessageBox.Show("Refine your query and try again.", "Ambiguous office entry");
                     return null;
                 }

@@ -194,7 +194,7 @@
             // 
             staffSearchTB.Location = new Point(23, 170);
             staffSearchTB.Name = "staffSearchTB";
-            staffSearchTB.PlaceholderText = "Enter the staff member's name, email then click this button -->";
+            staffSearchTB.PlaceholderText = "Enter the staff member's name or email then click this button -->";
             staffSearchTB.Size = new Size(409, 25);
             staffSearchTB.TabIndex = 20;
             // 
@@ -251,7 +251,7 @@
             // 
             serviceSearchTB.Location = new Point(23, 237);
             serviceSearchTB.Name = "serviceSearchTB";
-            serviceSearchTB.PlaceholderText = "Enter a service name and/or ID then click this button -->";
+            serviceSearchTB.PlaceholderText = "Enter a service name or ID then click this button -->";
             serviceSearchTB.Size = new Size(409, 25);
             serviceSearchTB.TabIndex = 26;
             // 

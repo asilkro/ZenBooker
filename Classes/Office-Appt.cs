@@ -82,7 +82,7 @@ namespace ZenoBook.Classes
                 {
                     {
                         var updatedAppt = connection.Update("[zth].[appointment]", entity: officeAppointment);
-                        MessageBox.Show(+updatedAppt + " removed.", "Appointment Removed");
+                        MessageBox.Show(updatedAppt + " removed.", "Appointment Removed");
                     }
                     return true;
                 }
