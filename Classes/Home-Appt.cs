@@ -13,7 +13,7 @@ namespace ZenoBook.Classes
     {
         #region Properties / Fields
         public bool InHomeService { get; set; } // TODO: update SQL schema to support these
-        public int ServiceAddressId { get; set; } // TODO: create table for Service Addresses
+        public int ServiceAddressId { get; set; }
 
         #endregion
 

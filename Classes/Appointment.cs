@@ -9,7 +9,6 @@ namespace ZenoBook.Classes
     public abstract class Appointment
     {
         #region Properties / Fields
-        //TODO: make lowercase?
         public int AppointmentId { get; set; } // PK, auto_increment, not_null
         public int CustomerId { get; set; } // FK, Customer.Customer_Id
         public int StaffId { get; set; } // FK, Staff.StaffId
@@ -26,7 +25,7 @@ namespace ZenoBook.Classes
 
         }
 
-        public Appointment(int appointmentId, int customerId, int serviceId, DateTime start, DateTime end)
+        protected Appointment(int appointmentId, int customerId, int serviceId, DateTime start, DateTime end)
         {
             AppointmentId = appointmentId;
             CustomerId = customerId;
@@ -34,6 +33,7 @@ namespace ZenoBook.Classes
             Start = start;
             End = end;
         }
+
         #endregion
         
     }

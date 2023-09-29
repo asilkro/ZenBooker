@@ -33,6 +33,14 @@
             cancelBtn = new Button();
             saveBtn = new Button();
             cxIdTB = new TextBox();
+            officeCountryTB = new TextBox();
+            officeStateTB = new TextBox();
+            address1TB = new TextBox();
+            officeIdTB = new TextBox();
+            officeSearchButton = new Button();
+            saSearchTB = new TextBox();
+            address2TB = new TextBox();
+            cityTB = new TextBox();
             SuspendLayout();
             // 
             // validateBtn
@@ -71,8 +79,80 @@
             cxIdTB.Location = new Point(26, 22);
             cxIdTB.Name = "cxIdTB";
             cxIdTB.PlaceholderText = "Customer Id";
-            cxIdTB.Size = new Size(100, 25);
+            cxIdTB.Size = new Size(124, 25);
             cxIdTB.TabIndex = 18;
+            // 
+            // officeCountryTB
+            // 
+            officeCountryTB.Location = new Point(26, 257);
+            officeCountryTB.Name = "officeCountryTB";
+            officeCountryTB.PlaceholderText = "Office Country";
+            officeCountryTB.ReadOnly = true;
+            officeCountryTB.Size = new Size(291, 25);
+            officeCountryTB.TabIndex = 44;
+            // 
+            // officeStateTB
+            // 
+            officeStateTB.Location = new Point(340, 257);
+            officeStateTB.Name = "officeStateTB";
+            officeStateTB.PlaceholderText = "Office State";
+            officeStateTB.ReadOnly = true;
+            officeStateTB.Size = new Size(80, 25);
+            officeStateTB.TabIndex = 43;
+            // 
+            // address1TB
+            // 
+            address1TB.Location = new Point(26, 133);
+            address1TB.Name = "address1TB";
+            address1TB.PlaceholderText = "Address Line 1";
+            address1TB.ReadOnly = true;
+            address1TB.Size = new Size(394, 25);
+            address1TB.TabIndex = 41;
+            // 
+            // officeIdTB
+            // 
+            officeIdTB.Location = new Point(26, 102);
+            officeIdTB.Name = "officeIdTB";
+            officeIdTB.PlaceholderText = "Service Address Id";
+            officeIdTB.ReadOnly = true;
+            officeIdTB.Size = new Size(124, 25);
+            officeIdTB.TabIndex = 40;
+            // 
+            // officeSearchButton
+            // 
+            officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            officeSearchButton.Location = new Point(311, 18);
+            officeSearchButton.Name = "officeSearchButton";
+            officeSearchButton.Size = new Size(60, 29);
+            officeSearchButton.TabIndex = 39;
+            officeSearchButton.Text = "Search";
+            officeSearchButton.UseVisualStyleBackColor = true;
+            // 
+            // saSearchTB
+            // 
+            saSearchTB.Location = new Point(26, 53);
+            saSearchTB.Name = "saSearchTB";
+            saSearchTB.PlaceholderText = "Enter another part of the service address and search.";
+            saSearchTB.Size = new Size(345, 25);
+            saSearchTB.TabIndex = 38;
+            // 
+            // address2TB
+            // 
+            address2TB.Location = new Point(26, 164);
+            address2TB.Name = "address2TB";
+            address2TB.PlaceholderText = "Address Line 2 (Optional)";
+            address2TB.ReadOnly = true;
+            address2TB.Size = new Size(394, 25);
+            address2TB.TabIndex = 45;
+            // 
+            // cityTB
+            // 
+            cityTB.Location = new Point(26, 195);
+            cityTB.Name = "cityTB";
+            cityTB.PlaceholderText = "City (optional, recommended)";
+            cityTB.ReadOnly = true;
+            cityTB.Size = new Size(394, 25);
+            cityTB.TabIndex = 46;
             // 
             // FormHomeAppt
             // 
@@ -81,6 +161,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
             ClientSize = new Size(434, 411);
+            Controls.Add(cityTB);
+            Controls.Add(address2TB);
+            Controls.Add(officeCountryTB);
+            Controls.Add(officeStateTB);
+            Controls.Add(address1TB);
+            Controls.Add(officeIdTB);
+            Controls.Add(officeSearchButton);
+            Controls.Add(saSearchTB);
             Controls.Add(cxIdTB);
             Controls.Add(saveBtn);
             Controls.Add(cancelBtn);
@@ -101,5 +189,13 @@
         private Button AddressSearchButton;
         private TextBox addressSearchTB;
         private TextBox cxIdTB;
+        private TextBox officeCountryTB;
+        private TextBox officeStateTB;
+        private TextBox address1TB;
+        private TextBox officeIdTB;
+        private Button officeSearchButton;
+        private TextBox saSearchTB;
+        private TextBox address2TB;
+        private TextBox cityTB;
     }
 }
