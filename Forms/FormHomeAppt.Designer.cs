@@ -37,7 +37,7 @@
             officeStateTB = new TextBox();
             address1TB = new TextBox();
             officeIdTB = new TextBox();
-            officeSearchButton = new Button();
+            SearchButton = new Button();
             saSearchTB = new TextBox();
             address2TB = new TextBox();
             cityTB = new TextBox();
@@ -52,6 +52,7 @@
             validateBtn.TabIndex = 0;
             validateBtn.Text = "Validate";
             validateBtn.UseVisualStyleBackColor = true;
+            validateBtn.Click += validateBtn_Click;
             // 
             // cancelBtn
             // 
@@ -62,6 +63,7 @@
             cancelBtn.TabIndex = 1;
             cancelBtn.Text = "Cancel";
             cancelBtn.UseVisualStyleBackColor = true;
+            cancelBtn.Click += cancelBtn_Click;
             // 
             // saveBtn
             // 
@@ -73,6 +75,7 @@
             saveBtn.TabIndex = 2;
             saveBtn.Text = "Submit";
             saveBtn.UseVisualStyleBackColor = true;
+            saveBtn.Click += saveBtn_Click;
             // 
             // cxIdTB
             // 
@@ -118,15 +121,16 @@
             officeIdTB.Size = new Size(124, 25);
             officeIdTB.TabIndex = 40;
             // 
-            // officeSearchButton
+            // SearchButton
             // 
-            officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            officeSearchButton.Location = new Point(311, 18);
-            officeSearchButton.Name = "officeSearchButton";
-            officeSearchButton.Size = new Size(60, 29);
-            officeSearchButton.TabIndex = 39;
-            officeSearchButton.Text = "Search";
-            officeSearchButton.UseVisualStyleBackColor = true;
+            SearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            SearchButton.Location = new Point(311, 18);
+            SearchButton.Name = "SearchButton";
+            SearchButton.Size = new Size(60, 29);
+            SearchButton.TabIndex = 39;
+            SearchButton.Text = "Search";
+            SearchButton.UseVisualStyleBackColor = true;
+            SearchButton.Click += SearchButton_Click;
             // 
             // saSearchTB
             // 
@@ -167,7 +171,7 @@
             Controls.Add(officeStateTB);
             Controls.Add(address1TB);
             Controls.Add(officeIdTB);
-            Controls.Add(officeSearchButton);
+            Controls.Add(SearchButton);
             Controls.Add(saSearchTB);
             Controls.Add(cxIdTB);
             Controls.Add(saveBtn);
@@ -193,7 +197,7 @@
         private TextBox officeStateTB;
         private TextBox address1TB;
         private TextBox officeIdTB;
-        private Button officeSearchButton;
+        private Button SearchButton;
         private TextBox saSearchTB;
         private TextBox address2TB;
         private TextBox cityTB;

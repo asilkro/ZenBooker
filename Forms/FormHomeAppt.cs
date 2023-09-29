@@ -27,7 +27,7 @@ namespace ZenoBook.Forms
         public FormHomeAppt(Appointment appt, int? cxId)
         {
             InitializeComponent();
-            var output = new HomeAppointment(appt.AppointmentId,appt.CustomerId,appt.StaffId,appt.ServiceID,appt.Start,appt.End,true,-1);
+            var output = new HomeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, appt.ServiceID, appt.Start, appt.End, true, -1);
             if (appt.CustomerId != cxId)
             {
                 if (cxId.HasValue)
@@ -35,14 +35,14 @@ namespace ZenoBook.Forms
                     cxIdTB.Text = cxId.ToString();
                     cxIdTB.BackColor = Color.CadetBlue;
                 }
-                cxIdTB.Text = appt.AppointmentId.ToString();
+                cxIdTB.Text = appt.CustomerId.ToString();
                 cxIdTB.BackColor = Color.PaleVioletRed; //Indicates mismatch
             }
-            cxIdTB.Focus();
+            ReturnServiceAddress(cxIdTB.Text);
         }
 
         #region SQL
-        public ServiceAddress? ReturnServiceAddress(string searchTerm)
+        public void ReturnServiceAddress(string searchTerm)
         {
             using (MySqlConnection connection = new Builder().Connect())
             {
@@ -50,18 +50,56 @@ namespace ZenoBook.Forms
                 {
                     int i;
                     int.TryParse(searchTerm, out i);
-                    var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]",e => e.RelatedCx == i);
-                    return (ServiceAddress?) serviceAddress;
+                    var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
+                    FillCxFromSearch(serviceAddress.GetEnumerator().Current);
                 }
                 catch (Exception e)
                 {
                     LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                    return null;
+
                 }
             }
         }
 
+        #endregion
+
+        #region Additional Methods
+
+        private void FillCxFromSearch(ServiceAddress? address)
+        {
+            address1TB.Text = address.Address1;
+            address2TB.Text = address.Address2;
+            cityTB.Text = address.City;
+            officeStateTB.Text = address.State;
+            officeCountryTB.Text = address.Country;
+        }
 
         #endregion
+
+        #region Event Handlers
+
+        private void SearchButton_Click(object sender, EventArgs e)
+        {
+            ReturnServiceAddress(saSearchTB.Text);
+        }
+
+        private void cancelBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void validateBtn_Click(object sender, EventArgs e)
+        {
+            //TODO: IMPLEMENT
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            //TODO
+        }
+
+        #endregion
+
+
     }
 }
