@@ -33,14 +33,15 @@
             cancelBtn = new Button();
             saveBtn = new Button();
             cxIdTB = new TextBox();
-            officeCountryTB = new TextBox();
-            officeStateTB = new TextBox();
+            countryTB = new TextBox();
+            stateTB = new TextBox();
             address1TB = new TextBox();
             officeIdTB = new TextBox();
             SearchButton = new Button();
             saSearchTB = new TextBox();
             address2TB = new TextBox();
             cityTB = new TextBox();
+            colorDialog1 = new ColorDialog();
             SuspendLayout();
             // 
             // validateBtn
@@ -85,23 +86,23 @@
             cxIdTB.Size = new Size(124, 25);
             cxIdTB.TabIndex = 18;
             // 
-            // officeCountryTB
+            // countryTB
             // 
-            officeCountryTB.Location = new Point(26, 257);
-            officeCountryTB.Name = "officeCountryTB";
-            officeCountryTB.PlaceholderText = "Office Country";
-            officeCountryTB.ReadOnly = true;
-            officeCountryTB.Size = new Size(291, 25);
-            officeCountryTB.TabIndex = 44;
+            countryTB.Location = new Point(129, 226);
+            countryTB.Name = "countryTB";
+            countryTB.PlaceholderText = "Country";
+            countryTB.ReadOnly = true;
+            countryTB.Size = new Size(291, 25);
+            countryTB.TabIndex = 44;
             // 
-            // officeStateTB
+            // stateTB
             // 
-            officeStateTB.Location = new Point(340, 257);
-            officeStateTB.Name = "officeStateTB";
-            officeStateTB.PlaceholderText = "Office State";
-            officeStateTB.ReadOnly = true;
-            officeStateTB.Size = new Size(80, 25);
-            officeStateTB.TabIndex = 43;
+            stateTB.Location = new Point(26, 226);
+            stateTB.Name = "stateTB";
+            stateTB.PlaceholderText = "State";
+            stateTB.ReadOnly = true;
+            stateTB.Size = new Size(80, 25);
+            stateTB.TabIndex = 43;
             // 
             // address1TB
             // 
@@ -167,8 +168,8 @@
             ClientSize = new Size(434, 411);
             Controls.Add(cityTB);
             Controls.Add(address2TB);
-            Controls.Add(officeCountryTB);
-            Controls.Add(officeStateTB);
+            Controls.Add(countryTB);
+            Controls.Add(stateTB);
             Controls.Add(address1TB);
             Controls.Add(officeIdTB);
             Controls.Add(SearchButton);
@@ -193,13 +194,14 @@
         private Button AddressSearchButton;
         private TextBox addressSearchTB;
         private TextBox cxIdTB;
-        private TextBox officeCountryTB;
-        private TextBox officeStateTB;
+        private TextBox countryTB;
+        private TextBox stateTB;
         private TextBox address1TB;
         private TextBox officeIdTB;
         private Button SearchButton;
         private TextBox saSearchTB;
         private TextBox address2TB;
         private TextBox cityTB;
+        private ColorDialog colorDialog1;
     }
 }

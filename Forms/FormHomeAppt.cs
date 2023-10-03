@@ -70,8 +70,8 @@ namespace ZenoBook.Forms
             address1TB.Text = address.Address1;
             address2TB.Text = address.Address2;
             cityTB.Text = address.City;
-            officeStateTB.Text = address.State;
-            officeCountryTB.Text = address.Country;
+            stateTB.Text = address.State;
+            countryTB.Text = address.Country;
         }
 
         #endregion
