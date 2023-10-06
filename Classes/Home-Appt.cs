@@ -41,7 +41,7 @@ namespace ZenoBook.Classes
 
         #region SQL
 
-        public bool InsertHomeAppt(HomeAppointment homeAppointment)
+        public static bool InsertHomeAppt(HomeAppointment homeAppointment)
         {
             using (var connection = new Builder().Connect())
                 try

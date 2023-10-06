@@ -114,6 +114,7 @@
             saveBtn.TabIndex = 47;
             saveBtn.Text = "Submit";
             saveBtn.UseVisualStyleBackColor = true;
+            saveBtn.Click += saveBtn_Click;
             // 
             // cancelBtn
             // 
@@ -124,6 +125,7 @@
             cancelBtn.TabIndex = 46;
             cancelBtn.Text = "Cancel";
             cancelBtn.UseVisualStyleBackColor = true;
+            cancelBtn.Click += cancelBtn_Click;
             // 
             // validateBtn
             // 
@@ -134,6 +136,7 @@
             validateBtn.TabIndex = 45;
             validateBtn.Text = "Validate";
             validateBtn.UseVisualStyleBackColor = true;
+            validateBtn.Click += validateBtn_Click;
             // 
             // FormOfficeAppt
             // 

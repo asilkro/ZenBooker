@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,16 +19,21 @@ namespace ZenoBook.Forms
 {
     public partial class FormHomeAppt : Form
     {
+        private HomeAppointment homeAppt;
+        private FormAppointment form1;
 
-        public FormHomeAppt()
+     //   public FormHomeAppt()
+     //   {
+     //       InitializeComponent();
+     //   }
+
+
+        public FormHomeAppt(Appointment appt, int? cxId, FormAppointment form1)
         {
             InitializeComponent();
-        }
-
-        public FormHomeAppt(Appointment appt, int? cxId)
-        {
-            InitializeComponent();
-            var output = new HomeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, appt.ServiceID, appt.Start, appt.End, true, -1);
+            form1 = (FormAppointment) this.ParentForm;
+            homeAppt = new HomeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, appt.ServiceID,
+                appt.Start, appt.End, true, -1);
             if (appt.CustomerId != cxId)
             {
                 if (cxId.HasValue)
@@ -39,6 +45,7 @@ namespace ZenoBook.Forms
                 cxIdTB.BackColor = Color.PaleVioletRed; //Indicates mismatch
             }
             ReturnServiceAddress(cxIdTB.Text);
+            saveBtn.Enabled = false;
         }
 
         #region SQL
@@ -61,6 +68,21 @@ namespace ZenoBook.Forms
             }
         }
 
+        public int ReturnServiceAddyId(string searchTerm)
+        {
+            using (MySqlConnection connection = new Builder().Connect())
+            {
+                try
+                {
+                    var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.AddressId == i);
+                }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger("LoggingRepo").Warn(e, e);
+
+                }
+            }
+        }
         #endregion
 
         #region Additional Methods
@@ -90,12 +112,17 @@ namespace ZenoBook.Forms
 
         private void validateBtn_Click(object sender, EventArgs e)
         {
-            //TODO: IMPLEMENT
+            homeAppt.ServiceAddressId = ReturnServiceAddyId(homeAppt.CustomerId.ToString());
+            saveBtn.Enabled = true;
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            //TODO
+            if (HomeAppointment.InsertHomeAppt(homeAppt))
+            {
+                this.Close();
+                form1.Close();
+            }
         }
 
         #endregion

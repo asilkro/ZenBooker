@@ -39,7 +39,7 @@ namespace ZenoBook.Classes
         #endregion
         #region SQL
 
-        public bool InsertOfficeAppt(OfficeAppointment officeAppointment)
+        public static bool InsertOfficeAppt(OfficeAppointment officeAppointment)
         {
             using (var connection = new Builder().Connect())
                 try
