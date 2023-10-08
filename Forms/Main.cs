@@ -12,9 +12,20 @@ namespace ZenoBook.Forms
 {
     public partial class Main : Form
     {
-        public Main()
+        private Login login;
+        public Main(Login login)
         {
             InitializeComponent();
+            this.login = login;
+        }
+
+        private void logoutBtn_Click(object sender, EventArgs e)
+        {
+            if (ActiveForm != null)
+            {
+                ActiveForm.Close();
+            }
+
         }
     }
 }

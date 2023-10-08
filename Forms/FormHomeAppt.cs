@@ -68,21 +68,26 @@ namespace ZenoBook.Forms
             }
         }
 
-        public int ReturnServiceAddyId(string searchTerm)
+        public int? ReturnServiceAddyId(string searchTerm)
         {
             using (MySqlConnection connection = new Builder().Connect())
             {
+                int sd;
                 try
                 {
-                    var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.AddressId == i);
+                    var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.AddressId == int.Parse(searchTerm));
+                    sd =  serviceAddress.GetEnumerator().Current.AddressId;
+                    return sd;
                 }
                 catch (Exception e)
                 {
                     LogManager.GetLogger("LoggingRepo").Warn(e, e);
 
                 }
+                return null;
             }
         }
+
         #endregion
 
         #region Additional Methods
@@ -112,7 +117,7 @@ namespace ZenoBook.Forms
 
         private void validateBtn_Click(object sender, EventArgs e)
         {
-            homeAppt.ServiceAddressId = ReturnServiceAddyId(homeAppt.CustomerId.ToString());
+            homeAppt.ServiceAddressId = (int)ReturnServiceAddyId(homeAppt.CustomerId.ToString());
             saveBtn.Enabled = true;
         }
 

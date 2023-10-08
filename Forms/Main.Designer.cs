@@ -30,31 +30,163 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             logoutBtn = new Button();
+            CxLabel = new Label();
+            CxCreateBtn = new Button();
+            UpdateCxBtn = new Button();
+            RemoveCxBtn = new Button();
+            RemoveApptBtn = new Button();
+            UpdateApptBtn = new Button();
+            CreateApptBtn = new Button();
+            ApptsLbl = new Label();
+            pictureBox1 = new PictureBox();
+            dataGridView1 = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // logoutBtn
             // 
-            logoutBtn.Location = new Point(672, 499);
+            logoutBtn.Location = new Point(768, 587);
+            logoutBtn.Margin = new Padding(3, 4, 3, 4);
             logoutBtn.Name = "logoutBtn";
-            logoutBtn.Size = new Size(100, 50);
+            logoutBtn.Size = new Size(114, 59);
             logoutBtn.TabIndex = 1;
             logoutBtn.Text = "Log Out";
             logoutBtn.UseVisualStyleBackColor = true;
+            logoutBtn.Click += logoutBtn_Click;
+            // 
+            // CxLabel
+            // 
+            CxLabel.AutoSize = true;
+            CxLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            CxLabel.Location = new Point(37, 434);
+            CxLabel.Name = "CxLabel";
+            CxLabel.Size = new Size(104, 28);
+            CxLabel.TabIndex = 2;
+            CxLabel.Text = "Customers";
+            // 
+            // CxCreateBtn
+            // 
+            CxCreateBtn.Location = new Point(37, 484);
+            CxCreateBtn.Name = "CxCreateBtn";
+            CxCreateBtn.Size = new Size(94, 29);
+            CxCreateBtn.TabIndex = 3;
+            CxCreateBtn.Text = "Create";
+            CxCreateBtn.UseVisualStyleBackColor = true;
+            // 
+            // UpdateCxBtn
+            // 
+            UpdateCxBtn.Location = new Point(37, 531);
+            UpdateCxBtn.Name = "UpdateCxBtn";
+            UpdateCxBtn.Size = new Size(94, 29);
+            UpdateCxBtn.TabIndex = 4;
+            UpdateCxBtn.Text = "Update";
+            UpdateCxBtn.UseVisualStyleBackColor = true;
+            // 
+            // RemoveCxBtn
+            // 
+            RemoveCxBtn.Location = new Point(37, 578);
+            RemoveCxBtn.Name = "RemoveCxBtn";
+            RemoveCxBtn.Size = new Size(94, 29);
+            RemoveCxBtn.TabIndex = 5;
+            RemoveCxBtn.Text = "Remove";
+            RemoveCxBtn.UseVisualStyleBackColor = true;
+            // 
+            // RemoveApptBtn
+            // 
+            RemoveApptBtn.Location = new Point(37, 384);
+            RemoveApptBtn.Name = "RemoveApptBtn";
+            RemoveApptBtn.Size = new Size(94, 29);
+            RemoveApptBtn.TabIndex = 9;
+            RemoveApptBtn.Text = "Remove";
+            RemoveApptBtn.UseVisualStyleBackColor = true;
+            // 
+            // UpdateApptBtn
+            // 
+            UpdateApptBtn.Location = new Point(37, 337);
+            UpdateApptBtn.Name = "UpdateApptBtn";
+            UpdateApptBtn.Size = new Size(94, 29);
+            UpdateApptBtn.TabIndex = 8;
+            UpdateApptBtn.Text = "Update";
+            UpdateApptBtn.UseVisualStyleBackColor = true;
+            // 
+            // CreateApptBtn
+            // 
+            CreateApptBtn.Location = new Point(37, 290);
+            CreateApptBtn.Name = "CreateApptBtn";
+            CreateApptBtn.Size = new Size(94, 29);
+            CreateApptBtn.TabIndex = 7;
+            CreateApptBtn.Text = "Create";
+            CreateApptBtn.UseVisualStyleBackColor = true;
+            // 
+            // ApptsLbl
+            // 
+            ApptsLbl.AutoSize = true;
+            ApptsLbl.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ApptsLbl.Location = new Point(37, 239);
+            ApptsLbl.Name = "ApptsLbl";
+            ApptsLbl.Size = new Size(137, 28);
+            ApptsLbl.TabIndex = 6;
+            ApptsLbl.Text = "Appointments";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.Zenobia_Black;
+            pictureBox1.Location = new Point(619, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(250, 250);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 10;
+            pictureBox1.TabStop = false;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(40, 29);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.RowTemplate.Height = 29;
+            dataGridView1.Size = new Size(300, 188);
+            dataGridView1.TabIndex = 11;
             // 
             // Main
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
+            ClientSize = new Size(896, 660);
+            Controls.Add(dataGridView1);
+            Controls.Add(pictureBox1);
+            Controls.Add(RemoveApptBtn);
+            Controls.Add(UpdateApptBtn);
+            Controls.Add(CreateApptBtn);
+            Controls.Add(ApptsLbl);
+            Controls.Add(RemoveCxBtn);
+            Controls.Add(UpdateCxBtn);
+            Controls.Add(CxCreateBtn);
+            Controls.Add(CxLabel);
             Controls.Add(logoutBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Main";
             Text = "ZTH - ZenoBook";
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Button logoutBtn;
+        private Label CxLabel;
+        private Button CxCreateBtn;
+        private Button UpdateCxBtn;
+        private Button RemoveCxBtn;
+        private Button RemoveApptBtn;
+        private Button UpdateApptBtn;
+        private Button CreateApptBtn;
+        private Label ApptsLbl;
+        private PictureBox pictureBox1;
+        private DataGridView dataGridView1;
     }
 }
