@@ -1,36 +1,32 @@
 using ZenoBook.DataManipulation;
-using System.Web;
 
-namespace ZenoBook.Forms
+namespace ZenoBook.Forms;
+
+public partial class Login : Form
 {
-    public partial class Login : Form
+    public Login()
     {
-        public Login()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
 
-        #region Buttons
+    #region Buttons
 
-        private void exitBtn_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+    private void exitBtn_Click(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
 
-        #endregion
+    #endregion
 
-        private void loginBtn_Click(object sender, EventArgs e)
-        {
-            var pwe = Security.GenerateEncryptionPw();
-            if (!new Helpers().LoginIsValid(loginTB.Text,pwTB.Text,pwe))
-            {
-                MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
-            }
+    private void loginBtn_Click(object sender, EventArgs e)
+    {
+        var pwe = Security.GenerateEncryptionPw();
+        if (!new Helpers().LoginIsValid(loginTB.Text, pwTB.Text, pwe))
+            MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
 
-            var main = new Main(); 
-            Hide();
-            main.Show();
-        }
+        var main = new Main();
+        Hide();
+        main.Show();
     }
 }
