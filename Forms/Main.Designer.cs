@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             logoutBtn = new Button();
             CxLabel = new Label();
@@ -40,8 +41,10 @@
             ApptsLbl = new Label();
             pictureBox1 = new PictureBox();
             dataGridView1 = new DataGridView();
+            homeAppointmentBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)homeAppointmentBindingSource).BeginInit();
             SuspendLayout();
             // 
             // logoutBtn
@@ -94,30 +97,33 @@
             // 
             // RemoveApptBtn
             // 
-            RemoveApptBtn.Location = new Point(37, 384);
+            RemoveApptBtn.Location = new Point(137, 315);
             RemoveApptBtn.Name = "RemoveApptBtn";
             RemoveApptBtn.Size = new Size(94, 29);
             RemoveApptBtn.TabIndex = 9;
             RemoveApptBtn.Text = "Remove";
             RemoveApptBtn.UseVisualStyleBackColor = true;
+            RemoveApptBtn.Click += RemoveApptBtn_Click;
             // 
             // UpdateApptBtn
             // 
-            UpdateApptBtn.Location = new Point(37, 337);
+            UpdateApptBtn.Location = new Point(37, 315);
             UpdateApptBtn.Name = "UpdateApptBtn";
             UpdateApptBtn.Size = new Size(94, 29);
             UpdateApptBtn.TabIndex = 8;
             UpdateApptBtn.Text = "Update";
             UpdateApptBtn.UseVisualStyleBackColor = true;
+            UpdateApptBtn.Click += UpdateApptBtn_Click;
             // 
             // CreateApptBtn
             // 
-            CreateApptBtn.Location = new Point(37, 290);
+            CreateApptBtn.Location = new Point(37, 280);
             CreateApptBtn.Name = "CreateApptBtn";
             CreateApptBtn.Size = new Size(94, 29);
             CreateApptBtn.TabIndex = 7;
             CreateApptBtn.Text = "Create";
             CreateApptBtn.UseVisualStyleBackColor = true;
+            CreateApptBtn.Click += CreateApptBtn_Click;
             // 
             // ApptsLbl
             // 
@@ -131,8 +137,9 @@
             // 
             // pictureBox1
             // 
+            pictureBox1.Enabled = false;
             pictureBox1.Image = Properties.Resources.Zenobia_Black;
-            pictureBox1.Location = new Point(619, 12);
+            pictureBox1.Location = new Point(346, 29);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(250, 250);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -144,10 +151,16 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(40, 29);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(300, 188);
             dataGridView1.TabIndex = 11;
+            // 
+            // homeAppointmentBindingSource
+            // 
+            homeAppointmentBindingSource.DataSource = typeof(Classes.HomeAppointment);
             // 
             // Main
             // 
@@ -171,6 +184,7 @@
             Text = "ZTH - ZenoBook";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)homeAppointmentBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -188,5 +202,6 @@
         private Label ApptsLbl;
         private PictureBox pictureBox1;
         private DataGridView dataGridView1;
+        private BindingSource homeAppointmentBindingSource;
     }
 }

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAppointment));
-            removeBtn = new Button();
             saveBtn = new Button();
             cancelBtn = new Button();
             dateCalendar = new MonthCalendar();
@@ -60,33 +59,26 @@
             officeStateTB = new TextBox();
             officeCountryTB = new TextBox();
             apptIdTB = new TextBox();
+            mySqlDataAdapter1 = new MySqlConnector.MySqlDataAdapter();
             SuspendLayout();
-            // 
-            // removeBtn
-            // 
-            removeBtn.BackColor = Color.RosyBrown;
-            removeBtn.Location = new Point(50, 475);
-            removeBtn.Name = "removeBtn";
-            removeBtn.Size = new Size(100, 50);
-            removeBtn.TabIndex = 6;
-            removeBtn.Text = "Remove";
-            removeBtn.UseVisualStyleBackColor = false;
             // 
             // saveBtn
             // 
             saveBtn.BackColor = Color.LightSteelBlue;
-            saveBtn.Location = new Point(525, 475);
+            saveBtn.Location = new Point(600, 559);
+            saveBtn.Margin = new Padding(3, 4, 3, 4);
             saveBtn.Name = "saveBtn";
-            saveBtn.Size = new Size(100, 50);
+            saveBtn.Size = new Size(114, 59);
             saveBtn.TabIndex = 5;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
             // 
             // cancelBtn
             // 
-            cancelBtn.Location = new Point(650, 475);
+            cancelBtn.Location = new Point(743, 559);
+            cancelBtn.Margin = new Padding(3, 4, 3, 4);
             cancelBtn.Name = "cancelBtn";
-            cancelBtn.Size = new Size(100, 50);
+            cancelBtn.Size = new Size(114, 59);
             cancelBtn.TabIndex = 4;
             cancelBtn.Text = "Cancel";
             cancelBtn.UseVisualStyleBackColor = true;
@@ -95,7 +87,8 @@
             // 
             dateCalendar.FirstDayOfWeek = Day.Saturday;
             dateCalendar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dateCalendar.Location = new Point(539, 38);
+            dateCalendar.Location = new Point(616, 45);
+            dateCalendar.Margin = new Padding(10, 11, 10, 11);
             dateCalendar.MaxSelectionCount = 1;
             dateCalendar.Name = "dateCalendar";
             dateCalendar.TabIndex = 7;
@@ -106,9 +99,10 @@
             startDtPicker.CustomFormat = "HH:mm";
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             startDtPicker.Format = DateTimePickerFormat.Custom;
-            startDtPicker.Location = new Point(675, 202);
+            startDtPicker.Location = new Point(771, 258);
+            startDtPicker.Margin = new Padding(3, 4, 3, 4);
             startDtPicker.Name = "startDtPicker";
-            startDtPicker.Size = new Size(75, 29);
+            startDtPicker.Size = new Size(85, 34);
             startDtPicker.TabIndex = 8;
             startDtPicker.Value = new DateTime(2023, 9, 17, 14, 0, 0, 0);
             // 
@@ -118,26 +112,29 @@
             endDtPicker.CustomFormat = "HH:mm";
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             endDtPicker.Format = DateTimePickerFormat.Custom;
-            endDtPicker.Location = new Point(675, 237);
+            endDtPicker.Location = new Point(771, 299);
+            endDtPicker.Margin = new Padding(3, 4, 3, 4);
             endDtPicker.Name = "endDtPicker";
-            endDtPicker.Size = new Size(75, 29);
+            endDtPicker.Size = new Size(85, 34);
             endDtPicker.TabIndex = 9;
             endDtPicker.Value = new DateTime(2023, 9, 17, 15, 0, 0, 0);
             // 
             // cxSearchTB
             // 
-            cxSearchTB.Location = new Point(23, 38);
+            cxSearchTB.Location = new Point(26, 45);
+            cxSearchTB.Margin = new Padding(3, 4, 3, 4);
             cxSearchTB.Name = "cxSearchTB";
             cxSearchTB.PlaceholderText = "Enter a customer name, email, and/or ID then click this button -->";
-            cxSearchTB.Size = new Size(409, 25);
+            cxSearchTB.Size = new Size(467, 27);
             cxSearchTB.TabIndex = 14;
             // 
             // cxSearchButton
             // 
             cxSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            cxSearchButton.Location = new Point(438, 35);
+            cxSearchButton.Location = new Point(501, 41);
+            cxSearchButton.Margin = new Padding(3, 4, 3, 4);
             cxSearchButton.Name = "cxSearchButton";
-            cxSearchButton.Size = new Size(75, 29);
+            cxSearchButton.Size = new Size(86, 34);
             cxSearchButton.TabIndex = 15;
             cxSearchButton.Text = "Search";
             cxSearchButton.UseVisualStyleBackColor = true;
@@ -145,46 +142,51 @@
             // 
             // cxIdTB
             // 
-            cxIdTB.Location = new Point(440, 68);
+            cxIdTB.Location = new Point(503, 80);
+            cxIdTB.Margin = new Padding(3, 4, 3, 4);
             cxIdTB.Name = "cxIdTB";
             cxIdTB.PlaceholderText = "Cust. Id";
             cxIdTB.ReadOnly = true;
-            cxIdTB.Size = new Size(73, 25);
+            cxIdTB.Size = new Size(83, 27);
             cxIdTB.TabIndex = 16;
             // 
             // cxNameTb
             // 
-            cxNameTb.Location = new Point(23, 68);
+            cxNameTb.Location = new Point(26, 80);
+            cxNameTb.Margin = new Padding(3, 4, 3, 4);
             cxNameTb.Name = "cxNameTb";
             cxNameTb.PlaceholderText = "Customer Name";
             cxNameTb.ReadOnly = true;
-            cxNameTb.Size = new Size(409, 25);
+            cxNameTb.Size = new Size(467, 27);
             cxNameTb.TabIndex = 17;
             // 
             // cxEmailTB
             // 
-            cxEmailTB.Location = new Point(23, 99);
+            cxEmailTB.Location = new Point(26, 116);
+            cxEmailTB.Margin = new Padding(3, 4, 3, 4);
             cxEmailTB.Name = "cxEmailTB";
             cxEmailTB.PlaceholderText = "Customer Email";
             cxEmailTB.ReadOnly = true;
-            cxEmailTB.Size = new Size(409, 25);
+            cxEmailTB.Size = new Size(467, 27);
             cxEmailTB.TabIndex = 18;
             // 
             // cxPhoneTB
             // 
-            cxPhoneTB.Location = new Point(23, 130);
+            cxPhoneTB.Location = new Point(26, 153);
+            cxPhoneTB.Margin = new Padding(3, 4, 3, 4);
             cxPhoneTB.Name = "cxPhoneTB";
             cxPhoneTB.PlaceholderText = "Customer Phone";
             cxPhoneTB.ReadOnly = true;
-            cxPhoneTB.Size = new Size(409, 25);
+            cxPhoneTB.Size = new Size(467, 27);
             cxPhoneTB.TabIndex = 19;
             // 
             // staffSearchButton
             // 
             staffSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            staffSearchButton.Location = new Point(438, 167);
+            staffSearchButton.Location = new Point(501, 196);
+            staffSearchButton.Margin = new Padding(3, 4, 3, 4);
             staffSearchButton.Name = "staffSearchButton";
-            staffSearchButton.Size = new Size(75, 29);
+            staffSearchButton.Size = new Size(86, 34);
             staffSearchButton.TabIndex = 21;
             staffSearchButton.Text = "Search";
             staffSearchButton.UseVisualStyleBackColor = true;
@@ -192,37 +194,40 @@
             // 
             // staffSearchTB
             // 
-            staffSearchTB.Location = new Point(23, 170);
+            staffSearchTB.Location = new Point(26, 200);
+            staffSearchTB.Margin = new Padding(3, 4, 3, 4);
             staffSearchTB.Name = "staffSearchTB";
             staffSearchTB.PlaceholderText = "Enter the staff member's name or email then click this button -->";
-            staffSearchTB.Size = new Size(409, 25);
+            staffSearchTB.Size = new Size(467, 27);
             staffSearchTB.TabIndex = 20;
             // 
             // staffNameTb
             // 
-            staffNameTb.Location = new Point(23, 201);
+            staffNameTb.Location = new Point(26, 236);
+            staffNameTb.Margin = new Padding(3, 4, 3, 4);
             staffNameTb.Name = "staffNameTb";
             staffNameTb.PlaceholderText = "Staff Member";
             staffNameTb.ReadOnly = true;
-            staffNameTb.Size = new Size(409, 25);
+            staffNameTb.Size = new Size(467, 27);
             staffNameTb.TabIndex = 23;
             // 
             // staffIdTB
             // 
-            staffIdTB.Location = new Point(440, 201);
+            staffIdTB.Location = new Point(503, 236);
+            staffIdTB.Margin = new Padding(3, 4, 3, 4);
             staffIdTB.Name = "staffIdTB";
             staffIdTB.PlaceholderText = "Staff Id";
             staffIdTB.ReadOnly = true;
-            staffIdTB.Size = new Size(73, 25);
+            staffIdTB.Size = new Size(83, 27);
             staffIdTB.TabIndex = 22;
             // 
             // startLbl
             // 
             startLbl.AutoSize = true;
             startLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            startLbl.Location = new Point(613, 204);
+            startLbl.Location = new Point(701, 260);
             startLbl.Name = "startLbl";
-            startLbl.Size = new Size(56, 25);
+            startLbl.Size = new Size(68, 32);
             startLbl.TabIndex = 24;
             startLbl.Text = "Start";
             // 
@@ -230,18 +235,19 @@
             // 
             endLbl.AutoSize = true;
             endLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            endLbl.Location = new Point(623, 241);
+            endLbl.Location = new Point(712, 304);
             endLbl.Name = "endLbl";
-            endLbl.Size = new Size(46, 25);
+            endLbl.Size = new Size(57, 32);
             endLbl.TabIndex = 25;
             endLbl.Text = "End";
             // 
             // serviceSearchButton
             // 
             serviceSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            serviceSearchButton.Location = new Point(440, 233);
+            serviceSearchButton.Location = new Point(503, 274);
+            serviceSearchButton.Margin = new Padding(3, 4, 3, 4);
             serviceSearchButton.Name = "serviceSearchButton";
-            serviceSearchButton.Size = new Size(75, 29);
+            serviceSearchButton.Size = new Size(86, 34);
             serviceSearchButton.TabIndex = 27;
             serviceSearchButton.Text = "Search";
             serviceSearchButton.UseVisualStyleBackColor = true;
@@ -249,72 +255,80 @@
             // 
             // serviceSearchTB
             // 
-            serviceSearchTB.Location = new Point(23, 237);
+            serviceSearchTB.Location = new Point(26, 279);
+            serviceSearchTB.Margin = new Padding(3, 4, 3, 4);
             serviceSearchTB.Name = "serviceSearchTB";
             serviceSearchTB.PlaceholderText = "Enter a service name or ID then click this button -->";
-            serviceSearchTB.Size = new Size(409, 25);
+            serviceSearchTB.Size = new Size(467, 27);
             serviceSearchTB.TabIndex = 26;
             // 
             // serviceDescTb
             // 
-            serviceDescTb.Location = new Point(23, 299);
+            serviceDescTb.Location = new Point(26, 352);
+            serviceDescTb.Margin = new Padding(3, 4, 3, 4);
             serviceDescTb.Name = "serviceDescTb";
             serviceDescTb.PlaceholderText = "Service Description";
             serviceDescTb.ReadOnly = true;
-            serviceDescTb.Size = new Size(490, 25);
+            serviceDescTb.Size = new Size(559, 27);
             serviceDescTb.TabIndex = 30;
             // 
             // serviceNameTb
             // 
-            serviceNameTb.Location = new Point(23, 268);
+            serviceNameTb.Location = new Point(26, 315);
+            serviceNameTb.Margin = new Padding(3, 4, 3, 4);
             serviceNameTb.Name = "serviceNameTb";
             serviceNameTb.PlaceholderText = "Service Name";
             serviceNameTb.ReadOnly = true;
-            serviceNameTb.Size = new Size(409, 25);
+            serviceNameTb.Size = new Size(467, 27);
             serviceNameTb.TabIndex = 29;
             // 
             // serviceIdTB
             // 
-            serviceIdTB.Location = new Point(440, 268);
+            serviceIdTB.Location = new Point(503, 315);
+            serviceIdTB.Margin = new Padding(3, 4, 3, 4);
             serviceIdTB.Name = "serviceIdTB";
             serviceIdTB.PlaceholderText = "Service Id";
             serviceIdTB.ReadOnly = true;
-            serviceIdTB.Size = new Size(75, 25);
+            serviceIdTB.Size = new Size(85, 27);
             serviceIdTB.TabIndex = 28;
             // 
             // officeCityTB
             // 
-            officeCityTB.Location = new Point(23, 404);
+            officeCityTB.Location = new Point(26, 475);
+            officeCityTB.Margin = new Padding(3, 4, 3, 4);
             officeCityTB.Name = "officeCityTB";
             officeCityTB.PlaceholderText = "Office City";
             officeCityTB.ReadOnly = true;
-            officeCityTB.Size = new Size(220, 25);
+            officeCityTB.Size = new Size(251, 27);
             officeCityTB.TabIndex = 35;
             // 
             // officeNameTB
             // 
-            officeNameTB.Location = new Point(23, 373);
+            officeNameTB.Location = new Point(26, 439);
+            officeNameTB.Margin = new Padding(3, 4, 3, 4);
             officeNameTB.Name = "officeNameTB";
             officeNameTB.PlaceholderText = "Office Name";
             officeNameTB.ReadOnly = true;
-            officeNameTB.Size = new Size(409, 25);
+            officeNameTB.Size = new Size(467, 27);
             officeNameTB.TabIndex = 34;
             // 
             // officeIdTB
             // 
-            officeIdTB.Location = new Point(444, 373);
+            officeIdTB.Location = new Point(507, 439);
+            officeIdTB.Margin = new Padding(3, 4, 3, 4);
             officeIdTB.Name = "officeIdTB";
             officeIdTB.PlaceholderText = "Office Id";
             officeIdTB.ReadOnly = true;
-            officeIdTB.Size = new Size(71, 25);
+            officeIdTB.Size = new Size(81, 27);
             officeIdTB.TabIndex = 33;
             // 
             // officeSearchButton
             // 
             officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            officeSearchButton.Location = new Point(440, 338);
+            officeSearchButton.Location = new Point(503, 398);
+            officeSearchButton.Margin = new Padding(3, 4, 3, 4);
             officeSearchButton.Name = "officeSearchButton";
-            officeSearchButton.Size = new Size(75, 29);
+            officeSearchButton.Size = new Size(86, 34);
             officeSearchButton.TabIndex = 32;
             officeSearchButton.Text = "Search";
             officeSearchButton.UseVisualStyleBackColor = true;
@@ -322,46 +336,58 @@
             // 
             // officeSearchTB
             // 
-            officeSearchTB.Location = new Point(23, 342);
+            officeSearchTB.Location = new Point(26, 402);
+            officeSearchTB.Margin = new Padding(3, 4, 3, 4);
             officeSearchTB.Name = "officeSearchTB";
             officeSearchTB.PlaceholderText = "Enter an office name, city, or ID then click this button -->";
-            officeSearchTB.Size = new Size(409, 25);
+            officeSearchTB.Size = new Size(467, 27);
             officeSearchTB.TabIndex = 31;
             // 
             // officeStateTB
             // 
-            officeStateTB.Location = new Point(249, 404);
+            officeStateTB.Location = new Point(285, 475);
+            officeStateTB.Margin = new Padding(3, 4, 3, 4);
             officeStateTB.Name = "officeStateTB";
             officeStateTB.PlaceholderText = "Office State";
             officeStateTB.ReadOnly = true;
-            officeStateTB.Size = new Size(95, 25);
+            officeStateTB.Size = new Size(108, 27);
             officeStateTB.TabIndex = 36;
             // 
             // officeCountryTB
             // 
-            officeCountryTB.Location = new Point(350, 404);
+            officeCountryTB.Location = new Point(400, 475);
+            officeCountryTB.Margin = new Padding(3, 4, 3, 4);
             officeCountryTB.Name = "officeCountryTB";
             officeCountryTB.PlaceholderText = "Office Country";
             officeCountryTB.ReadOnly = true;
-            officeCountryTB.Size = new Size(165, 25);
+            officeCountryTB.Size = new Size(188, 27);
             officeCountryTB.TabIndex = 37;
             // 
             // apptIdTB
             // 
-            apptIdTB.Location = new Point(525, 206);
+            apptIdTB.Location = new Point(614, 267);
+            apptIdTB.Margin = new Padding(3, 4, 3, 4);
             apptIdTB.Name = "apptIdTB";
             apptIdTB.PlaceholderText = "Appt Id";
             apptIdTB.ReadOnly = true;
-            apptIdTB.Size = new Size(71, 25);
+            apptIdTB.Size = new Size(81, 27);
             apptIdTB.TabIndex = 38;
+            // 
+            // mySqlDataAdapter1
+            // 
+            mySqlDataAdapter1.DeleteCommand = null;
+            mySqlDataAdapter1.InsertCommand = null;
+            mySqlDataAdapter1.SelectCommand = null;
+            mySqlDataAdapter1.UpdateBatchSize = 0;
+            mySqlDataAdapter1.UpdateCommand = null;
             // 
             // FormAppointment
             // 
             AcceptButton = saveBtn;
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
-            ClientSize = new Size(784, 561);
+            ClientSize = new Size(896, 660);
             Controls.Add(apptIdTB);
             Controls.Add(officeCountryTB);
             Controls.Add(officeStateTB);
@@ -390,10 +416,10 @@
             Controls.Add(endDtPicker);
             Controls.Add(startDtPicker);
             Controls.Add(dateCalendar);
-            Controls.Add(removeBtn);
             Controls.Add(saveBtn);
             Controls.Add(cancelBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormAppointment";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ZTH - Appointment";
@@ -402,8 +428,6 @@
         }
 
         #endregion
-
-        private Button removeBtn;
         private Button saveBtn;
         private Button cancelBtn;
         private MonthCalendar dateCalendar;
@@ -434,5 +458,6 @@
         private TextBox officeStateTB;
         private TextBox officeCountryTB;
         private TextBox apptIdTB;
+        private MySqlConnector.MySqlDataAdapter mySqlDataAdapter1;
     }
 }
