@@ -36,92 +36,101 @@
             officeIdTB = new TextBox();
             officeSearchButton = new Button();
             officeSearchTB = new TextBox();
-            saveBtn = new Button();
+            submitBtn = new Button();
             cancelBtn = new Button();
             validateBtn = new Button();
             SuspendLayout();
             // 
             // officeCountryTB
             // 
-            officeCountryTB.Location = new Point(12, 105);
+            officeCountryTB.Location = new Point(22, 198);
+            officeCountryTB.Margin = new Padding(6, 6, 6, 6);
             officeCountryTB.Name = "officeCountryTB";
             officeCountryTB.PlaceholderText = "Office Country";
             officeCountryTB.ReadOnly = true;
-            officeCountryTB.Size = new Size(322, 25);
+            officeCountryTB.Size = new Size(595, 39);
             officeCountryTB.TabIndex = 44;
             // 
             // officeStateTB
             // 
-            officeStateTB.Location = new Point(239, 74);
+            officeStateTB.Location = new Point(444, 139);
+            officeStateTB.Margin = new Padding(6, 6, 6, 6);
             officeStateTB.Name = "officeStateTB";
             officeStateTB.PlaceholderText = "Office State";
             officeStateTB.ReadOnly = true;
-            officeStateTB.Size = new Size(95, 25);
+            officeStateTB.Size = new Size(173, 39);
             officeStateTB.TabIndex = 43;
             // 
             // officeCityTB
             // 
-            officeCityTB.Location = new Point(13, 74);
+            officeCityTB.Location = new Point(24, 139);
+            officeCityTB.Margin = new Padding(6, 6, 6, 6);
             officeCityTB.Name = "officeCityTB";
             officeCityTB.PlaceholderText = "Office City";
             officeCityTB.ReadOnly = true;
-            officeCityTB.Size = new Size(220, 25);
+            officeCityTB.Size = new Size(405, 39);
             officeCityTB.TabIndex = 42;
             // 
             // officeNameTB
             // 
-            officeNameTB.Location = new Point(13, 43);
+            officeNameTB.Location = new Point(24, 81);
+            officeNameTB.Margin = new Padding(6, 6, 6, 6);
             officeNameTB.Name = "officeNameTB";
             officeNameTB.PlaceholderText = "Office Name";
             officeNameTB.ReadOnly = true;
-            officeNameTB.Size = new Size(244, 25);
+            officeNameTB.Size = new Size(450, 39);
             officeNameTB.TabIndex = 41;
             // 
             // officeIdTB
             // 
-            officeIdTB.Location = new Point(263, 43);
+            officeIdTB.Location = new Point(488, 81);
+            officeIdTB.Margin = new Padding(6, 6, 6, 6);
             officeIdTB.Name = "officeIdTB";
             officeIdTB.PlaceholderText = "Office Id";
             officeIdTB.ReadOnly = true;
-            officeIdTB.Size = new Size(71, 25);
+            officeIdTB.Size = new Size(128, 39);
             officeIdTB.TabIndex = 40;
             // 
             // officeSearchButton
             // 
             officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            officeSearchButton.Location = new Point(347, 12);
+            officeSearchButton.Location = new Point(644, 23);
+            officeSearchButton.Margin = new Padding(6, 6, 6, 6);
             officeSearchButton.Name = "officeSearchButton";
-            officeSearchButton.Size = new Size(75, 29);
+            officeSearchButton.Size = new Size(139, 55);
             officeSearchButton.TabIndex = 39;
             officeSearchButton.Text = "Search";
             officeSearchButton.UseVisualStyleBackColor = true;
             // 
             // officeSearchTB
             // 
-            officeSearchTB.Location = new Point(13, 12);
+            officeSearchTB.Location = new Point(24, 23);
+            officeSearchTB.Margin = new Padding(6, 6, 6, 6);
             officeSearchTB.Name = "officeSearchTB";
             officeSearchTB.PlaceholderText = "Enter office name, city, or ID then click -->";
-            officeSearchTB.Size = new Size(321, 25);
+            officeSearchTB.Size = new Size(593, 39);
             officeSearchTB.TabIndex = 38;
             // 
-            // saveBtn
+            // submitBtn
             // 
-            saveBtn.Enabled = false;
-            saveBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            saveBtn.Location = new Point(321, 361);
-            saveBtn.Name = "saveBtn";
-            saveBtn.Size = new Size(76, 27);
-            saveBtn.TabIndex = 47;
-            saveBtn.Text = "Submit";
-            saveBtn.UseVisualStyleBackColor = true;
-            saveBtn.Click += saveBtn_Click;
+            submitBtn.Enabled = false;
+            submitBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            submitBtn.Location = new Point(596, 680);
+            submitBtn.Margin = new Padding(6, 6, 6, 6);
+            submitBtn.Name = "submitBtn";
+            submitBtn.Size = new Size(141, 51);
+            submitBtn.TabIndex = 47;
+            submitBtn.Text = "Submit";
+            submitBtn.UseVisualStyleBackColor = true;
+            submitBtn.Click += SaveBtn_Click;
             // 
             // cancelBtn
             // 
             cancelBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            cancelBtn.Location = new Point(21, 361);
+            cancelBtn.Location = new Point(39, 680);
+            cancelBtn.Margin = new Padding(6, 6, 6, 6);
             cancelBtn.Name = "cancelBtn";
-            cancelBtn.Size = new Size(76, 27);
+            cancelBtn.Size = new Size(141, 51);
             cancelBtn.TabIndex = 46;
             cancelBtn.Text = "Cancel";
             cancelBtn.UseVisualStyleBackColor = true;
@@ -130,9 +139,10 @@
             // validateBtn
             // 
             validateBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            validateBtn.Location = new Point(181, 361);
+            validateBtn.Location = new Point(336, 680);
+            validateBtn.Margin = new Padding(6, 6, 6, 6);
             validateBtn.Name = "validateBtn";
-            validateBtn.Size = new Size(76, 27);
+            validateBtn.Size = new Size(141, 51);
             validateBtn.TabIndex = 45;
             validateBtn.Text = "Validate";
             validateBtn.UseVisualStyleBackColor = true;
@@ -141,11 +151,11 @@
             // FormOfficeAppt
             // 
             AcceptButton = validateBtn;
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
-            ClientSize = new Size(434, 411);
-            Controls.Add(saveBtn);
+            ClientSize = new Size(806, 774);
+            Controls.Add(submitBtn);
             Controls.Add(cancelBtn);
             Controls.Add(validateBtn);
             Controls.Add(officeCountryTB);
@@ -156,6 +166,7 @@
             Controls.Add(officeSearchButton);
             Controls.Add(officeSearchTB);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(6, 6, 6, 6);
             Name = "FormOfficeAppt";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ZTH - Office Appointment Details";
@@ -172,7 +183,7 @@
         private TextBox officeIdTB;
         private Button officeSearchButton;
         private TextBox officeSearchTB;
-        private Button saveBtn;
+        private Button submitBtn;
         private Button cancelBtn;
         private Button validateBtn;
     }

@@ -15,27 +15,26 @@ public partial class FormOfficeAppt : Form
 
     private readonly OfficeAppointment officeAppt;
 
-    public FormOfficeAppt(Appointment appt, FormAppointment form1)
+    public FormOfficeAppt(Appointment appt, FormAppointment? form1)
     {
         InitializeComponent();
-        form1 = (FormAppointment) ParentForm;
         var cx = ReturnCustomer(appt.CustomerId.ToString());
-        ReturnOfficeAddress(cx.PreferredOffice.ToString());
+        ReturnOfficeAddress(cx?.PreferredOffice.ToString());
         officeAppt = new OfficeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, -1, appt.ServiceID,
             appt.Start,
             appt.End, false);
-        saveBtn.Enabled = false;
+        submitBtn.Enabled = false;
     }
 
     #region Other Methods
 
     private void FillOfficeFromSearch(Office? address)
     {
-        officeNameTB.Text = address.OfficeName;
-        officeCityTB.Text = address.City;
-        officeCountryTB.Text = address.Country;
-        officeStateTB.Text = address.State;
-        officeIdTB.Text = address.OfficeId.ToString();
+        officeNameTB.Text = address?.OfficeName;
+        officeCityTB.Text = address?.City;
+        officeCountryTB.Text = address?.Country;
+        officeStateTB.Text = address?.State;
+        officeIdTB.Text = address?.OfficeId.ToString();
     }
 
     #endregion
@@ -53,7 +52,7 @@ public partial class FormOfficeAppt : Form
         officeAppt.InHomeService = false;
     }
 
-    private void saveBtn_Click(object sender, EventArgs e)
+    private void SaveBtn_Click(object sender, EventArgs e)
     {
         if (OfficeAppointment.InsertOfficeAppt(officeAppt))
         {
@@ -69,55 +68,51 @@ public partial class FormOfficeAppt : Form
 
     public void ReturnOfficeAddress(string searchTerm)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                int i;
-                int.TryParse(searchTerm, out i);
-                var officeAddress = connection.Query<Office>("[zth].[office]", e => e.OfficeId == i);
-                FillOfficeFromSearch(officeAddress.GetEnumerator().Current);
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            }
+            int i;
+            int.TryParse(searchTerm, out i);
+            var officeAddress = connection.Query<Office>("[zth].[office]", e => e.OfficeId == i);
+            FillOfficeFromSearch(officeAddress.GetEnumerator().Current);
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
         }
     }
 
     private Customer? ReturnCustomer(string searchTerm)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        var space = ' ';
+        var atSign = '@';
+
+        if (searchTerm.Contains(space))
         {
-            var space = ' ';
-            var atSign = '@';
-
-            if (searchTerm.Contains(space))
-            {
-                var searchTerms = searchTerm.Split(' ', 2);
-                var first = searchTerms[0];
-                var last = searchTerms[1];
-                var sCustomer = connection.Query<Customer>("[zth].[customer]", e => e.First == first && e.Last == last)
-                    .FirstOrDefault();
-                return sCustomer;
-            }
-
-            if (searchTerm.Contains(atSign))
-            {
-                var aCustomer = connection.Query<Customer>("[zth].[customer]", e => e.Email == searchTerm)
-                    .FirstOrDefault();
-                return aCustomer;
-            }
-
-            if (int.TryParse(searchTerm, out var i))
-            {
-                var iCustomer = connection.Query<Customer>("[zth].[customer]", e => e.Customer_Id == i)
-                    .FirstOrDefault();
-                return iCustomer;
-            }
-
-            return null;
+            var searchTerms = searchTerm.Split(' ', 2);
+            var first = searchTerms[0];
+            var last = searchTerms[1];
+            var sCustomer = connection.Query<Customer>("[zth].[customer]", e => e.First == first && e.Last == last)
+                .FirstOrDefault();
+            return sCustomer;
         }
+
+        if (searchTerm.Contains(atSign))
+        {
+            var aCustomer = connection.Query<Customer>("[zth].[customer]", e => e.Email == searchTerm)
+                .FirstOrDefault();
+            return aCustomer;
+        }
+
+        if (int.TryParse(searchTerm, out var i))
+        {
+            var iCustomer = connection.Query<Customer>("[zth].[customer]", e => e.Customer_Id == i)
+                .FirstOrDefault();
+            return iCustomer;
+        }
+
+        return null;
     }
 
     #endregion

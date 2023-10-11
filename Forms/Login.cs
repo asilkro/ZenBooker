@@ -11,6 +11,16 @@ public partial class Login : Form
 
 
     #region Buttons
+    private void loginBtn_Click(object sender, EventArgs e)
+    {
+        var pwe = Security.GenerateEncryptionPw();
+        if (!new Helpers().LoginIsValid(loginTB.Text, pwTB.Text, pwe))
+            MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
+
+        var main = new Main(login: this);
+        Hide();
+        main.Show();
+    }
 
     private void exitBtn_Click(object sender, EventArgs e)
     {
@@ -18,15 +28,4 @@ public partial class Login : Form
     }
 
     #endregion
-
-    private void loginBtn_Click(object sender, EventArgs e)
-    {
-        var pwe = Security.GenerateEncryptionPw();
-        if (!new Helpers().LoginIsValid(loginTB.Text, pwTB.Text, pwe))
-            MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
-
-        var main = new Main();
-        Hide();
-        main.Show();
-    }
 }

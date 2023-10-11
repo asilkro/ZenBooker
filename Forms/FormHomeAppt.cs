@@ -16,37 +16,40 @@ public partial class FormHomeAppt : Form
     //   }
 
 
-    public FormHomeAppt(Appointment appt, int? cxId, FormAppointment form1)
+    public FormHomeAppt(Appointment appt, int? cxId, FormAppointment? form1)
     {
-        InitializeComponent();
-        form1 = (FormAppointment) ParentForm;
-        homeAppt = new HomeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, appt.ServiceID,
-            appt.Start, appt.End, true, -1);
-        if (appt.CustomerId != cxId)
+        using (form1)
         {
-            if (cxId.HasValue)
+            InitializeComponent();
+            homeAppt = new HomeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, appt.ServiceID,
+                appt.Start, appt.End, true, -1);
+            if (appt.CustomerId != cxId)
             {
-                cxIdTB.Text = cxId.ToString();
-                cxIdTB.BackColor = Color.CadetBlue;
+                if (cxId.HasValue)
+                {
+                    cxIdTB.Text = cxId.ToString();
+                    cxIdTB.BackColor = Color.CadetBlue;
+                }
+
+                cxIdTB.Text = appt.CustomerId.ToString();
+                cxIdTB.BackColor = Color.PaleVioletRed; //Indicates mismatch
             }
 
-            cxIdTB.Text = appt.CustomerId.ToString();
-            cxIdTB.BackColor = Color.PaleVioletRed; //Indicates mismatch
+            ReturnServiceAddress(cxIdTB.Text);
+            saveBtn.Enabled = false;
         }
 
-        ReturnServiceAddress(cxIdTB.Text);
-        saveBtn.Enabled = false;
     }
 
     #region Additional Methods
 
     private void FillCxFromSearch(ServiceAddress? address)
     {
-        address1TB.Text = address.Address1;
-        address2TB.Text = address.Address2;
-        cityTB.Text = address.City;
-        stateTB.Text = address.State;
-        countryTB.Text = address.Country;
+        address1TB.Text = address?.Address1;
+        address2TB.Text = address?.Address2;
+        cityTB.Text = address?.City;
+        stateTB.Text = address?.State;
+        countryTB.Text = address?.Country;
     }
 
     #endregion
@@ -55,41 +58,36 @@ public partial class FormHomeAppt : Form
 
     public void ReturnServiceAddress(string searchTerm)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                int i;
-                int.TryParse(searchTerm, out i);
-                var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
-                FillCxFromSearch(serviceAddress.GetEnumerator().Current);
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            }
+            int.TryParse(searchTerm, out int i);
+            var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
+            FillCxFromSearch(serviceAddress.GetEnumerator().Current);
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
         }
     }
 
     public int? ReturnServiceAddyId(string searchTerm)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        int sd;
+        try
         {
-            int sd;
-            try
-            {
-                var serviceAddress =
-                    connection.Query<ServiceAddress>("[zth].[address]", e => e.AddressId == int.Parse(searchTerm));
-                sd = serviceAddress.GetEnumerator().Current.AddressId;
-                return sd;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            }
-
-            return null;
+            var serviceAddress =
+                connection.Query<ServiceAddress>("[zth].[address]", e => e.AddressId == int.Parse(searchTerm));
+            sd = serviceAddress.GetEnumerator().Current.AddressId;
+            return sd;
         }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+        }
+
+        return null;
     }
 
     #endregion
@@ -108,7 +106,7 @@ public partial class FormHomeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        homeAppt.ServiceAddressId = (int) ReturnServiceAddyId(homeAppt.CustomerId.ToString());
+        homeAppt.ServiceAddressId = (int)ReturnServiceAddyId(homeAppt.CustomerId.ToString());
         saveBtn.Enabled = true;
     }
 
