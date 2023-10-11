@@ -10,13 +10,7 @@ public partial class FormHomeAppt : Form
     private FormAppointment form1;
     private readonly HomeAppointment homeAppt;
 
-    //   public FormHomeAppt()
-    //   {
-    //       InitializeComponent();
-    //   }
-
-
-    public FormHomeAppt(Appointment appt, int? cxId, FormAppointment? form1)
+    public FormHomeAppt(Appointment appt, int? cxId, FormAppointment form1)
     {
         using (form1)
         {
@@ -106,7 +100,7 @@ public partial class FormHomeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        homeAppt.ServiceAddressId = (int)ReturnServiceAddyId(homeAppt.CustomerId.ToString());
+        homeAppt.ServiceAddressId = (int)ReturnServiceAddyId(homeAppt.CustomerId.ToString())!;
         saveBtn.Enabled = true;
     }
 

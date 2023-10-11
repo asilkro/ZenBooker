@@ -7,22 +7,20 @@ namespace ZenoBook.Forms;
 
 public partial class FormOfficeAppt : Form
 {
-    private FormAppointment form1;
-    //   public FormOfficeAppt()
-    //   {
-    //       InitializeComponent();
-    //   }
-
+    private FormAppointment? form1;
     private readonly OfficeAppointment officeAppt;
 
-    public FormOfficeAppt(Appointment appt, FormAppointment? form1)
+    public FormOfficeAppt(Appointment appt)
     {
         InitializeComponent();
-        var cx = ReturnCustomer(appt.CustomerId.ToString());
-        ReturnOfficeAddress(cx?.PreferredOffice.ToString());
         officeAppt = new OfficeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, -1, appt.ServiceID,
             appt.Start,
             appt.End, false);
+        var cx = ReturnCustomer(appt.CustomerId.ToString());
+        if (cx != null)
+        {
+            officeAppt.OfficeId = (cx.PreferredOffice);
+        }
         submitBtn.Enabled = false;
     }
 
@@ -30,11 +28,15 @@ public partial class FormOfficeAppt : Form
 
     private void FillOfficeFromSearch(Office? address)
     {
-        officeNameTB.Text = address?.OfficeName;
-        officeCityTB.Text = address?.City;
-        officeCountryTB.Text = address?.Country;
-        officeStateTB.Text = address?.State;
-        officeIdTB.Text = address?.OfficeId.ToString();
+        if (address != null)
+        {
+            officeNameTB.Text = address.OfficeName;
+            officeCityTB.Text = address.City;
+            officeCountryTB.Text = address.Country;
+            officeStateTB.Text = address.State;
+            officeIdTB.Text = address.OfficeId.ToString();
+        }
+
     }
 
     #endregion
@@ -57,7 +59,7 @@ public partial class FormOfficeAppt : Form
         if (OfficeAppointment.InsertOfficeAppt(officeAppt))
         {
             Close();
-            form1.Close();
+            form1?.Close();
         }
     }
 
@@ -71,10 +73,11 @@ public partial class FormOfficeAppt : Form
         using var connection = new Builder().Connect();
         try
         {
-            int i;
-            int.TryParse(searchTerm, out i);
-            var officeAddress = connection.Query<Office>("[zth].[office]", e => e.OfficeId == i);
-            FillOfficeFromSearch(officeAddress.GetEnumerator().Current);
+            if (int.TryParse(searchTerm, out int i))
+            {
+                var officeAddress = connection.Query<Office>("[zth].[office]", e => e.OfficeId == i);
+                FillOfficeFromSearch(officeAddress.GetEnumerator().Current);
+            }
         }
         catch (Exception e)
         {
@@ -82,7 +85,7 @@ public partial class FormOfficeAppt : Form
         }
     }
 
-    private Customer? ReturnCustomer(string searchTerm)
+    private static Customer? ReturnCustomer(string searchTerm)
     {
         using var connection = new Builder().Connect();
         var space = ' ';
