@@ -63,9 +63,12 @@ public partial class Main : Form
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {
         var selected = dataGridView1.CurrentRow;
-        if (selected != null)
+        switch (selected.DataBoundItem.GetType())
         {
-            
+            case null:
+                break;
+            case HomeAppointment:
+                
         }
     }
 
