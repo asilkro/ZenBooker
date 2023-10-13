@@ -16,9 +16,13 @@ internal static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
+        GlobalContext.Properties["LogFileName"] = Application.StartupPath;
         MySqlConnectorLogManager.Provider = new Log4netLoggerProvider();
         GlobalConfiguration.Setup().UseMySqlConnector();
-        if (LogManager.Exists("LoggingRepo") == null) LogManager.CreateRepository("LoggingRepo");
+        if (LogManager.Exists("LoggingRepo") == null)
+        {
+            LogManager.CreateRepository("LoggingRepo");
+        }
         Application.Run(new Login());
     }
 }
