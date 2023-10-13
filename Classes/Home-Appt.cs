@@ -57,7 +57,7 @@ public class HomeAppointment : Appointment
         }
     }
 
-    public bool RemoveHomeAppt(int homeApptId)
+    public static bool RemoveHomeAppt(int homeApptId)
     {
         using (var connection = new Builder().Connect())
         {
@@ -75,7 +75,7 @@ public class HomeAppointment : Appointment
         }
     }
 
-    public bool UpdateHomeAppt(HomeAppointment homeAppointment)
+    public static bool UpdateHomeAppt(HomeAppointment homeAppointment)
     {
         using (var connection = new Builder().Connect())
         {

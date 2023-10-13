@@ -57,7 +57,7 @@ public class OfficeAppointment : Appointment
         }
     }
 
-    public bool RemoveOfficeAppt(int officeApptId)
+    public static bool RemoveOfficeAppt(int officeApptId)
     {
         using (var connection = new Builder().Connect())
         {
@@ -75,7 +75,7 @@ public class OfficeAppointment : Appointment
         }
     }
 
-    public bool UpdateOfficeAppt(OfficeAppointment officeAppointment)
+    public static bool UpdateOfficeAppt(OfficeAppointment officeAppointment)
     {
         using (var connection = new Builder().Connect())
         {

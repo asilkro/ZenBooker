@@ -15,7 +15,7 @@ public partial class Main : Form
         populateDGV(dataGridView1, "appointment");
     }
 
-    public void populateDGV(DataGridView dgv, string tableName)
+    public static void populateDGV(DataGridView dgv, string tableName)
     {
         {
             using var connection = new Builder().Connect();
@@ -55,6 +55,7 @@ public partial class Main : Form
         if (selected != null)
         {
             var apptForm = new FormAppointment((Appointment)selected.DataBoundItem);
+            
         }
 
 
@@ -63,13 +64,25 @@ public partial class Main : Form
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {
         var selected = dataGridView1.CurrentRow;
-        switch (selected.DataBoundItem.GetType())
+        if (selected != null)
         {
-            case null:
-                break;
-            case HomeAppointment:
-                
+            int apptId = (int)selected.Cells[dataGridView1.Columns["appointment_id"].Index].Value;
+            var result = Helpers.WhatKindOfAppt(apptId);
+
+            if (result == typeof(HomeAppointment))
+            {
+                HomeAppointment.RemoveHomeAppt(apptId);
+                populateDGV(dataGridView1, "appointment");
+            }
+
+            if (result == typeof(OfficeAppointment))
+            {
+                OfficeAppointment.RemoveOfficeAppt(apptId);
+                populateDGV(dataGridView1, "appointment");
+            }
+
         }
+
     }
 
 

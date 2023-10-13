@@ -17,7 +17,7 @@ public partial class Login : Form
         if (!new Helpers().LoginIsValid(loginTB.Text, pwTB.Text, pwe))
             MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
 
-        var main = new Main(login: this);
+        var main = new Main();
         Hide();
         main.Show();
     }

@@ -45,7 +45,7 @@ public class Helpers
         return checkPass;
     }
 
-    public void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
+    public static void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
     {
         using (var connection = new Builder().Connect())
         {
@@ -72,6 +72,20 @@ public class Helpers
                 var formToReturn = new FormAppointment(query);
                 formToReturn.Activate();
             }
+        }
+    }
+
+    public static Type WhatKindOfAppt(int ApptId)
+    {
+        using var connection = new Builder().Connect();
+        var query = connection.Query<HomeAppointment>("[zth].[appointment]", e => e.AppointmentId == ApptId)
+            .FirstOrDefault();
+        switch (query.InHomeService)
+        {
+            case true:
+                return typeof(HomeAppointment);
+            case false:
+                return typeof(OfficeAppointment);
         }
     }
 }
