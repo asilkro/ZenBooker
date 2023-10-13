@@ -38,7 +38,7 @@ public class Customer
 
     #region SQL
 
-    public bool InsertCustomer(Customer customer)
+    public static bool InsertCustomer(Customer customer)
     {
         using (var connection = new Builder().Connect())
         {
@@ -56,7 +56,7 @@ public class Customer
         }
     }
 
-    public bool DeleteCustomer(int customerId)
+    public static bool DeleteCustomer(int customerId)
     {
         using (var connection = new Builder().Connect())
         {
@@ -74,7 +74,7 @@ public class Customer
         }
     }
 
-    public bool UpdateCustomer(Customer customer)
+    public static bool UpdateCustomer(Customer customer)
     {
         using (var connection = new Builder().Connect())
         {

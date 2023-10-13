@@ -12,7 +12,8 @@ public partial class Main : Form
     public Main()
     {
         InitializeComponent();
-        populateDGV(dataGridView1, "appointment");
+        populateDGV(apptsDataGridView, "appointment");
+        populateDGV(cxDataGridView, "customer");
     }
 
     public static void populateDGV(DataGridView dgv, string tableName)
@@ -30,19 +31,21 @@ public partial class Main : Form
 
                 BindingSource bSource = new BindingSource();
                 bSource.DataSource = table;
-                
+
                 dgv.DataSource = bSource;
             }
         }
     }
 
     #region Event Handlers
+
     private void logoutBtn_Click(object sender, EventArgs e)
     {
         var newLogin = new Login();
         newLogin.Activate();
         Close();
     }
+
     private void CreateApptBtn_Click(object sender, EventArgs e)
     {
         var apptForm = new FormAppointment();
@@ -51,11 +54,12 @@ public partial class Main : Form
 
     private void UpdateApptBtn_Click(object sender, EventArgs e)
     {
-        var selected = dataGridView1.CurrentRow;
+        var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            var apptForm = new FormAppointment((Appointment)selected.DataBoundItem);
-            
+            var apptForm = new FormAppointment((Appointment) selected.DataBoundItem);
+            apptForm.ShowDialog();
+
         }
 
 
@@ -63,31 +67,59 @@ public partial class Main : Form
 
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {
-        var selected = dataGridView1.CurrentRow;
+        var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            int apptId = (int)selected.Cells[dataGridView1.Columns["appointment_id"].Index].Value;
+            int apptId = (int) selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
             var result = Helpers.WhatKindOfAppt(apptId);
 
             if (result == typeof(HomeAppointment))
             {
                 HomeAppointment.RemoveHomeAppt(apptId);
-                populateDGV(dataGridView1, "appointment");
+                populateDGV(apptsDataGridView, "appointment");
             }
 
             if (result == typeof(OfficeAppointment))
             {
                 OfficeAppointment.RemoveOfficeAppt(apptId);
-                populateDGV(dataGridView1, "appointment");
+                populateDGV(apptsDataGridView, "appointment");
             }
 
         }
-
     }
 
+    private void CxCreateBtn_Click(object sender, EventArgs e)
+    {
+        var cxForm = new FormCustomer();
+        cxForm.ShowDialog();
+    }
 
-    #endregion
+    private void UpdateCxBtn_Click(object sender, EventArgs e)
+    {
+        var selected = cxDataGridView.CurrentRow;
+        if (selected != null)
+        { 
+           var cxForm = new FormCustomer((Customer)selected.DataBoundItem);
+           cxForm.ShowDialog(); //TODO: finish
+        }
+    }
 
+    private void RemoveCxBtn_Click(object sender, EventArgs e)
+    {
+        var selected = cxDataGridView.CurrentRow;
+        if (selected != null)
+        {
+            int cxId = (int) selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
+            var result = Customer.DeleteCustomer(cxId);
+            if (result)
+            {
+                MessageBox.Show("Customer with ID: " + cxId + "removed.");
+            }
 
+            populateDGV(cxDataGridView, "customer");
+        }
 
+        #endregion
+
+    }
 }

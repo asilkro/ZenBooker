@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             logoutBtn = new Button();
             CxLabel = new Label();
@@ -40,17 +39,18 @@
             CreateApptBtn = new Button();
             ApptsLbl = new Label();
             pictureBox1 = new PictureBox();
-            dataGridView1 = new DataGridView();
+            apptsDataGridView = new DataGridView();
+            cxDataGridView = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)apptsDataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cxDataGridView).BeginInit();
             SuspendLayout();
             // 
             // logoutBtn
             // 
-            logoutBtn.Location = new Point(768, 587);
-            logoutBtn.Margin = new Padding(3, 4, 3, 4);
+            logoutBtn.Location = new Point(672, 440);
             logoutBtn.Name = "logoutBtn";
-            logoutBtn.Size = new Size(114, 59);
+            logoutBtn.Size = new Size(100, 44);
             logoutBtn.TabIndex = 1;
             logoutBtn.Text = "Log Out";
             logoutBtn.UseVisualStyleBackColor = true;
@@ -60,44 +60,51 @@
             // 
             CxLabel.AutoSize = true;
             CxLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            CxLabel.Location = new Point(37, 434);
+            CxLabel.Location = new Point(32, 244);
             CxLabel.Name = "CxLabel";
-            CxLabel.Size = new Size(104, 28);
+            CxLabel.Size = new Size(85, 21);
             CxLabel.TabIndex = 2;
             CxLabel.Text = "Customers";
             // 
             // CxCreateBtn
             // 
-            CxCreateBtn.Location = new Point(37, 484);
+            CxCreateBtn.Location = new Point(32, 267);
+            CxCreateBtn.Margin = new Padding(3, 2, 3, 2);
             CxCreateBtn.Name = "CxCreateBtn";
-            CxCreateBtn.Size = new Size(94, 29);
+            CxCreateBtn.Size = new Size(82, 22);
             CxCreateBtn.TabIndex = 3;
             CxCreateBtn.Text = "Create";
             CxCreateBtn.UseVisualStyleBackColor = true;
+            CxCreateBtn.Click += CxCreateBtn_Click;
             // 
             // UpdateCxBtn
             // 
-            UpdateCxBtn.Location = new Point(37, 531);
+            UpdateCxBtn.Location = new Point(32, 440);
+            UpdateCxBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateCxBtn.Name = "UpdateCxBtn";
-            UpdateCxBtn.Size = new Size(94, 29);
+            UpdateCxBtn.Size = new Size(82, 22);
             UpdateCxBtn.TabIndex = 4;
             UpdateCxBtn.Text = "Update";
             UpdateCxBtn.UseVisualStyleBackColor = true;
+            UpdateCxBtn.Click += UpdateCxBtn_Click;
             // 
             // RemoveCxBtn
             // 
-            RemoveCxBtn.Location = new Point(37, 578);
+            RemoveCxBtn.Location = new Point(212, 440);
+            RemoveCxBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveCxBtn.Name = "RemoveCxBtn";
-            RemoveCxBtn.Size = new Size(94, 29);
+            RemoveCxBtn.Size = new Size(82, 22);
             RemoveCxBtn.TabIndex = 5;
             RemoveCxBtn.Text = "Remove";
             RemoveCxBtn.UseVisualStyleBackColor = true;
+            RemoveCxBtn.Click += RemoveCxBtn_Click;
             // 
             // RemoveApptBtn
             // 
-            RemoveApptBtn.Location = new Point(137, 315);
+            RemoveApptBtn.Location = new Point(212, 210);
+            RemoveApptBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveApptBtn.Name = "RemoveApptBtn";
-            RemoveApptBtn.Size = new Size(94, 29);
+            RemoveApptBtn.Size = new Size(82, 22);
             RemoveApptBtn.TabIndex = 9;
             RemoveApptBtn.Text = "Remove";
             RemoveApptBtn.UseVisualStyleBackColor = true;
@@ -105,9 +112,10 @@
             // 
             // UpdateApptBtn
             // 
-            UpdateApptBtn.Location = new Point(37, 315);
+            UpdateApptBtn.Location = new Point(32, 210);
+            UpdateApptBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateApptBtn.Name = "UpdateApptBtn";
-            UpdateApptBtn.Size = new Size(94, 29);
+            UpdateApptBtn.Size = new Size(82, 22);
             UpdateApptBtn.TabIndex = 8;
             UpdateApptBtn.Text = "Update";
             UpdateApptBtn.UseVisualStyleBackColor = true;
@@ -115,9 +123,10 @@
             // 
             // CreateApptBtn
             // 
-            CreateApptBtn.Location = new Point(37, 280);
+            CreateApptBtn.Location = new Point(32, 39);
+            CreateApptBtn.Margin = new Padding(3, 2, 3, 2);
             CreateApptBtn.Name = "CreateApptBtn";
-            CreateApptBtn.Size = new Size(94, 29);
+            CreateApptBtn.Size = new Size(82, 22);
             CreateApptBtn.TabIndex = 7;
             CreateApptBtn.Text = "Create";
             CreateApptBtn.UseVisualStyleBackColor = true;
@@ -127,41 +136,62 @@
             // 
             ApptsLbl.AutoSize = true;
             ApptsLbl.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            ApptsLbl.Location = new Point(37, 239);
+            ApptsLbl.Location = new Point(32, 9);
             ApptsLbl.Name = "ApptsLbl";
-            ApptsLbl.Size = new Size(137, 28);
+            ApptsLbl.Size = new Size(108, 21);
             ApptsLbl.TabIndex = 6;
             ApptsLbl.Text = "Appointments";
             // 
             // pictureBox1
             // 
             pictureBox1.Enabled = false;
-            pictureBox1.Image = Properties.Resources.Zenobia_Black;
-            pictureBox1.Location = new Point(346, 29);
+            pictureBox1.Image = Properties.Resources.Zenobia_Transparent;
+            pictureBox1.Location = new Point(647, 11);
+            pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(250, 250);
+            pictureBox1.Size = new Size(125, 125);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 10;
             pictureBox1.TabStop = false;
             // 
-            // dataGridView1
+            // apptsDataGridView
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(40, 29);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(300, 188);
-            dataGridView1.TabIndex = 11;
+            apptsDataGridView.AllowUserToAddRows = false;
+            apptsDataGridView.AllowUserToDeleteRows = false;
+            apptsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            apptsDataGridView.Location = new Point(32, 65);
+            apptsDataGridView.Margin = new Padding(3, 2, 3, 2);
+            apptsDataGridView.Name = "apptsDataGridView";
+            apptsDataGridView.ReadOnly = true;
+            apptsDataGridView.RowHeadersWidth = 51;
+            apptsDataGridView.RowTemplate.Height = 29;
+            apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            apptsDataGridView.Size = new Size(262, 141);
+            apptsDataGridView.TabIndex = 11;
+            // 
+            // cxDataGridView
+            // 
+            cxDataGridView.AllowUserToAddRows = false;
+            cxDataGridView.AllowUserToDeleteRows = false;
+            cxDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            cxDataGridView.Location = new Point(32, 293);
+            cxDataGridView.Margin = new Padding(3, 2, 3, 2);
+            cxDataGridView.Name = "cxDataGridView";
+            cxDataGridView.ReadOnly = true;
+            cxDataGridView.RowHeadersWidth = 51;
+            cxDataGridView.RowTemplate.Height = 29;
+            cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            cxDataGridView.Size = new Size(262, 141);
+            cxDataGridView.TabIndex = 12;
             // 
             // Main
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(896, 660);
-            Controls.Add(dataGridView1);
+            CancelButton = logoutBtn;
+            ClientSize = new Size(784, 495);
+            Controls.Add(cxDataGridView);
+            Controls.Add(apptsDataGridView);
             Controls.Add(pictureBox1);
             Controls.Add(RemoveApptBtn);
             Controls.Add(UpdateApptBtn);
@@ -173,11 +203,11 @@
             Controls.Add(CxLabel);
             Controls.Add(logoutBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Main";
             Text = "ZTH - ZenoBook";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)apptsDataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cxDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -194,6 +224,7 @@
         private Button CreateApptBtn;
         private Label ApptsLbl;
         private PictureBox pictureBox1;
-        private DataGridView dataGridView1;
+        private DataGridView apptsDataGridView;
+        private DataGridView cxDataGridView;
     }
 }
