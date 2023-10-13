@@ -41,10 +41,8 @@
             ApptsLbl = new Label();
             pictureBox1 = new PictureBox();
             dataGridView1 = new DataGridView();
-            homeAppointmentBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)homeAppointmentBindingSource).BeginInit();
             SuspendLayout();
             // 
             // logoutBtn
@@ -158,10 +156,6 @@
             dataGridView1.Size = new Size(300, 188);
             dataGridView1.TabIndex = 11;
             // 
-            // homeAppointmentBindingSource
-            // 
-            homeAppointmentBindingSource.DataSource = typeof(Classes.HomeAppointment);
-            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -184,7 +178,6 @@
             Text = "ZTH - ZenoBook";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)homeAppointmentBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -202,6 +195,5 @@
         private Label ApptsLbl;
         private PictureBox pictureBox1;
         private DataGridView dataGridView1;
-        private BindingSource homeAppointmentBindingSource;
     }
 }
