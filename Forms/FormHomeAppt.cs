@@ -55,9 +55,12 @@ public partial class FormHomeAppt : Form
         using var connection = new Builder().Connect();
         try
         {
-            int.TryParse(searchTerm, out int i);
-            var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
-            FillCxFromSearch(serviceAddress.GetEnumerator().Current);
+            if (int.TryParse(searchTerm, out int i))
+            {
+                var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
+                FillCxFromSearch(serviceAddress.GetEnumerator().Current);
+            }
+
         }
         catch (Exception e)
         {

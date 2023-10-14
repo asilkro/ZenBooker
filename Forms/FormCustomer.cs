@@ -47,7 +47,8 @@ public partial class FormCustomer : Form
                     isThereAProblem = false;
                     break;
                 }
-        if (Int32.TryParse(cxIdTB.Text, out int cxId))
+
+        if (int.TryParse(cxIdTB.Text, out _))
         {
             isThereAProblem = false;
         }
