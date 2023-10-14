@@ -1,6 +1,15 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Data;
+using System.Data.Common;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Update;
+using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
+using RepoDb;
+using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -8,7 +17,6 @@ namespace ZenoBook.Forms;
 
 public partial class Main : Form
 {
-
     public Main()
     {
         InitializeComponent();
@@ -21,6 +29,39 @@ public partial class Main : Form
         {
             using var connection = new Builder().Connect();
             {
+                if (tableName == "appointment")
+                {
+                    var results = connection.QueryAll<Appointment>("[zth].[appointment]");
+                    var appointments = results.ToList();
+                    BindingSource bs = new BindingSource(appointments, tableName);
+                    dgv.DataSource = bs;
+                }
+                if (tableName == "customer")
+                {
+                    var results = connection.QueryAll<Customer>("[zth].[customer]");
+                    var customers = results.ToList();
+                    BindingSource bs = new BindingSource(customers, tableName);
+                    dgv.DataSource = bs;
+                }
+                if (tableName == "service")
+                {
+                    var results = connection.QueryAll<Service>("[zth].[service]");
+                    var services = results.ToList();
+                    BindingSource bs = new BindingSource(services, tableName);
+                    dgv.DataSource = bs;
+                }
+
+            }
+        }
+    }
+
+    public static void searchDGV(DataGridView dgv, string tableName, string searchQuery)
+    {
+        {
+            using var connection = new Builder().Connect();
+            {
+
+
                 MySqlCommand cmd = new MySqlCommand("SELECT * from @TABLE");
                 cmd.Parameters.AddWithValue("@TABLE", tableName);
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter();
@@ -57,7 +98,7 @@ public partial class Main : Form
         var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            var apptForm = new FormAppointment((Appointment) selected.DataBoundItem);
+            var apptForm = new FormAppointment((Appointment)selected.DataBoundItem);
             apptForm.ShowDialog();
 
         }
@@ -68,7 +109,7 @@ public partial class Main : Form
         var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            int apptId = (int) selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
+            int apptId = (int)selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
             var result = Helpers.WhatKindOfAppt(apptId);
 
             if (result == typeof(HomeAppointment))
@@ -96,9 +137,9 @@ public partial class Main : Form
     {
         var selected = cxDataGridView.CurrentRow;
         if (selected != null)
-        { 
-           var cxForm = new FormCustomer((Customer)selected.DataBoundItem);
-           cxForm.ShowDialog(); //TODO: finish
+        {
+            var cxForm = new FormCustomer((Customer)selected.DataBoundItem);
+            cxForm.ShowDialog(); //TODO: finish
         }
     }
 
@@ -107,7 +148,7 @@ public partial class Main : Form
         var selected = cxDataGridView.CurrentRow;
         if (selected != null)
         {
-            int cxId = (int) selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
+            int cxId = (int)selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
             var result = Customer.DeleteCustomer(cxId);
             if (result)
             {
