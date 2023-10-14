@@ -1,10 +1,12 @@
 ﻿using System.Data;
 using System.Text;
+using log4net;
 using MySqlConnector;
 using RepoDb;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.Forms;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ZenoBook.DataManipulation;
 
@@ -86,6 +88,33 @@ public class Helpers
                 return typeof(HomeAppointment);
             case false:
                 return typeof(OfficeAppointment);
+        }
+    }
+
+    public static string? AutoIncrementId(string tableName) //TODO: TEST THE AUTOINCREMENT - if it's not playing ball, yeet it
+    {
+        using var connection = new Builder().Connect();
+        try
+        {
+            connection.Open();
+            var setupCommand = connection.CreateCommand();
+            setupCommand.CommandText = "SET @@SESSION.information_schema_stats_expiry = 0;";
+            setupCommand.ExecuteNonQuery(); //Makes sure autoincrement doesn't reset during this session
+
+            var autoIncrement = connection.CreateCommand();
+            autoIncrement.CommandText = "SELECT AUTO_INCREMENT FROM information_schema.tables " +
+                                        "WHERE table_name = @TABLE AND table_schema = DATABASE();";
+            autoIncrement.Parameters.AddWithValue("@TABLE", tableName);
+            
+            var intAiNumber = autoIncrement.ExecuteScalar()?.ToString();
+            MessageBox.Show("Debug: Auto increment number is: " + intAiNumber);
+            return intAiNumber;
+
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return null;
         }
     }
 }

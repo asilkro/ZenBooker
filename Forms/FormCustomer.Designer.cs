@@ -31,20 +31,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCustomer));
             cancelBtn = new Button();
             saveBtn = new Button();
-            removeBtn = new Button();
             tbFirstName = new TextBox();
             tbLastName = new TextBox();
             tbPhone = new TextBox();
             tbEmail = new TextBox();
             tbOffice = new TextBox();
             validateBtn = new Button();
+            cxIdTB = new TextBox();
             SuspendLayout();
             // 
             // cancelBtn
             // 
-            cancelBtn.Location = new Point(650, 475);
+            cancelBtn.Location = new Point(650, 419);
             cancelBtn.Name = "cancelBtn";
-            cancelBtn.Size = new Size(100, 50);
+            cancelBtn.Size = new Size(100, 44);
             cancelBtn.TabIndex = 1;
             cancelBtn.Text = "Cancel";
             cancelBtn.UseVisualStyleBackColor = true;
@@ -52,27 +52,18 @@
             // saveBtn
             // 
             saveBtn.BackColor = Color.LightSteelBlue;
-            saveBtn.Location = new Point(525, 475);
+            saveBtn.Location = new Point(525, 419);
             saveBtn.Name = "saveBtn";
-            saveBtn.Size = new Size(100, 50);
+            saveBtn.Size = new Size(100, 44);
             saveBtn.TabIndex = 2;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
-            // 
-            // removeBtn
-            // 
-            removeBtn.BackColor = Color.RosyBrown;
-            removeBtn.Location = new Point(50, 475);
-            removeBtn.Name = "removeBtn";
-            removeBtn.Size = new Size(100, 50);
-            removeBtn.TabIndex = 3;
-            removeBtn.Text = "Remove";
-            removeBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += saveBtn_Click;
             // 
             // tbFirstName
             // 
             tbFirstName.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            tbFirstName.Location = new Point(102, 122);
+            tbFirstName.Location = new Point(102, 108);
             tbFirstName.Name = "tbFirstName";
             tbFirstName.PlaceholderText = "First Name";
             tbFirstName.Size = new Size(332, 29);
@@ -81,7 +72,7 @@
             // tbLastName
             // 
             tbLastName.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            tbLastName.Location = new Point(102, 187);
+            tbLastName.Location = new Point(102, 165);
             tbLastName.Name = "tbLastName";
             tbLastName.PlaceholderText = "Last Name";
             tbLastName.Size = new Size(332, 29);
@@ -90,7 +81,7 @@
             // tbPhone
             // 
             tbPhone.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            tbPhone.Location = new Point(102, 248);
+            tbPhone.Location = new Point(102, 219);
             tbPhone.Name = "tbPhone";
             tbPhone.PlaceholderText = "Phone Number";
             tbPhone.Size = new Size(332, 29);
@@ -99,7 +90,7 @@
             // tbEmail
             // 
             tbEmail.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            tbEmail.Location = new Point(102, 306);
+            tbEmail.Location = new Point(102, 270);
             tbEmail.Name = "tbEmail";
             tbEmail.PlaceholderText = "E-Mail";
             tbEmail.Size = new Size(332, 29);
@@ -108,7 +99,7 @@
             // tbOffice
             // 
             tbOffice.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            tbOffice.Location = new Point(102, 369);
+            tbOffice.Location = new Point(102, 326);
             tbOffice.Name = "tbOffice";
             tbOffice.PlaceholderText = "Preferred Office";
             tbOffice.Size = new Size(177, 29);
@@ -117,28 +108,38 @@
             // validateBtn
             // 
             validateBtn.BackColor = Color.MintCream;
-            validateBtn.Location = new Point(525, 475);
+            validateBtn.Location = new Point(525, 419);
             validateBtn.Name = "validateBtn";
-            validateBtn.Size = new Size(100, 50);
+            validateBtn.Size = new Size(100, 44);
             validateBtn.TabIndex = 9;
             validateBtn.Text = "Validate";
             validateBtn.UseVisualStyleBackColor = false;
             validateBtn.Click += validateBtn_Click;
             // 
+            // cxIdTB
+            // 
+            cxIdTB.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            cxIdTB.Location = new Point(285, 326);
+            cxIdTB.Name = "cxIdTB";
+            cxIdTB.PlaceholderText = "Customer Id";
+            cxIdTB.ReadOnly = true;
+            cxIdTB.Size = new Size(149, 29);
+            cxIdTB.TabIndex = 10;
+            // 
             // FormCustomer
             // 
             AcceptButton = saveBtn;
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
-            ClientSize = new Size(784, 561);
+            ClientSize = new Size(784, 495);
+            Controls.Add(cxIdTB);
             Controls.Add(validateBtn);
             Controls.Add(tbOffice);
             Controls.Add(tbEmail);
             Controls.Add(tbPhone);
             Controls.Add(tbLastName);
             Controls.Add(tbFirstName);
-            Controls.Add(removeBtn);
             Controls.Add(saveBtn);
             Controls.Add(cancelBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -153,12 +154,12 @@
 
         private Button cancelBtn;
         private Button saveBtn;
-        private Button removeBtn;
         private TextBox tbFirstName;
         private TextBox tbLastName;
         private TextBox tbPhone;
         private TextBox tbEmail;
         private TextBox tbOffice;
         private Button validateBtn;
+        private TextBox cxIdTB;
     }
 }

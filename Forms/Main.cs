@@ -61,8 +61,6 @@ public partial class Main : Form
             apptForm.ShowDialog();
 
         }
-
-
     }
 
     private void RemoveApptBtn_Click(object sender, EventArgs e)
@@ -113,10 +111,9 @@ public partial class Main : Form
             var result = Customer.DeleteCustomer(cxId);
             if (result)
             {
-                MessageBox.Show("Customer with ID: " + cxId + "removed.");
+                populateDGV(cxDataGridView, "customer");
             }
 
-            populateDGV(cxDataGridView, "customer");
         }
 
         #endregion

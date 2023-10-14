@@ -47,9 +47,9 @@
             // validateBtn
             // 
             validateBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            validateBtn.Location = new Point(186, 357);
+            validateBtn.Location = new Point(186, 315);
             validateBtn.Name = "validateBtn";
-            validateBtn.Size = new Size(76, 27);
+            validateBtn.Size = new Size(76, 24);
             validateBtn.TabIndex = 0;
             validateBtn.Text = "Validate";
             validateBtn.UseVisualStyleBackColor = true;
@@ -58,9 +58,9 @@
             // cancelBtn
             // 
             cancelBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            cancelBtn.Location = new Point(26, 357);
+            cancelBtn.Location = new Point(26, 315);
             cancelBtn.Name = "cancelBtn";
-            cancelBtn.Size = new Size(76, 27);
+            cancelBtn.Size = new Size(76, 24);
             cancelBtn.TabIndex = 1;
             cancelBtn.Text = "Cancel";
             cancelBtn.UseVisualStyleBackColor = true;
@@ -70,9 +70,9 @@
             // 
             saveBtn.Enabled = false;
             saveBtn.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            saveBtn.Location = new Point(326, 357);
+            saveBtn.Location = new Point(326, 315);
             saveBtn.Name = "saveBtn";
-            saveBtn.Size = new Size(76, 27);
+            saveBtn.Size = new Size(76, 24);
             saveBtn.TabIndex = 2;
             saveBtn.Text = "Submit";
             saveBtn.UseVisualStyleBackColor = true;
@@ -80,54 +80,51 @@
             // 
             // cxIdTB
             // 
-            cxIdTB.Location = new Point(26, 22);
+            cxIdTB.Location = new Point(26, 19);
             cxIdTB.Name = "cxIdTB";
             cxIdTB.PlaceholderText = "Customer Id";
-            cxIdTB.Size = new Size(124, 25);
+            cxIdTB.Size = new Size(124, 23);
             cxIdTB.TabIndex = 18;
             // 
             // countryTB
             // 
-            countryTB.Location = new Point(129, 226);
+            countryTB.Location = new Point(129, 199);
             countryTB.Name = "countryTB";
             countryTB.PlaceholderText = "Country";
-            countryTB.ReadOnly = true;
-            countryTB.Size = new Size(291, 25);
+            countryTB.Size = new Size(291, 23);
             countryTB.TabIndex = 44;
             // 
             // stateTB
             // 
-            stateTB.Location = new Point(26, 226);
+            stateTB.Location = new Point(26, 199);
             stateTB.Name = "stateTB";
             stateTB.PlaceholderText = "State";
-            stateTB.ReadOnly = true;
-            stateTB.Size = new Size(80, 25);
+            stateTB.Size = new Size(80, 23);
             stateTB.TabIndex = 43;
             // 
             // address1TB
             // 
-            address1TB.Location = new Point(26, 133);
+            address1TB.Location = new Point(26, 117);
             address1TB.Name = "address1TB";
             address1TB.PlaceholderText = "Address Line 1";
-            address1TB.ReadOnly = true;
-            address1TB.Size = new Size(394, 25);
+            address1TB.Size = new Size(394, 23);
             address1TB.TabIndex = 41;
             // 
             // officeIdTB
             // 
-            officeIdTB.Location = new Point(26, 102);
+            officeIdTB.Location = new Point(26, 90);
             officeIdTB.Name = "officeIdTB";
             officeIdTB.PlaceholderText = "Service Address Id";
             officeIdTB.ReadOnly = true;
-            officeIdTB.Size = new Size(124, 25);
+            officeIdTB.Size = new Size(124, 23);
             officeIdTB.TabIndex = 40;
             // 
             // SearchButton
             // 
             SearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            SearchButton.Location = new Point(311, 18);
+            SearchButton.Location = new Point(311, 16);
             SearchButton.Name = "SearchButton";
-            SearchButton.Size = new Size(60, 29);
+            SearchButton.Size = new Size(60, 26);
             SearchButton.TabIndex = 39;
             SearchButton.Text = "Search";
             SearchButton.UseVisualStyleBackColor = true;
@@ -135,37 +132,35 @@
             // 
             // saSearchTB
             // 
-            saSearchTB.Location = new Point(26, 53);
+            saSearchTB.Location = new Point(26, 47);
             saSearchTB.Name = "saSearchTB";
             saSearchTB.PlaceholderText = "Enter another part of the service address and search.";
-            saSearchTB.Size = new Size(345, 25);
+            saSearchTB.Size = new Size(345, 23);
             saSearchTB.TabIndex = 38;
             // 
             // address2TB
             // 
-            address2TB.Location = new Point(26, 164);
+            address2TB.Location = new Point(26, 145);
             address2TB.Name = "address2TB";
             address2TB.PlaceholderText = "Address Line 2 (Optional)";
-            address2TB.ReadOnly = true;
-            address2TB.Size = new Size(394, 25);
+            address2TB.Size = new Size(394, 23);
             address2TB.TabIndex = 45;
             // 
             // cityTB
             // 
-            cityTB.Location = new Point(26, 195);
+            cityTB.Location = new Point(26, 172);
             cityTB.Name = "cityTB";
             cityTB.PlaceholderText = "City (optional, recommended)";
-            cityTB.ReadOnly = true;
-            cityTB.Size = new Size(394, 25);
+            cityTB.Size = new Size(394, 23);
             cityTB.TabIndex = 46;
             // 
             // FormHomeAppt
             // 
             AcceptButton = saveBtn;
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
-            ClientSize = new Size(434, 411);
+            ClientSize = new Size(434, 363);
             Controls.Add(cityTB);
             Controls.Add(address2TB);
             Controls.Add(countryTB);
