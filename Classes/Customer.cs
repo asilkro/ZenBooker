@@ -12,7 +12,7 @@ public class Customer
     public int Customer_Id { get; set; } // PK, auto_increment, not_null
     public string First { get; set; } // VARCHAR(32), PK, not_null
     public string Last { get; set; } // VARCHAR(32) PK, not_null
-    public int Phone { get; set; } // int, not_null
+    public string Phone { get; set; } // VARCHAR(12), not_null
     public string Email { get; set; } // VARCHAR(48) PK, not_null
     public int PreferredOffice { get; set; } // int, FK
 
@@ -24,7 +24,7 @@ public class Customer
     {
     }
 
-    public Customer(int customerId, string first, string last, int phone, string email, int preferredOffice)
+    public Customer(int customerId, string first, string last, string phone, string email, int preferredOffice)
     {
         Customer_Id = customerId;
         First = first;

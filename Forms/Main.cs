@@ -151,13 +151,13 @@ public partial class Main : Form
         var atSign = '@';
         string result = "default";
 
-        if (DateTime.TryParse(valueToCheck, out var someDate))
+        if (DateTime.TryParse(valueToCheck, out _))
         {
             result = "date";
             return result; // If it parses as a date, treat as date
         }
 
-        if (int.TryParse(valueToCheck, out var i))
+        if (Int64.TryParse(valueToCheck, out _))
         {
             result = "integer";
             return result; // If it parses as a number, treat as ID or a phone number

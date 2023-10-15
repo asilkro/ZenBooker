@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using Accessibility;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
@@ -10,14 +11,12 @@ public partial class FormCustomer : Form
     private Customer? _existingCx;
     public FormCustomer()
     {
-
         InitializeComponent();
         saveBtn.Enabled = false;
         saveBtn.Visible = false;
        // cxIdTB.Visible = false; // Simpler user experience without this visible when a Cx hasn't been created yet,
                                 // as it might not be known what the ID is.
         cxIdTB.Text = Helpers.AutoIncrementId("customer"); //TODO: RELIES ON AUTOINCREMENT WHICH MAY BE FLAKY
-
     }
 
     public FormCustomer(Customer customer)
@@ -26,7 +25,7 @@ public partial class FormCustomer : Form
         InitializeComponent();
         tbFirstName.Text = customer.First;
         tbLastName.Text = customer.Last;
-        tbPhone.Text = customer.Phone.ToString();
+        tbPhone.Text = customer.Phone;
         tbEmail.Text = customer.Email;
         tbOffice.Text = customer.PreferredOffice.ToString();
         cxIdTB.Text = customer.Customer_Id.ToString();
@@ -53,6 +52,11 @@ public partial class FormCustomer : Form
             isThereAProblem = false;
         }
 
+        if (Int64.TryParse(tbPhone.Text, out _))
+        {
+            isThereAProblem = false;
+        }
+
         if (!isThereAProblem)
         {
             validateBtn.Enabled = false;
@@ -69,20 +73,20 @@ public partial class FormCustomer : Form
         {
             case null: 
                 result = Customer.InsertCustomer(new Customer(
-                    int.Parse(cxIdTB.Text),
-                    tbFirstName.Text,
-                    tbLastName.Text,
-                    int.Parse(tbPhone.Text),
-                    tbEmail.Text,
+                    customerId: int.Parse(cxIdTB.Text),
+                    first: tbFirstName.Text,
+                    last: tbLastName.Text,
+                    phone: tbPhone.Text,
+                    email: tbEmail.Text,
                     int.Parse(tbOffice.Text)));
                 break;
             case not null:
                 result = Customer.UpdateCustomer((new Customer(
-                    int.Parse(cxIdTB.Text),
-                    tbFirstName.Text,
-                    tbLastName.Text,
-                    int.Parse(tbPhone.Text),
-                    tbEmail.Text,
+                    customerId: int.Parse(cxIdTB.Text),
+                    first: tbFirstName.Text,
+                    last: tbLastName.Text,
+                    phone: tbPhone.Text,
+                    email: tbEmail.Text,
                     int.Parse(tbOffice.Text))));
                 break;
         }

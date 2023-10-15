@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Diagnostics;
 using System.Text;
 using log4net;
 using MySqlConnector;
@@ -82,13 +83,18 @@ public class Helpers
         using var connection = new Builder().Connect();
         var query = connection.Query<HomeAppointment>("[zth].[appointment]", e => e.AppointmentId == ApptId)
             .FirstOrDefault();
+        var returnType = typeof(Appointment);
         switch (query.InHomeService)
         {
             case true:
-                return typeof(HomeAppointment);
+                returnType = typeof(HomeAppointment);
+                break;
             case false:
-                return typeof(OfficeAppointment);
+                returnType = typeof(OfficeAppointment);
+                break;
         }
+        return returnType;
+
     }
 
     public static string? AutoIncrementId(string tableName) //TODO: TEST THE AUTOINCREMENT - if it's not playing ball, yeet it
