@@ -51,7 +51,7 @@
             // logoutBtn
             // 
             logoutBtn.Location = new Point(1248, 939);
-            logoutBtn.Margin = new Padding(6, 6, 6, 6);
+            logoutBtn.Margin = new Padding(6);
             logoutBtn.Name = "logoutBtn";
             logoutBtn.Size = new Size(186, 94);
             logoutBtn.TabIndex = 1;
@@ -201,7 +201,7 @@
             // 
             apptSearchTB.Location = new Point(59, 93);
             apptSearchTB.Name = "apptSearchTB";
-            apptSearchTB.PlaceholderText = "Search for Appointment (date, office, or cxId)";
+            apptSearchTB.PlaceholderText = "Search for Appointment (date or cxId)";
             apptSearchTB.Size = new Size(487, 39);
             apptSearchTB.TabIndex = 14;
             // 
@@ -226,7 +226,7 @@
             Controls.Add(CxLabel);
             Controls.Add(logoutBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(6, 6, 6, 6);
+            Margin = new Padding(6);
             Name = "Main";
             Text = "ZTH - ZenoBook";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

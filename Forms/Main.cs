@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Runtime.ExceptionServices;
+using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,9 @@ using RepoDb;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ZenoBook.Forms;
 
@@ -60,22 +65,118 @@ public partial class Main : Form
         {
             using var connection = new Builder().Connect();
             {
+                var searchType = WhatIsThisThing(searchQuery);
+                if (searchType == "default")
+                {
+                    MessageBox.Show("Invalid search parameter.");
+                    tableName = "discard";
+                }
 
+                if (tableName == "appointment")
+                {
+                    if (searchType == "date")
+                    {
+                        var sql = "SELECT * FROM 'appointment' WHERE CONTAINS(start,'@VALUE');";
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        var results = connection.ExecuteQuery<Appointment>(sql);
+                        var appointments = results.ToList();
+                        BindingSource bs = new BindingSource(appointments, tableName);
+                        dgv.DataSource = bs;
+                    }
 
-                MySqlCommand cmd = new MySqlCommand("SELECT * from @TABLE");
-                cmd.Parameters.AddWithValue("@TABLE", tableName);
-                MySqlDataAdapter dataAdapter = new MySqlDataAdapter();
-                dataAdapter.SelectCommand = cmd;
+                    if (searchType == "integer")
+                    {
+                        var sql = "SELECT * FROM 'appointment' WHERE CONTAINS(customer_id,'@VALUE');";
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        var results = connection.ExecuteQuery<Appointment>(sql);
+                        var appointments = results.ToList();
+                        BindingSource bs = new BindingSource(appointments, tableName);
+                        dgv.DataSource = bs;
+                    }
+                }
 
-                DataTable table = new DataTable();
-                dataAdapter.Fill(table);
+                if (tableName == "customer")
+                {
+                    if (searchType == "email")
+                    {
+                        var sql = "SELECT * FROM 'customer' WHERE CONTAINS(email,'@VALUE');";
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        var results = connection.ExecuteQuery<Customer>(sql);
+                        var customers = results.ToList();
+                        BindingSource bs = new BindingSource(customers, tableName);
+                        dgv.DataSource = bs;
+                    }
 
-                BindingSource bSource = new BindingSource();
-                bSource.DataSource = table;
+                    if (searchType == "integer")
+                    {
+                        var sql = "SELECT * FROM 'customer' WHERE CONTAINS(phone,'@VALUE');";
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        var results = connection.ExecuteQuery<Customer>(sql);
+                        var customers = results.ToList();
+                        BindingSource bs = new BindingSource(customers, tableName);
+                        dgv.DataSource = bs;
+                    }
 
-                dgv.DataSource = bSource;
+                    if (searchType == "name")
+                    {
+                        var sql =
+                            "SELECT *, concat_ws(' ', 'first', 'last') AS Name FROM 'customer' HAVING Name LIKE '@VALUE'";
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        var results = connection.ExecuteQuery<Customer>(sql);
+                        var customers = results.ToList();
+                        BindingSource bs = new BindingSource(customers, tableName);
+                        dgv.DataSource = bs;
+                    }
+                }
+
+                if (tableName == "service")
+                {
+                    if (searchType == "name")
+                    {
+                        var sql = "SELECT * FROM 'service' WHERE CONTAINS(service_name,'@VALUE');";
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        var results = connection.ExecuteQuery<Service>(sql);
+                        var services = results.ToList();
+                        BindingSource bs = new BindingSource(services, tableName);
+                        dgv.DataSource = bs;
+                    }
+                }
             }
         }
+    }
+
+    public static string WhatIsThisThing(string valueToCheck)
+    {
+        var space = ' ';
+        var atSign = '@';
+        string result = "default";
+
+        if (DateTime.TryParse(valueToCheck, out var someDate))
+        {
+            result = "date";
+            return result; // If it parses as a date, treat as date
+        }
+
+        if (int.TryParse(valueToCheck, out var i))
+        {
+            result = "integer";
+            return result; // If it parses as a number, treat as ID or a phone number
+        }
+
+        if (valueToCheck.Contains(atSign))
+        {
+            result = "email";
+            return result; // If it has an @ sign, treat as an email address
+        }
+
+        if (valueToCheck.Contains(space))
+        {
+            result = "name";
+            return result; // If it has a whitespace, treat as a name
+        }
+
+
+        return result;
     }
 
     #region Event Handlers
