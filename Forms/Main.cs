@@ -261,4 +261,14 @@ public partial class Main : Form
         #endregion
 
     }
+
+    private void apptSearchBtn_Click(object sender, EventArgs e)
+    {
+        searchDGV(apptsDataGridView, "appointment", apptSearchTB.Text);
+    }
+
+    private void cxSearchBtn_Click(object sender, EventArgs e)
+    {
+        searchDGV(cxDataGridView,"customer",cxSearchTB.Text);
+    }
 }

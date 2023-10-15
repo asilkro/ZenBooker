@@ -43,6 +43,8 @@
             cxDataGridView = new DataGridView();
             cxSearchTB = new TextBox();
             apptSearchTB = new TextBox();
+            apptSearchBtn = new Button();
+            cxSearchBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)apptsDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cxDataGridView).BeginInit();
@@ -205,12 +207,36 @@
             apptSearchTB.Size = new Size(487, 39);
             apptSearchTB.TabIndex = 14;
             // 
+            // apptSearchBtn
+            // 
+            apptSearchBtn.Location = new Point(562, 93);
+            apptSearchBtn.Margin = new Padding(0);
+            apptSearchBtn.Name = "apptSearchBtn";
+            apptSearchBtn.Size = new Size(150, 46);
+            apptSearchBtn.TabIndex = 15;
+            apptSearchBtn.Text = "Search";
+            apptSearchBtn.UseVisualStyleBackColor = true;
+            apptSearchBtn.Click += apptSearchBtn_Click;
+            // 
+            // cxSearchBtn
+            // 
+            cxSearchBtn.Location = new Point(571, 576);
+            cxSearchBtn.Margin = new Padding(0);
+            cxSearchBtn.Name = "cxSearchBtn";
+            cxSearchBtn.Size = new Size(150, 46);
+            cxSearchBtn.TabIndex = 16;
+            cxSearchBtn.Text = "Search";
+            cxSearchBtn.UseVisualStyleBackColor = true;
+            cxSearchBtn.Click += cxSearchBtn_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = logoutBtn;
             ClientSize = new Size(1456, 1056);
+            Controls.Add(cxSearchBtn);
+            Controls.Add(apptSearchBtn);
             Controls.Add(apptSearchTB);
             Controls.Add(cxSearchTB);
             Controls.Add(cxDataGridView);
@@ -252,5 +278,7 @@
         private DataGridView cxDataGridView;
         private TextBox cxSearchTB;
         private TextBox apptSearchTB;
+        private Button apptSearchBtn;
+        private Button cxSearchBtn;
     }
 }
