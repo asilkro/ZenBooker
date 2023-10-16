@@ -47,31 +47,27 @@ public class Helpers
 
     public static void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
     {
-        using (var connection = new Builder().Connect())
-        {
-            var query = connection.CreateCommand();
-            query.CommandText = "SELECT * FROM @TABLE like '%\"+@SEARCHVALUE+\"%'";
-            query.Parameters.AddWithValue("@TABLE", tableToSearch);
-            query.Parameters.AddWithValue("@SEARCHVALUE", valueToSearch);
-            var da = new MySqlDataAdapter(query);
-            var dt = new DataTable("SearchResults");
-            da.Fill(dt);
-            dataGridViewToPop.DataSource = dt;
-        }
+        using var connection = new Builder().Connect();
+        var query = connection.CreateCommand();
+        query.CommandText = "SELECT * FROM @TABLE like '%\"+@SEARCHVALUE+\"%'";
+        query.Parameters.AddWithValue("@TABLE", tableToSearch);
+        query.Parameters.AddWithValue("@SEARCHVALUE", valueToSearch);
+        var da = new MySqlDataAdapter(query);
+        var dt = new DataTable("SearchResults");
+        da.Fill(dt);
+        dataGridViewToPop.DataSource = dt;
     }
 
     public void ExistingAppointment(string apptId)
     {
         int.TryParse(apptId, out var i);
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        var query = connection.Query<Appointment>("[zth].[appointment]", e => e.AppointmentId == i)
+            .FirstOrDefault();
+        if (query != null)
         {
-            var query = connection.Query<Appointment>("[zth].[appointment]", e => e.AppointmentId == i)
-                .FirstOrDefault();
-            if (query != null)
-            {
-                var formToReturn = new FormAppointment(query);
-                formToReturn.Activate();
-            }
+            var formToReturn = new FormAppointment(query);
+            formToReturn.Activate();
         }
     }
 
@@ -81,7 +77,7 @@ public class Helpers
         var query = connection.Query<HomeAppointment>("[zth].[appointment]", e => e.AppointmentId == ApptId)
             .FirstOrDefault();
         var returnType = typeof(Appointment);
-        switch (query.InHomeService)
+        switch (query?.InHomeService)
         {
             case true:
                 returnType = typeof(HomeAppointment);

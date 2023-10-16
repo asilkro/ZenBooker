@@ -40,57 +40,51 @@ public class Customer
 
     public static bool InsertCustomer(Customer customer)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Insert("[zth].[customer]", customer);
-                MessageBox.Show("Customer id " + id + " created.", "Customer Created");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Insert("[zth].[customer]", customer);
+            MessageBox.Show("Customer id " + id + " created.", "Customer Created");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public static bool DeleteCustomer(int customerId)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Delete("[zth].[customer]", customerId);
-                MessageBox.Show("Customer id " + id + " removed.", "Customer Removed");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Delete("[zth].[customer]", customerId);
+            MessageBox.Show("Customer id " + id + " removed.", "Customer Removed");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public static bool UpdateCustomer(Customer customer)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var updatedCx = connection.Update("[zth].[customer]", customer);
-                    MessageBox.Show("Customer id " + updatedCx + " updated.", "Customer Updated");
-                }
-                return true;
+                var updatedCx = connection.Update("[zth].[customer]", customer);
+                MessageBox.Show("Customer id " + updatedCx + " updated.", "Customer Updated");
             }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 

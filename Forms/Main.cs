@@ -38,21 +38,21 @@ public partial class Main : Form
                 {
                     var results = connection.QueryAll<Appointment>("[zth].[appointment]");
                     var appointments = results.ToList();
-                    BindingSource bs = new BindingSource(appointments, tableName);
+                    BindingSource bs = new(appointments, tableName);
                     dgv.DataSource = bs;
                 }
                 if (tableName == "customer")
                 {
                     var results = connection.QueryAll<Customer>("[zth].[customer]");
                     var customers = results.ToList();
-                    BindingSource bs = new BindingSource(customers, tableName);
+                    BindingSource bs = new(customers, tableName);
                     dgv.DataSource = bs;
                 }
                 if (tableName == "service")
                 {
                     var results = connection.QueryAll<Service>("[zth].[service]");
                     var services = results.ToList();
-                    BindingSource bs = new BindingSource(services, tableName);
+                    BindingSource bs = new(services, tableName);
                     dgv.DataSource = bs;
                 }
 
@@ -80,7 +80,7 @@ public partial class Main : Form
                         sql = sql.Replace("@VALUE", searchQuery);
                         var results = connection.ExecuteQuery<Appointment>(sql);
                         var appointments = results.ToList();
-                        BindingSource bs = new BindingSource(appointments, tableName);
+                        BindingSource bs = new(appointments, tableName);
                         dgv.DataSource = bs;
                     }
 
@@ -90,7 +90,7 @@ public partial class Main : Form
                         sql = sql.Replace("@VALUE", searchQuery);
                         var results = connection.ExecuteQuery<Appointment>(sql);
                         var appointments = results.ToList();
-                        BindingSource bs = new BindingSource(appointments, tableName);
+                        BindingSource bs = new(appointments, tableName);
                         dgv.DataSource = bs;
                     }
                 }
@@ -103,7 +103,7 @@ public partial class Main : Form
                         sql = sql.Replace("@VALUE", searchQuery);
                         var results = connection.ExecuteQuery<Customer>(sql);
                         var customers = results.ToList();
-                        BindingSource bs = new BindingSource(customers, tableName);
+                        BindingSource bs = new(customers, tableName);
                         dgv.DataSource = bs;
                     }
 
@@ -113,7 +113,7 @@ public partial class Main : Form
                         sql = sql.Replace("@VALUE", searchQuery);
                         var results = connection.ExecuteQuery<Customer>(sql);
                         var customers = results.ToList();
-                        BindingSource bs = new BindingSource(customers, tableName);
+                        BindingSource bs = new(customers, tableName);
                         dgv.DataSource = bs;
                     }
 
@@ -124,7 +124,7 @@ public partial class Main : Form
                         sql = sql.Replace("@VALUE", searchQuery);
                         var results = connection.ExecuteQuery<Customer>(sql);
                         var customers = results.ToList();
-                        BindingSource bs = new BindingSource(customers, tableName);
+                        BindingSource bs = new(customers, tableName);
                         dgv.DataSource = bs;
                     }
                 }
@@ -137,7 +137,7 @@ public partial class Main : Form
                         sql = sql.Replace("@VALUE", searchQuery);
                         var results = connection.ExecuteQuery<Service>(sql);
                         var services = results.ToList();
-                        BindingSource bs = new BindingSource(services, tableName);
+                        BindingSource bs = new(services, tableName);
                         dgv.DataSource = bs;
                     }
                 }
