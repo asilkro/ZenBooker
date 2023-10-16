@@ -14,11 +14,13 @@ public class Builder
 
     public string ConnectionString()
     {
-        var csb = new MySqlConnectionStringBuilder();
-        csb.UserID = _username;
-        csb.Password = _password;
-        csb.Server = _serveraddress;
-        csb.Database = _database;
+        var csb = new MySqlConnectionStringBuilder
+        {
+            UserID = _username,
+            Password = _password,
+            Server = _serveraddress,
+            Database = _database
+        };
 
         var connString = csb.ToString();
 

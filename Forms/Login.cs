@@ -13,13 +13,20 @@ public partial class Login : Form
     #region Buttons
     private void loginBtn_Click(object sender, EventArgs e)
     {
-        var pwe = Security.GenerateEncryptionPw();
-        if (!new Helpers().LoginIsValid(loginTB.Text, pwTB.Text, pwe))
-            MessageBox.Show("Username/password not correct. Check and try again.", "Login failed");
+        using var connection = new Builder().Connect();
 
-        var main = new Main();
-        Hide();
-        main.Show();
+        var result = new Helpers().LoginIsValid(loginTB.Text, pwTB.Text);
+        switch (result)
+        {
+            case true:
+                var main = new Main();
+                ActiveForm?.Hide();
+                main.Show();
+                break;
+            case false:
+                MessageBox.Show("Username/password not correct. Check and try again.");
+                break;
+        }
     }
 
     private void exitBtn_Click(object sender, EventArgs e)
