@@ -19,6 +19,7 @@ public partial class Login : Form
     }
 
     #region Buttons
+
     private void loginBtn_Click(object sender, EventArgs e)
     {
         using var connection = new Builder().Connect();
@@ -29,7 +30,7 @@ public partial class Login : Form
             case true:
                 var main = new Main();
                 ActiveForm?.Hide();
-                main.Show();
+                main.ShowDialog();
                 break;
             case false:
                 MessageBox.Show("Username/password not correct. Check and try again.");

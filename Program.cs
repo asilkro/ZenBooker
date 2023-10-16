@@ -23,6 +23,7 @@ internal static class Program
         {
             LogManager.CreateRepository("LoggingRepo");
         }
+
         Application.Run(new Login());
     }
 }

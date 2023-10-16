@@ -49,6 +49,7 @@ public class ServiceAddress
             {
                 MessageBox.Show("Customer already has a service address attached for home service.", "Not required");
             }
+
             ;
             if (address.RelatedCx == null)
             {
@@ -113,5 +114,6 @@ public class ServiceAddress
             }
         }
     }
+
     #endregion
 }

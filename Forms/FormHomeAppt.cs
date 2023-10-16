@@ -32,7 +32,6 @@ public partial class FormHomeAppt : Form
             ReturnServiceAddress(cxIdTB.Text);
             saveBtn.Enabled = false;
         }
-
     }
 
     #region Additional Methods
@@ -60,7 +59,6 @@ public partial class FormHomeAppt : Form
                 var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
                 FillCxFromSearch(serviceAddress.GetEnumerator().Current);
             }
-
         }
         catch (Exception e)
         {
@@ -103,7 +101,7 @@ public partial class FormHomeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        homeAppt.ServiceAddressId = (int)ReturnServiceAddyId(homeAppt.CustomerId.ToString())!;
+        homeAppt.ServiceAddressId = (int) ReturnServiceAddyId(homeAppt.CustomerId.ToString())!;
         saveBtn.Enabled = true;
     }
 

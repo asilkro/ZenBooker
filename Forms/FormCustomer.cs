@@ -9,13 +9,14 @@ namespace ZenoBook.Forms;
 public partial class FormCustomer : Form
 {
     private Customer? _existingCx;
+
     public FormCustomer()
     {
         InitializeComponent();
         saveBtn.Enabled = false;
         saveBtn.Visible = false;
-       // cxIdTB.Visible = false; // Simpler user experience without this visible when a Cx hasn't been created yet,
-                                // as it might not be known what the ID is.
+        // cxIdTB.Visible = false; // Simpler user experience without this visible when a Cx hasn't been created yet,
+        // as it might not be known what the ID is.
         cxIdTB.Text = Helpers.AutoIncrementId("customer"); //TODO: RELIES ON AUTOINCREMENT WHICH MAY BE FLAKY
     }
 
@@ -71,7 +72,7 @@ public partial class FormCustomer : Form
         bool result;
         switch (_existingCx)
         {
-            case null: 
+            case null:
                 result = Customer.InsertCustomer(new Customer(
                     customerId: int.Parse(cxIdTB.Text),
                     first: tbFirstName.Text,
@@ -95,6 +96,5 @@ public partial class FormCustomer : Form
         {
             this.Close();
         }
-        
     }
 }

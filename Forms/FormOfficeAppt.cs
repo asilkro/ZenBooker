@@ -21,6 +21,7 @@ public partial class FormOfficeAppt : Form
         {
             officeAppt.OfficeId = (cx.PreferredOffice);
         }
+
         submitBtn.Enabled = false;
     }
 
@@ -36,7 +37,6 @@ public partial class FormOfficeAppt : Form
             officeStateTB.Text = address.State;
             officeIdTB.Text = address.OfficeId.ToString();
         }
-
     }
 
     #endregion

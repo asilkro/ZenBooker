@@ -48,8 +48,9 @@ public partial class Main : Form
                     connection.Open();
                     break;
             }
-           var workingDataTable = new DataTable();
-           var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
+
+            var workingDataTable = new DataTable();
+            var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
             dataAdapter.Fill(workingDataTable);
             var bSource = new BindingSource();
             bSource.DataSource = workingDataTable;
@@ -197,9 +198,8 @@ public partial class Main : Form
         var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            var apptForm = new FormAppointment((Appointment)selected.DataBoundItem);
+            var apptForm = new FormAppointment((Appointment) selected.DataBoundItem);
             apptForm.ShowDialog();
-
         }
     }
 
@@ -208,7 +208,7 @@ public partial class Main : Form
         var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            int apptId = (int)selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
+            int apptId = (int) selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
             var result = Helpers.WhatKindOfAppt(apptId);
 
             if (result == typeof(HomeAppointment))
@@ -222,7 +222,6 @@ public partial class Main : Form
                 OfficeAppointment.RemoveOfficeAppt(apptId);
                 populateDGV(apptsDataGridView, "appointment");
             }
-
         }
     }
 
@@ -234,11 +233,17 @@ public partial class Main : Form
 
     private void UpdateCxBtn_Click(object sender, EventArgs e)
     {
-        var selected = cxDataGridView.CurrentRow;
-        if (selected != null)
+        if (cxDataGridView.SelectedRows.Count > 0)
         {
-            var cxForm = new FormCustomer((Customer)selected.DataBoundItem);
-            cxForm.ShowDialog(); //TODO: finish
+            foreach (DataGridViewRow row in cxDataGridView.SelectedRows)
+            {
+                Customer cx = row.DataBoundItem as Customer;
+                if (cx != null)
+                {
+                    var form = new FormCustomer(cx);
+                    form.ShowDialog();
+                }
+            }
         }
     }
 
@@ -247,17 +252,15 @@ public partial class Main : Form
         var selected = cxDataGridView.CurrentRow;
         if (selected != null)
         {
-            int cxId = (int)selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
+            int cxId = (int) selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
             var result = Customer.DeleteCustomer(cxId);
             if (result)
             {
                 populateDGV(cxDataGridView, "customer");
             }
-
         }
 
         #endregion
-
     }
 
     private void apptSearchBtn_Click(object sender, EventArgs e)
@@ -267,6 +270,6 @@ public partial class Main : Form
 
     private void cxSearchBtn_Click(object sender, EventArgs e)
     {
-        searchDGV(cxDataGridView,"customer",cxSearchTB.Text);
+        searchDGV(cxDataGridView, "customer", cxSearchTB.Text);
     }
 }

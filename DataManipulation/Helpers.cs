@@ -15,7 +15,6 @@ public class Helpers
 {
     public bool LoginIsValid(string username, string password)
     {
-
         var result = false;
         using (var connection = new Builder().Connect())
         {
@@ -61,6 +60,7 @@ public class Helpers
                     return result;
                 }
             }
+
             return result;
         }
     }
@@ -116,7 +116,6 @@ public class Helpers
         }
 
         return returnType;
-
     }
 
     public static string?
@@ -138,7 +137,6 @@ public class Helpers
             var intAiNumber = autoIncrement.ExecuteScalar()?.ToString();
             MessageBox.Show("Debug: Auto increment number is: " + intAiNumber);
             return intAiNumber;
-
         }
         catch (Exception e)
         {
@@ -161,6 +159,7 @@ public class Helpers
             builder.Append(bytes[i].ToString("x2")); //format string to match format in DB; could be changed
             //if updated formatting of the hashes in the DB is desired
         }
+
         return builder.ToString();
     }
 }
