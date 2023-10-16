@@ -13,34 +13,36 @@ public class Helpers
     {
         var result = false;
         using var connection = new Builder().Connect();
-        var sqlcmd = connection.CreateCommand();
         {
-            sqlcmd.CommandType = CommandType.StoredProcedure;
-            sqlcmd.CommandText = "zth.AuthenticateUser";
-            sqlcmd.Parameters.Add(new MySqlParameter()
+            var sqlcmd = connection.CreateCommand();
             {
-                Direction = ParameterDirection.Input,
-                ParameterName = "@paramLogin",
-                Value = username
-            });
+                sqlcmd.CommandType = CommandType.StoredProcedure;
+                sqlcmd.CommandText = "zth.AuthenticateUser";
+                sqlcmd.Parameters.Add(new MySqlParameter()
+                {
+                    Direction = ParameterDirection.Input,
+                    ParameterName = "@paramLogin",
+                    Value = username
+                });
 
-            sqlcmd.Parameters.Add(new MySqlParameter()
-            {
-                Direction = ParameterDirection.Input,
-                ParameterName = "@paramPassword",
-                Value = password
-            });
+                sqlcmd.Parameters.Add(new MySqlParameter()
+                {
+                    Direction = ParameterDirection.Input,
+                    ParameterName = "@paramPassword",
+                    Value = password
+                });
 
-            sqlcmd.Parameters.Add(new MySqlParameter()
-            {
-                Direction = ParameterDirection.Output,
-                ParameterName = "@isAuthenticated",
-            });
-            if (sqlcmd.ExecuteNonQuery() == 1)
-            {
-                result = true;
+                sqlcmd.Parameters.Add(new MySqlParameter()
+                {
+                    Direction = ParameterDirection.Output,
+                    ParameterName = "@isAuthenticated",
+                    Value = sqlcmd.ExecuteNonQuery()
+                });
+                if (sqlcmd.ExecuteNonQuery() == 1)
+                {
+                    result = true;
+                }
             }
-
             return result;
         }
     }
