@@ -7,8 +7,14 @@ public partial class Login : Form
     public Login()
     {
         InitializeComponent();
+        DebugLogin();
     }
 
+    public void DebugLogin()
+    {
+        loginTB.Text = "DarthVader";
+        pwTB.Text = "DeathStar77";
+    }
 
     #region Buttons
     private void loginBtn_Click(object sender, EventArgs e)

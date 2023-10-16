@@ -2,6 +2,7 @@
 using log4net;
 using MySqlConnector;
 using RepoDb;
+using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.Forms;
 
@@ -11,40 +12,27 @@ public class Helpers
 {
     public bool LoginIsValid(string username, string password)
     {
+        var callProc = "CALL AuthenticateUser(@paramLogin, @paramPassword, @isAuthenticated), select @isAuthenticated";
         var result = false;
-        using var connection = new Builder().Connect();
+        using (var connection = new Builder().Connect())
         {
+            Helpers.WakeUpSQL(connection);
             var sqlcmd = connection.CreateCommand();
+            sqlcmd.CommandText = callProc;
+            sqlcmd.CommandType = CommandType.StoredProcedure;
+            sqlcmd.Parameters.AddWithValue("@paramLogin", username).Direction = ParameterDirection.Input;
+            sqlcmd.Parameters.AddWithValue("@paramPassword", password).Direction = ParameterDirection.Input;
+            var param = new MySqlParameter("@isAuthenticated", MySqlDbType.Int32);
+            sqlcmd.Parameters.Add(param).Direction = ParameterDirection.ReturnValue;
+                var outcome = sqlcmd.ExecuteNonQuery();
+            if (outcome == 1)
             {
-                sqlcmd.CommandType = CommandType.StoredProcedure;
-                sqlcmd.CommandText = "zth.AuthenticateUser";
-                sqlcmd.Parameters.Add(new MySqlParameter()
-                {
-                    Direction = ParameterDirection.Input,
-                    ParameterName = "@paramLogin",
-                    Value = username
-                });
-
-                sqlcmd.Parameters.Add(new MySqlParameter()
-                {
-                    Direction = ParameterDirection.Input,
-                    ParameterName = "@paramPassword",
-                    Value = password
-                });
-
-                sqlcmd.Parameters.Add(new MySqlParameter()
-                {
-                    Direction = ParameterDirection.Output,
-                    ParameterName = "@isAuthenticated",
-                    Value = sqlcmd.ExecuteNonQuery()
-                });
-                if (sqlcmd.ExecuteNonQuery() == 1)
-                {
-                    result = true;
-                }
+                result = true;
             }
-            return result;
+            connection.Close();
         }
+        
+        return result;
     }
 
     public static void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
@@ -70,6 +58,14 @@ public class Helpers
         {
             var formToReturn = new FormAppointment(query);
             formToReturn.Activate();
+        }
+    }
+
+    public static void WakeUpSQL(MySqlConnector.MySqlConnection conn)
+    {
+        if (conn.State != ConnectionState.Open)
+        {
+            conn.Open();
         }
     }
 
