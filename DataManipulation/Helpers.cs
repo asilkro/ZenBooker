@@ -1,14 +1,9 @@
 ﻿using System.Data;
-using System.Diagnostics;
-using System.Text;
 using log4net;
 using MySqlConnector;
 using RepoDb;
-using RepoDb.Enumerations;
-using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.Forms;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ZenoBook.DataManipulation;
 
