@@ -32,31 +32,29 @@ public partial class Main : Form
     public static void populateDGV(DataGridView dgv, string tableName)
     {
         {
-            using var connection = new Builder().Connect();
+            var selectQuery = "SELECT * FROM " + tableName + ";";
+            var connection = new Builder().Connect();
+            switch (connection.State)
             {
-                if (tableName == "appointment")
-                {
-                    var results = connection.QueryAll<Appointment>("appointment");
-                    var appointments = results.ToList();
-                    BindingSource bs = new(appointments, tableName);
-                    dgv.DataSource = bs;
-                }
-                if (tableName == "customer")
-                {
-                    var results = connection.QueryAll<Customer>("customer");
-                    var customers = results.ToList();
-                    BindingSource bs = new(customers, tableName);
-                    dgv.DataSource = bs;
-                }
-                if (tableName == "service")
-                {
-                    var results = connection.QueryAll<Service>("service");
-                    var services = results.ToList();
-                    BindingSource bs = new(services, tableName);
-                    dgv.DataSource = bs;
-                }
-
+                case ConnectionState.Open:
+                    break;
+                case ConnectionState.Closed:
+                    connection.Open();
+                    break;
+                case ConnectionState.Broken:
+                    connection.Dispose();
+                    break;
+                default:
+                    connection.Open();
+                    break;
             }
+           var workingDataTable = new DataTable();
+           var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
+            dataAdapter.Fill(workingDataTable);
+            var bSource = new BindingSource();
+            bSource.DataSource = workingDataTable;
+            dgv.DataSource = bSource;
+            connection.Close();
         }
     }
 
