@@ -1,10 +1,13 @@
 ﻿using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 using log4net;
 using MySqlConnector;
 using RepoDb;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.Forms;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ZenoBook.DataManipulation;
 
@@ -12,27 +15,54 @@ public class Helpers
 {
     public bool LoginIsValid(string username, string password)
     {
-        var callProc = "CALL AuthenticateUser(@paramLogin, @paramPassword, @isAuthenticated), select @isAuthenticated";
+
         var result = false;
         using (var connection = new Builder().Connect())
         {
-            Helpers.WakeUpSQL(connection);
-            var sqlcmd = connection.CreateCommand();
-            sqlcmd.CommandText = callProc;
+            WakeUpSQL(connection);
+            MySqlCommand sqlcmd = connection.CreateCommand();
+            sqlcmd.CommandText = "call zth.AuthenticateUser";
+            sqlcmd.Parameters.AddWithValue("@paramLogin", username);
+            sqlcmd.Parameters.AddWithValue("@paramPassword", password);
+            sqlcmd.Parameters.AddWithValue("@isAuthenticated", null).Direction = ParameterDirection.ReturnValue;
             sqlcmd.CommandType = CommandType.StoredProcedure;
-            sqlcmd.Parameters.AddWithValue("@paramLogin", username).Direction = ParameterDirection.Input;
-            sqlcmd.Parameters.AddWithValue("@paramPassword", password).Direction = ParameterDirection.Input;
-            var param = new MySqlParameter("@isAuthenticated", MySqlDbType.Int32);
-            sqlcmd.Parameters.Add(param).Direction = ParameterDirection.ReturnValue;
-                var outcome = sqlcmd.ExecuteNonQuery();
+
+
+            var outcome = (int) sqlcmd.ExecuteScalar();
             if (outcome == 1)
             {
                 result = true;
             }
+
             connection.Close();
         }
-        
+
         return result;
+    }
+
+    public bool ValidateLogin(string username, string password)
+    {
+        var result = false;
+        using (var connection = new Builder().Connect())
+        {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+                var fields = new[]
+                {
+                    new QueryField("login", username),
+                    new QueryField("password", HashedString(password))
+                };
+                var existing = connection.Exists("user", fields);
+                if (existing)
+                {
+                    result = true;
+                    connection.Close();
+                    return result;
+                }
+            }
+            return result;
+        }
     }
 
     public static void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
@@ -84,11 +114,13 @@ public class Helpers
                 returnType = typeof(OfficeAppointment);
                 break;
         }
+
         return returnType;
 
     }
 
-    public static string? AutoIncrementId(string tableName) //TODO: TEST THE AUTOINCREMENT - if it's not playing ball, yeet it
+    public static string?
+        AutoIncrementId(string tableName) //TODO: TEST THE AUTOINCREMENT - if it's not playing ball, yeet it
     {
         using var connection = new Builder().Connect();
         try
@@ -102,7 +134,7 @@ public class Helpers
             autoIncrement.CommandText = "SELECT AUTO_INCREMENT FROM information_schema.tables " +
                                         "WHERE table_name = @TABLE AND table_schema = DATABASE();";
             autoIncrement.Parameters.AddWithValue("@TABLE", tableName);
-            
+
             var intAiNumber = autoIncrement.ExecuteScalar()?.ToString();
             MessageBox.Show("Debug: Auto increment number is: " + intAiNumber);
             return intAiNumber;
@@ -113,5 +145,22 @@ public class Helpers
             LogManager.GetLogger("LoggingRepo").Warn(e, e);
             return null;
         }
+    }
+
+    public static string HashedString(string input)
+    {
+        // First, make a new hash
+        using SHA256 sha256Hash = SHA256.Create();
+        // This will need an array of bytes
+        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+        // Convert byte array to a string
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            builder.Append(bytes[i].ToString("x2")); //format string to match format in DB; could be changed
+            //if updated formatting of the hashes in the DB is desired
+        }
+        return builder.ToString();
     }
 }

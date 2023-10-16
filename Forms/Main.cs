@@ -36,21 +36,21 @@ public partial class Main : Form
             {
                 if (tableName == "appointment")
                 {
-                    var results = connection.QueryAll<Appointment>("[zth].[appointment]");
+                    var results = connection.QueryAll<Appointment>("appointment");
                     var appointments = results.ToList();
                     BindingSource bs = new(appointments, tableName);
                     dgv.DataSource = bs;
                 }
                 if (tableName == "customer")
                 {
-                    var results = connection.QueryAll<Customer>("[zth].[customer]");
+                    var results = connection.QueryAll<Customer>("customer");
                     var customers = results.ToList();
                     BindingSource bs = new(customers, tableName);
                     dgv.DataSource = bs;
                 }
                 if (tableName == "service")
                 {
-                    var results = connection.QueryAll<Service>("[zth].[service]");
+                    var results = connection.QueryAll<Service>("service");
                     var services = results.ToList();
                     BindingSource bs = new(services, tableName);
                     dgv.DataSource = bs;

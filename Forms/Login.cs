@@ -1,3 +1,5 @@
+using Accessibility;
+using log4net;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms;
@@ -21,7 +23,7 @@ public partial class Login : Form
     {
         using var connection = new Builder().Connect();
 
-        var result = new Helpers().LoginIsValid(loginTB.Text, pwTB.Text);
+        var result = new Helpers().ValidateLogin(loginTB.Text, pwTB.Text);
         switch (result)
         {
             case true:
