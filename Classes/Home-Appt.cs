@@ -63,7 +63,7 @@ public class HomeAppointment : Appointment
         {
             try
             {
-                var removedAppt = connection.Delete("[zth].[appointment]", homeApptId);
+                var removedAppt = connection.Delete("appointment", homeApptId);
                 MessageBox.Show(+removedAppt + " removed.", "Appointment Removed");
                 return true;
             }
@@ -82,8 +82,8 @@ public class HomeAppointment : Appointment
             try
             {
                 {
-                    var updatedAppt = connection.Update("[zth].[appointment]", homeAppointment);
-                    MessageBox.Show(+updatedAppt + " removed.", "Appointment Removed");
+                    var updatedAppt = connection.Update("appointment", homeAppointment);
+                    MessageBox.Show(+updatedAppt + " updated.", "Appointment Update");
                 }
                 return true;
             }

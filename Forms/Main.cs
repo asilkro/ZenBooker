@@ -221,8 +221,8 @@ public partial class Main : Form
     private void logoutBtn_Click(object sender, EventArgs e)
     {
         var newLogin = new Login();
-        newLogin.Activate();
-        Close();
+        newLogin.ShowDialog();
+        this.Close();
     }
 
     private void CreateApptBtn_Click(object sender, EventArgs e)
@@ -275,37 +275,38 @@ public partial class Main : Form
                         break;
 
                 }
-
-                Customer customer = connection.Query<Customer>(e => e.Customer_Id == selected).FirstOrDefault();
-                if (customer != null)
-                {
-                    var cxForm = new FormCustomer(customer);
-                    cxForm.ShowDialog();
-                }
             }
         }
     }
-}
+
 
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {
-        var selected = apptsDataGridView.CurrentRow;
-        if (selected != null)
+        var selectedRow = apptsDataGridView.CurrentRow;
+        if (selectedRow != null)
         {
-            int apptId = (int)selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
-            var result = Helpers.WhatKindOfAppt(apptId);
-
-            if (result == typeof(HomeAppointment))
+            var row = apptsDataGridView.Rows.IndexOf(selectedRow);
+            int selected = (int)apptsDataGridView["appointment_id", row].Value;
+            if (selected != null)
             {
-                HomeAppointment.RemoveHomeAppt(apptId);
-                populateDGV(apptsDataGridView, "appointment");
+                var result = Helpers.WhatKindOfAppt(selected);
+                switch (result)
+                {
+                    case "HomeAppointment":
+                        if (HomeAppointment.RemoveHomeAppt(selected))
+                        {
+                            populateDGV(apptsDataGridView, "appointment");
+                        }
+                        break;
+                    case "OfficeAppointment":
+                        if (OfficeAppointment.RemoveOfficeAppt(selected))
+                        {
+                            populateDGV(apptsDataGridView, "appointment");
+                        }
+                        break;
+                }
             }
-
-            if (result == typeof(OfficeAppointment))
-            {
-                OfficeAppointment.RemoveOfficeAppt(apptId);
-                populateDGV(apptsDataGridView, "appointment");
-            }
+            
         }
     }
 
@@ -339,7 +340,7 @@ public partial class Main : Form
         var selected = cxDataGridView.CurrentRow;
         if (selected != null)
         {
-            int cxId = (int)selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
+            int cxId = (int)selected.Cells[cxDataGridView.Columns["customer_id"].Index].Value;
             var result = Customer.DeleteCustomer(cxId);
             if (result)
             {
