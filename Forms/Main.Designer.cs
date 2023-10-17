@@ -52,10 +52,9 @@
             // 
             // logoutBtn
             // 
-            logoutBtn.Location = new Point(1248, 939);
-            logoutBtn.Margin = new Padding(6);
+            logoutBtn.Location = new Point(672, 440);
             logoutBtn.Name = "logoutBtn";
-            logoutBtn.Size = new Size(186, 94);
+            logoutBtn.Size = new Size(100, 44);
             logoutBtn.TabIndex = 1;
             logoutBtn.Text = "Log Out";
             logoutBtn.UseVisualStyleBackColor = true;
@@ -65,19 +64,18 @@
             // 
             CxLabel.AutoSize = true;
             CxLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            CxLabel.Location = new Point(59, 521);
-            CxLabel.Margin = new Padding(6, 0, 6, 0);
+            CxLabel.Location = new Point(32, 244);
             CxLabel.Name = "CxLabel";
-            CxLabel.Size = new Size(172, 45);
+            CxLabel.Size = new Size(85, 21);
             CxLabel.TabIndex = 2;
             CxLabel.Text = "Customers";
             // 
             // CxCreateBtn
             // 
-            CxCreateBtn.Location = new Point(59, 939);
-            CxCreateBtn.Margin = new Padding(6, 4, 6, 4);
+            CxCreateBtn.Location = new Point(32, 440);
+            CxCreateBtn.Margin = new Padding(3, 2, 3, 2);
             CxCreateBtn.Name = "CxCreateBtn";
-            CxCreateBtn.Size = new Size(152, 47);
+            CxCreateBtn.Size = new Size(82, 22);
             CxCreateBtn.TabIndex = 3;
             CxCreateBtn.Text = "Create";
             CxCreateBtn.UseVisualStyleBackColor = true;
@@ -85,10 +83,10 @@
             // 
             // UpdateCxBtn
             // 
-            UpdateCxBtn.Location = new Point(230, 939);
-            UpdateCxBtn.Margin = new Padding(6, 4, 6, 4);
+            UpdateCxBtn.Location = new Point(124, 440);
+            UpdateCxBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateCxBtn.Name = "UpdateCxBtn";
-            UpdateCxBtn.Size = new Size(152, 47);
+            UpdateCxBtn.Size = new Size(82, 22);
             UpdateCxBtn.TabIndex = 4;
             UpdateCxBtn.Text = "Update";
             UpdateCxBtn.UseVisualStyleBackColor = true;
@@ -96,10 +94,10 @@
             // 
             // RemoveCxBtn
             // 
-            RemoveCxBtn.Location = new Point(394, 939);
-            RemoveCxBtn.Margin = new Padding(6, 4, 6, 4);
+            RemoveCxBtn.Location = new Point(212, 440);
+            RemoveCxBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveCxBtn.Name = "RemoveCxBtn";
-            RemoveCxBtn.Size = new Size(152, 47);
+            RemoveCxBtn.Size = new Size(82, 22);
             RemoveCxBtn.TabIndex = 5;
             RemoveCxBtn.Text = "Remove";
             RemoveCxBtn.UseVisualStyleBackColor = true;
@@ -107,10 +105,10 @@
             // 
             // RemoveApptBtn
             // 
-            RemoveApptBtn.Location = new Point(394, 448);
-            RemoveApptBtn.Margin = new Padding(6, 4, 6, 4);
+            RemoveApptBtn.Location = new Point(212, 210);
+            RemoveApptBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveApptBtn.Name = "RemoveApptBtn";
-            RemoveApptBtn.Size = new Size(152, 47);
+            RemoveApptBtn.Size = new Size(82, 22);
             RemoveApptBtn.TabIndex = 9;
             RemoveApptBtn.Text = "Remove";
             RemoveApptBtn.UseVisualStyleBackColor = true;
@@ -118,10 +116,10 @@
             // 
             // UpdateApptBtn
             // 
-            UpdateApptBtn.Location = new Point(223, 448);
-            UpdateApptBtn.Margin = new Padding(6, 4, 6, 4);
+            UpdateApptBtn.Location = new Point(120, 210);
+            UpdateApptBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateApptBtn.Name = "UpdateApptBtn";
-            UpdateApptBtn.Size = new Size(152, 47);
+            UpdateApptBtn.Size = new Size(82, 22);
             UpdateApptBtn.TabIndex = 8;
             UpdateApptBtn.Text = "Update";
             UpdateApptBtn.UseVisualStyleBackColor = true;
@@ -129,10 +127,10 @@
             // 
             // CreateApptBtn
             // 
-            CreateApptBtn.Location = new Point(59, 448);
-            CreateApptBtn.Margin = new Padding(6, 4, 6, 4);
+            CreateApptBtn.Location = new Point(32, 210);
+            CreateApptBtn.Margin = new Padding(3, 2, 3, 2);
             CreateApptBtn.Name = "CreateApptBtn";
-            CreateApptBtn.Size = new Size(152, 47);
+            CreateApptBtn.Size = new Size(82, 22);
             CreateApptBtn.TabIndex = 7;
             CreateApptBtn.Text = "Create";
             CreateApptBtn.UseVisualStyleBackColor = true;
@@ -142,10 +140,9 @@
             // 
             ApptsLbl.AutoSize = true;
             ApptsLbl.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            ApptsLbl.Location = new Point(59, 19);
-            ApptsLbl.Margin = new Padding(6, 0, 6, 0);
+            ApptsLbl.Location = new Point(32, 9);
             ApptsLbl.Name = "ApptsLbl";
-            ApptsLbl.Size = new Size(223, 45);
+            ApptsLbl.Size = new Size(108, 21);
             ApptsLbl.TabIndex = 6;
             ApptsLbl.Text = "Appointments";
             // 
@@ -153,10 +150,10 @@
             // 
             pictureBox1.Enabled = false;
             pictureBox1.Image = Properties.Resources.Zenobia_Transparent;
-            pictureBox1.Location = new Point(1202, 23);
-            pictureBox1.Margin = new Padding(6, 4, 6, 4);
+            pictureBox1.Location = new Point(647, 11);
+            pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(240, 240);
+            pictureBox1.Size = new Size(129, 112);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 10;
             pictureBox1.TabStop = false;
@@ -166,14 +163,14 @@
             apptsDataGridView.AllowUserToAddRows = false;
             apptsDataGridView.AllowUserToDeleteRows = false;
             apptsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            apptsDataGridView.Location = new Point(59, 139);
-            apptsDataGridView.Margin = new Padding(6, 4, 6, 4);
+            apptsDataGridView.Location = new Point(32, 65);
+            apptsDataGridView.Margin = new Padding(3, 2, 3, 2);
             apptsDataGridView.Name = "apptsDataGridView";
             apptsDataGridView.ReadOnly = true;
             apptsDataGridView.RowHeadersWidth = 51;
             apptsDataGridView.RowTemplate.Height = 29;
             apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            apptsDataGridView.Size = new Size(487, 301);
+            apptsDataGridView.Size = new Size(352, 141);
             apptsDataGridView.TabIndex = 11;
             // 
             // cxDataGridView
@@ -181,38 +178,40 @@
             cxDataGridView.AllowUserToAddRows = false;
             cxDataGridView.AllowUserToDeleteRows = false;
             cxDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            cxDataGridView.Location = new Point(59, 625);
-            cxDataGridView.Margin = new Padding(6, 4, 6, 4);
+            cxDataGridView.Location = new Point(32, 293);
+            cxDataGridView.Margin = new Padding(3, 2, 3, 2);
             cxDataGridView.Name = "cxDataGridView";
             cxDataGridView.ReadOnly = true;
             cxDataGridView.RowHeadersWidth = 51;
             cxDataGridView.RowTemplate.Height = 29;
             cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            cxDataGridView.Size = new Size(487, 301);
+            cxDataGridView.Size = new Size(352, 141);
             cxDataGridView.TabIndex = 12;
             // 
             // cxSearchTB
             // 
-            cxSearchTB.Location = new Point(59, 576);
+            cxSearchTB.Location = new Point(32, 267);
+            cxSearchTB.Margin = new Padding(2, 1, 2, 1);
             cxSearchTB.Name = "cxSearchTB";
             cxSearchTB.PlaceholderText = "Search for customer (email, phone, or name)";
-            cxSearchTB.Size = new Size(487, 39);
+            cxSearchTB.Size = new Size(264, 23);
             cxSearchTB.TabIndex = 13;
             // 
             // apptSearchTB
             // 
-            apptSearchTB.Location = new Point(59, 93);
+            apptSearchTB.Location = new Point(32, 39);
+            apptSearchTB.Margin = new Padding(2, 1, 2, 1);
             apptSearchTB.Name = "apptSearchTB";
             apptSearchTB.PlaceholderText = "Search for Appointment (date or cxId)";
-            apptSearchTB.Size = new Size(487, 39);
+            apptSearchTB.Size = new Size(264, 23);
             apptSearchTB.TabIndex = 14;
             // 
             // apptSearchBtn
             // 
-            apptSearchBtn.Location = new Point(562, 93);
+            apptSearchBtn.Location = new Point(303, 39);
             apptSearchBtn.Margin = new Padding(0);
             apptSearchBtn.Name = "apptSearchBtn";
-            apptSearchBtn.Size = new Size(150, 46);
+            apptSearchBtn.Size = new Size(81, 22);
             apptSearchBtn.TabIndex = 15;
             apptSearchBtn.Text = "Search";
             apptSearchBtn.UseVisualStyleBackColor = true;
@@ -220,10 +219,10 @@
             // 
             // cxSearchBtn
             // 
-            cxSearchBtn.Location = new Point(571, 576);
+            cxSearchBtn.Location = new Point(305, 267);
             cxSearchBtn.Margin = new Padding(0);
             cxSearchBtn.Name = "cxSearchBtn";
-            cxSearchBtn.Size = new Size(150, 46);
+            cxSearchBtn.Size = new Size(81, 22);
             cxSearchBtn.TabIndex = 16;
             cxSearchBtn.Text = "Search";
             cxSearchBtn.UseVisualStyleBackColor = true;
@@ -231,10 +230,10 @@
             // 
             // Main
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = logoutBtn;
-            ClientSize = new Size(1456, 1056);
+            ClientSize = new Size(784, 495);
             Controls.Add(cxSearchBtn);
             Controls.Add(apptSearchBtn);
             Controls.Add(apptSearchTB);
@@ -252,7 +251,6 @@
             Controls.Add(CxLabel);
             Controls.Add(logoutBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(6);
             Name = "Main";
             Text = "ZTH - ZenoBook";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

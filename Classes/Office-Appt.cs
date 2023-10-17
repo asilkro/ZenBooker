@@ -22,11 +22,11 @@ public class OfficeAppointment : Appointment
     public OfficeAppointment(int appointmentId, int customerId, int staffId, int officeId, int serviceId,
         DateTime start, DateTime end, bool inHomeService)
     {
-        AppointmentId = appointmentId;
-        CustomerId = customerId;
-        StaffId = staffId;
+        Appointment_Id = appointmentId;
+        Customer_Id = customerId;
+        Staff_Id = staffId;
         OfficeId = officeId;
-        ServiceID = serviceId;
+        Service_Id = serviceId;
         Start = start;
         End = end;
         InHomeService = inHomeService;

@@ -82,7 +82,7 @@ public class Helpers
     {
         int.TryParse(apptId, out var i);
         using var connection = new Builder().Connect();
-        var query = connection.Query<Appointment>("[zth].[appointment]", e => e.AppointmentId == i)
+        var query = connection.Query<Appointment>("[zth].[appointment]", e => e.Appointment_Id == i)
             .FirstOrDefault();
         if (query != null)
         {
@@ -102,7 +102,7 @@ public class Helpers
     public static Type WhatKindOfAppt(int ApptId)
     {
         using var connection = new Builder().Connect();
-        var query = connection.Query<HomeAppointment>("[zth].[appointment]", e => e.AppointmentId == ApptId)
+        var query = connection.Query<HomeAppointment>("[zth].[appointment]", e => e.Appointment_Id == ApptId)
             .FirstOrDefault();
         var returnType = typeof(Appointment);
         switch (query?.InHomeService)

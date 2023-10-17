@@ -13,10 +13,10 @@ public partial class FormOfficeAppt : Form
     public FormOfficeAppt(Appointment appt)
     {
         InitializeComponent();
-        officeAppt = new OfficeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, -1, appt.ServiceID,
+        officeAppt = new OfficeAppointment(appt.Appointment_Id, appt.Customer_Id, appt.Staff_Id, -1, appt.Service_Id,
             appt.Start,
             appt.End, false);
-        var cx = ReturnCustomer(appt.CustomerId.ToString());
+        var cx = ReturnCustomer(appt.Customer_Id.ToString());
         if (cx != null)
         {
             officeAppt.OfficeId = (cx.PreferredOffice);

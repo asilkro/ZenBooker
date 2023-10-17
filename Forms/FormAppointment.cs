@@ -27,7 +27,7 @@ public partial class FormAppointment : Form
 
     private void FillDt(Appointment appt)
     {
-        apptIdTB.Text = appt.AppointmentId.ToString();
+        apptIdTB.Text = appt.Appointment_Id.ToString();
         dateCalendar.SetDate(appt.Start.Date);
         startDtPicker.Value = appt.Start;
         endDtPicker.Value = appt.End;
@@ -35,23 +35,23 @@ public partial class FormAppointment : Form
 
     private void FillServiceFields(Appointment appt)
     {
-        var service = ReturnService(appt.ServiceID.ToString());
-        serviceIdTB.Text = appt.ServiceID.ToString();
+        var service = ReturnService(appt.Service_Id.ToString());
+        serviceIdTB.Text = appt.Service_Id.ToString();
         serviceNameTb.Text = service?.ServiceName;
         serviceDescTb.Text = service?.ServiceDesc;
     }
 
     private void FillStaffFields(Appointment appt)
     {
-        var staff = ReturnStaff(appt.StaffId.ToString());
-        staffIdTB.Text = appt.StaffId.ToString();
+        var staff = ReturnStaff(appt.Staff_Id.ToString());
+        staffIdTB.Text = appt.Staff_Id.ToString();
         staffNameTb.Text = staff?.Name;
     }
 
     private void FillCxFields(Appointment appt)
     {
-        var cx = ReturnCustomer(appt.CustomerId.ToString());
-        cxIdTB.Text = appt.CustomerId.ToString();
+        var cx = ReturnCustomer(appt.Customer_Id.ToString());
+        cxIdTB.Text = appt.Customer_Id.ToString();
         string v = cx?.First + cx?.Last;
         cxNameTb.Text = v;
         cxEmailTB.Text = cx?.Email;

@@ -22,10 +22,10 @@ public class HomeAppointment : Appointment
     public HomeAppointment(int appointmentId, int customerId, int staffId, int serviceId, DateTime start, DateTime end,
         bool inHomeService, int serviceAddressId)
     {
-        AppointmentId = appointmentId;
-        CustomerId = customerId;
-        StaffId = staffId;
-        ServiceID = serviceId;
+        Appointment_Id = appointmentId;
+        Customer_Id = customerId;
+        Staff_Id = staffId;
+        Service_Id = serviceId;
         Start = start;
         End = end;
         InHomeService = inHomeService;

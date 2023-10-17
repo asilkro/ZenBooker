@@ -1,5 +1,7 @@
 ﻿using log4net;
 using RepoDb;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes;
@@ -87,6 +89,5 @@ public class Customer
             return false;
         }
     }
-
     #endregion
 }

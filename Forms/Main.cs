@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Common;
-using System.Diagnostics;
-using System.Runtime.ExceptionServices;
-using System.Windows.Forms;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Update;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Data;
 using MySqlConnector;
 using RepoDb;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ZenoBook.Forms;
 
@@ -48,14 +35,89 @@ public partial class Main : Form
                     connection.Open();
                     break;
             }
-
-            var workingDataTable = new DataTable();
             var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
-            dataAdapter.Fill(workingDataTable);
-            var bSource = new BindingSource();
-            bSource.DataSource = workingDataTable;
-            dgv.DataSource = bSource;
+            using (dataAdapter)
+            {
+                switch (tableName)
+                {
+                    case "customer":
+                        var customers = new List<Customer>();
+                        DataTable customerDataTable = new DataTable();
+                        customerDataTable.Columns.Add("Customer_Id", typeof(int));
+                        customerDataTable.Columns.Add("First", typeof(string));
+                        customerDataTable.Columns.Add("Last", typeof(string));
+                        customerDataTable.Columns.Add("Phone", typeof(string));
+                        customerDataTable.Columns.Add("Email", typeof(string));
+                        customerDataTable.Columns.Add("PreferredOffice", typeof(int));
+                        dataAdapter.Fill(customerDataTable);
+
+                        foreach (DataRow row in customerDataTable.Rows)
+                        {
+                            Customer cx = new Customer();
+                            cx.Customer_Id = (int)row["Customer_Id"];
+                            cx.First = row["First"].ToString();
+                            cx.Last = row["Last"].ToString();
+                            cx.Phone = row["Phone"].ToString();
+                            cx.Email = row["Email"].ToString();
+                            cx.PreferredOffice = Convert.IsDBNull(row["PreferredOffice"])? 0 : (int)row["PreferredOffice"];
+                            customers.Add(cx);
+                        }
+                        dgv.DataSource = customerDataTable;
+                        break;
+
+                    case "appointment":
+                        var appointments = new List<Appointment>();
+                        DataTable appointmentsDataTable = new DataTable();
+                        appointmentsDataTable.Columns.Add("Appointment_Id", typeof(int));
+                        appointmentsDataTable.Columns.Add("Customer_Id", typeof(int));
+                        appointmentsDataTable.Columns.Add("Staff_Id", typeof(int));
+                        appointmentsDataTable.Columns.Add("Service_Id", typeof(int));
+                        appointmentsDataTable.Columns.Add("Start", typeof(DateTime));
+                        appointmentsDataTable.Columns.Add("End", typeof(DateTime));
+                        dataAdapter.Fill(appointmentsDataTable);
+
+                        foreach (DataRow row in appointmentsDataTable.Rows)
+                        {
+                            Appointment appt = new Appointment();
+                            appt.Appointment_Id = (int)row["Appointment_Id"]; // Set the correct property names
+                            appt.Customer_Id = (int)row["Customer_Id"];
+                            appt.Staff_Id = (int)row["Staff_Id"];
+                            appt.Service_Id = (int)row["Service_Id"];
+                            appt.Start = (DateTime)row["Start"];
+                            appt.End = (DateTime)row["End"];
+                            appointments.Add(appt);
+                        }
+                        dgv.DataSource = appointmentsDataTable;
+                        break;
+                }
+            }
+
+
             connection.Close();
+        }
+    }
+
+    public static void diffPopDGV(DataGridView dgv, string tableName)
+    {
+        using (var connection = new Builder().Connect())
+        {
+            switch (tableName)
+            {
+                case "customer":
+                    var cx = connection.QueryAll<Customer>();
+                    var cxBindingSource = new BindingSource();
+                    cxBindingSource.DataSource = cx.ToList();
+                    dgv.AutoGenerateColumns=true;
+                    dgv.DataSource = cxBindingSource;
+                    break;
+                case "appointment":
+                    var appt = connection.QueryAll("appointment");
+                    var apptBindingSource = new BindingSource();
+                    apptBindingSource.DataSource = appt.ToList();
+                    dgv.AutoGenerateColumns=true;
+                    dgv.DataSource = apptBindingSource;
+                    break;
+            }
         }
     }
 
@@ -198,7 +260,7 @@ public partial class Main : Form
         var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            var apptForm = new FormAppointment((Appointment) selected.DataBoundItem);
+            var apptForm = new FormAppointment((Appointment)selected.DataBoundItem);
             apptForm.ShowDialog();
         }
     }
@@ -208,7 +270,7 @@ public partial class Main : Form
         var selected = apptsDataGridView.CurrentRow;
         if (selected != null)
         {
-            int apptId = (int) selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
+            int apptId = (int)selected.Cells[apptsDataGridView.Columns["appointment_id"].Index].Value;
             var result = Helpers.WhatKindOfAppt(apptId);
 
             if (result == typeof(HomeAppointment))
@@ -233,17 +295,11 @@ public partial class Main : Form
 
     private void UpdateCxBtn_Click(object sender, EventArgs e)
     {
-        if (cxDataGridView.SelectedRows.Count > 0)
+        var selected = cxDataGridView.SelectedRows.WithType<Customer>();
+        if (selected != null)
         {
-            foreach (DataGridViewRow row in cxDataGridView.SelectedRows)
-            {
-                Customer cx = row.DataBoundItem as Customer;
-                if (cx != null)
-                {
-                    var form = new FormCustomer(cx);
-                    form.ShowDialog();
-                }
-            }
+            var Form = new FormCustomer(selected.First());
+            Form.ShowDialog();
         }
     }
 
@@ -252,7 +308,7 @@ public partial class Main : Form
         var selected = cxDataGridView.CurrentRow;
         if (selected != null)
         {
-            int cxId = (int) selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
+            int cxId = (int)selected.Cells[apptsDataGridView.Columns["customer_id"].Index].Value;
             var result = Customer.DeleteCustomer(cxId);
             if (result)
             {

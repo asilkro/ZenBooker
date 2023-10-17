@@ -15,9 +15,9 @@ public partial class FormHomeAppt : Form
         using (form1)
         {
             InitializeComponent();
-            homeAppt = new HomeAppointment(appt.AppointmentId, appt.CustomerId, appt.StaffId, appt.ServiceID,
+            homeAppt = new HomeAppointment(appt.Appointment_Id, appt.Customer_Id, appt.Staff_Id, appt.Service_Id,
                 appt.Start, appt.End, true, -1);
-            if (appt.CustomerId != cxId)
+            if (appt.Customer_Id != cxId)
             {
                 if (cxId.HasValue)
                 {
@@ -25,7 +25,7 @@ public partial class FormHomeAppt : Form
                     cxIdTB.BackColor = Color.CadetBlue;
                 }
 
-                cxIdTB.Text = appt.CustomerId.ToString();
+                cxIdTB.Text = appt.Customer_Id.ToString();
                 cxIdTB.BackColor = Color.PaleVioletRed; //Indicates mismatch
             }
 
@@ -101,7 +101,7 @@ public partial class FormHomeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        homeAppt.ServiceAddressId = (int) ReturnServiceAddyId(homeAppt.CustomerId.ToString())!;
+        homeAppt.ServiceAddressId = (int) ReturnServiceAddyId(homeAppt.Customer_Id.ToString())!;
         saveBtn.Enabled = true;
     }
 
