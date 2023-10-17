@@ -29,8 +29,8 @@ public partial class Login : Form
         {
             case true:
                 var main = new Main();
-                ActiveForm?.Hide();
                 main.ShowDialog();
+                Hide();
                 break;
             case false:
                 MessageBox.Show("Username/password not correct. Check and try again.");

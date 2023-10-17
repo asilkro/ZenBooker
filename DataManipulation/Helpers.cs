@@ -99,23 +99,22 @@ public class Helpers
         }
     }
 
-    public static Type WhatKindOfAppt(int ApptId)
+    public static string? WhatKindOfAppt(int ApptId)
     {
         using var connection = new Builder().Connect();
-        var query = connection.Query<HomeAppointment>("[zth].[appointment]", e => e.Appointment_Id == ApptId)
+        var query = connection.Query<HomeAppointment>("appointment", e => e.Appointment_Id == ApptId)
             .FirstOrDefault();
-        var returnType = typeof(Appointment);
+        string apptKind = null;
         switch (query?.InHomeService)
         {
             case true:
-                returnType = typeof(HomeAppointment);
+                apptKind = "HomeAppointment";
                 break;
             case false:
-                returnType = typeof(OfficeAppointment);
+                apptKind = "OfficeAppointment";
                 break;
         }
-
-        return returnType;
+        return apptKind;
     }
 
     public static string?

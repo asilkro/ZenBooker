@@ -233,13 +233,59 @@ public partial class Main : Form
 
     private void UpdateApptBtn_Click(object sender, EventArgs e)
     {
-        var selected = apptsDataGridView.CurrentRow;
-        if (selected != null)
+        var selectedRow = apptsDataGridView.CurrentRow;
+        if (selectedRow != null)
         {
-            var apptForm = new FormAppointment((Appointment)selected.DataBoundItem);
-            apptForm.ShowDialog();
+            var row = apptsDataGridView.Rows.IndexOf(selectedRow);
+            int selected = (int) apptsDataGridView["appointment_id", row].Value;
+            using (var connection = new Builder().Connect())
+            {
+                switch (Helpers.WhatKindOfAppt(selected))
+                {
+                    case "HomeAppointment":
+                        HomeAppointment hAppt = connection.Query<HomeAppointment>(e => e.Appointment_Id == selected)
+                            .FirstOrDefault();
+                        var tempHAppt = new Appointment();
+                        tempHAppt.Customer_Id = hAppt.Customer_Id;
+                        tempHAppt.Appointment_Id = hAppt.Appointment_Id;
+                        tempHAppt.Service_Id = hAppt.Service_Id;
+                        tempHAppt.Staff_Id = hAppt.Staff_Id;
+                        tempHAppt.Start = hAppt.Start;
+                        tempHAppt.End = hAppt.End;
+                        var aForm = new FormAppointment(tempHAppt);
+                        aForm.ShowDialog();
+                        var hForm = new FormHomeAppt(hAppt,hAppt.Customer_Id,aForm);
+                        hForm.ShowDialog();
+                        break;
+                    
+                    case "OfficeAppointment":
+                        OfficeAppointment oAppt = connection.Query<OfficeAppointment>(e => e.Appointment_Id == selected)
+                            .FirstOrDefault();
+                        var tempOAppt = new Appointment();
+                        tempOAppt.Customer_Id = oAppt.Customer_Id;
+                        tempOAppt.Appointment_Id = oAppt.Appointment_Id;
+                        tempOAppt.Service_Id = oAppt.Service_Id;
+                        tempOAppt.Staff_Id = oAppt.Staff_Id;
+                        tempOAppt.Start = oAppt.Start;
+                        tempOAppt.End = oAppt.End;
+                        var tForm = new FormAppointment(tempOAppt);
+                        tForm.ShowDialog();
+                        var oForm = new FormOfficeAppt(oAppt);
+                        oForm.ShowDialog();
+                        break;
+
+                }
+
+                Customer customer = connection.Query<Customer>(e => e.Customer_Id == selected).FirstOrDefault();
+                if (customer != null)
+                {
+                    var cxForm = new FormCustomer(customer);
+                    cxForm.ShowDialog();
+                }
+            }
         }
     }
+}
 
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {
@@ -271,11 +317,20 @@ public partial class Main : Form
 
     private void UpdateCxBtn_Click(object sender, EventArgs e)
     {
-        var selected = cxDataGridView.SelectedRows.WithType<Customer>();
-        if (selected != null)
+        var selectedRow = cxDataGridView.CurrentRow;
+        var row = cxDataGridView.Rows.IndexOf(selectedRow);
+        int selected = (int)cxDataGridView["customer_id", row].Value;
+        if (selectedRow != null)
         {
-            var Form = new FormCustomer(selected.First());
-            Form.ShowDialog();
+            using (var connection = new Builder().Connect())
+            {
+                Customer customer = connection.Query<Customer>(e => e.Customer_Id == selected).FirstOrDefault();
+                if (customer != null)
+                {
+                    var cxForm = new FormCustomer(customer);
+                    cxForm.ShowDialog();
+                }
+            }
         }
     }
 
