@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using MySqlConnector;
 using RepoDb;
 using RepoDb.Extensions;
@@ -96,31 +97,6 @@ public partial class Main : Form
             connection.Close();
         }
     }
-
-    public static void diffPopDGV(DataGridView dgv, string tableName)
-    {
-        using (var connection = new Builder().Connect())
-        {
-            switch (tableName)
-            {
-                case "customer":
-                    var cx = connection.QueryAll<Customer>();
-                    var cxBindingSource = new BindingSource();
-                    cxBindingSource.DataSource = cx.ToList();
-                    dgv.AutoGenerateColumns=true;
-                    dgv.DataSource = cxBindingSource;
-                    break;
-                case "appointment":
-                    var appt = connection.QueryAll("appointment");
-                    var apptBindingSource = new BindingSource();
-                    apptBindingSource.DataSource = appt.ToList();
-                    dgv.AutoGenerateColumns=true;
-                    dgv.DataSource = apptBindingSource;
-                    break;
-            }
-        }
-    }
-
     public static void searchDGV(DataGridView dgv, string tableName, string searchQuery)
     {
         {
