@@ -56,7 +56,7 @@ public partial class FormAppointment : Form
         cxNameTb.Text = v;
         cxEmailTB.Text = cx?.Email;
         cxPhoneTB.Text = cx?.Phone.ToString();
-        officeSearchTB.Text = cx?.PreferredOffice.ToString();
+        officeSearchTB.Text = cx?.Preferred_Office.ToString();
     }
 
     #region SQL

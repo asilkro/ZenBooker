@@ -19,7 +19,7 @@ public partial class FormOfficeAppt : Form
         var cx = ReturnCustomer(appt.Customer_Id.ToString());
         if (cx != null)
         {
-            officeAppt.OfficeId = (cx.PreferredOffice);
+            officeAppt.OfficeId = (cx.Preferred_Office);
         }
 
         submitBtn.Enabled = false;

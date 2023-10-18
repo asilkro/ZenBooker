@@ -16,7 +16,7 @@ public class Customer
     public string Last { get; set; } // VARCHAR(32) PK, not_null
     public string Phone { get; set; } // VARCHAR(12), not_null
     public string Email { get; set; } // VARCHAR(48) PK, not_null
-    public int PreferredOffice { get; set; } // int, FK
+    public int Preferred_Office { get; set; } // int, FK
 
     #endregion
 
@@ -26,14 +26,14 @@ public class Customer
     {
     }
 
-    public Customer(int customerId, string first, string last, string phone, string email, int preferredOffice)
+    public Customer(int customer_Id, string first, string last, string phone, string email, int preferred_Office)
     {
-        Customer_Id = customerId;
+        Customer_Id = customer_Id;
         First = first;
         Last = last;
         Phone = phone;
         Email = email;
-        PreferredOffice = preferredOffice;
+        Preferred_Office = preferred_Office;
     }
 
     #endregion
@@ -45,7 +45,7 @@ public class Customer
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Insert("[zth].[customer]", customer);
+            var id = connection.Insert("customer", customer);
             MessageBox.Show("Customer id " + id + " created.", "Customer Created");
             return true;
         }
@@ -78,7 +78,7 @@ public class Customer
         try
         {
             {
-                var updatedCx = connection.Update("[zth].[customer]", customer);
+                var updatedCx = connection.Update("customer", customer);
                 MessageBox.Show("Customer id " + updatedCx + " updated.", "Customer Updated");
             }
             return true;

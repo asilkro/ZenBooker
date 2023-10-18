@@ -17,7 +17,7 @@ public partial class Main : Form
         populateDGV(cxDataGridView, "customer");
     }
 
-    public static void populateDGV(DataGridView dgv, string tableName)
+    public static void populateDGV(DataGridView dgv, string tableName) //, string? where) //Maybe expand to include clauses?
     {
         {
             var selectQuery = "SELECT * FROM " + tableName + ";";
@@ -49,7 +49,7 @@ public partial class Main : Form
                         customerDataTable.Columns.Add("Last", typeof(string));
                         customerDataTable.Columns.Add("Phone", typeof(string));
                         customerDataTable.Columns.Add("Email", typeof(string));
-                        customerDataTable.Columns.Add("PreferredOffice", typeof(int));
+                        customerDataTable.Columns.Add("Preferred_Office", typeof(int));
                         dataAdapter.Fill(customerDataTable);
 
                         foreach (DataRow row in customerDataTable.Rows)
@@ -60,7 +60,7 @@ public partial class Main : Form
                             cx.Last = row["Last"].ToString();
                             cx.Phone = row["Phone"].ToString();
                             cx.Email = row["Email"].ToString();
-                            cx.PreferredOffice = Convert.IsDBNull(row["PreferredOffice"])? 0 : (int)row["PreferredOffice"];
+                            cx.Preferred_Office = Convert.IsDBNull(row["Preferred_Office"])? 0 : (int)row["Preferred_Office"];
                             customers.Add(cx);
                         }
                         dgv.DataSource = customerDataTable;
@@ -237,7 +237,7 @@ public partial class Main : Form
         if (selectedRow != null)
         {
             var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-            int selected = (int) apptsDataGridView["appointment_id", row].Value;
+            var selected = (int) apptsDataGridView["appointment_id", row].Value;
             using (var connection = new Builder().Connect())
             {
                 switch (Helpers.WhatKindOfAppt(selected))
@@ -286,7 +286,7 @@ public partial class Main : Form
         if (selectedRow != null)
         {
             var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-            int selected = (int)apptsDataGridView["appointment_id", row].Value;
+            var selected = (int)apptsDataGridView["appointment_id", row].Value;
             if (selected != null)
             {
                 var result = Helpers.WhatKindOfAppt(selected);
@@ -319,17 +319,19 @@ public partial class Main : Form
     private void UpdateCxBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = cxDataGridView.CurrentRow;
-        var row = cxDataGridView.Rows.IndexOf(selectedRow);
-        int selected = (int)cxDataGridView["customer_id", row].Value;
         if (selectedRow != null)
         {
-            using (var connection = new Builder().Connect())
+            var row = cxDataGridView.Rows.IndexOf(selectedRow);
+            var selected = (int)cxDataGridView["customer_id", row].Value;
             {
-                Customer customer = connection.Query<Customer>(e => e.Customer_Id == selected).FirstOrDefault();
-                if (customer != null)
+                using (var connection = new Builder().Connect())
                 {
-                    var cxForm = new FormCustomer(customer);
-                    cxForm.ShowDialog();
+                    var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
+                    if (customer != null)
+                    {
+                        var cxForm = new FormCustomer(customer);
+                        cxForm.ShowDialog();
+                    }
                 }
             }
         }
@@ -337,11 +339,12 @@ public partial class Main : Form
 
     private void RemoveCxBtn_Click(object sender, EventArgs e)
     {
-        var selected = cxDataGridView.CurrentRow;
+        var selectedRow = cxDataGridView.CurrentRow;
+        var row = cxDataGridView.Rows.IndexOf(selectedRow);
+        int selected = (int)cxDataGridView["customer_id", row].Value;
         if (selected != null)
         {
-            int cxId = (int)selected.Cells[cxDataGridView.Columns["customer_id"].Index].Value;
-            var result = Customer.DeleteCustomer(cxId);
+            var result = Customer.DeleteCustomer(selected);
             if (result)
             {
                 populateDGV(cxDataGridView, "customer");

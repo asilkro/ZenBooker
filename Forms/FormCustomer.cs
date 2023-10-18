@@ -28,7 +28,7 @@ public partial class FormCustomer : Form
         tbLastName.Text = customer.Last;
         tbPhone.Text = customer.Phone;
         tbEmail.Text = customer.Email;
-        tbOffice.Text = customer.PreferredOffice.ToString();
+        tbOffice.Text = customer.Preferred_Office.ToString();
         cxIdTB.Text = customer.Customer_Id.ToString();
 
         saveBtn.Enabled = false;
@@ -74,7 +74,7 @@ public partial class FormCustomer : Form
         {
             case null:
                 result = Customer.InsertCustomer(new Customer(
-                    customerId: int.Parse(cxIdTB.Text),
+                    customer_Id: int.Parse(cxIdTB.Text),
                     first: tbFirstName.Text,
                     last: tbLastName.Text,
                     phone: tbPhone.Text,
@@ -83,7 +83,7 @@ public partial class FormCustomer : Form
                 break;
             case not null:
                 result = Customer.UpdateCustomer((new Customer(
-                    customerId: int.Parse(cxIdTB.Text),
+                    customer_Id: int.Parse(cxIdTB.Text),
                     first: tbFirstName.Text,
                     last: tbLastName.Text,
                     phone: tbPhone.Text,
