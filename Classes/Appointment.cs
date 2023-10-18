@@ -27,6 +27,14 @@ public class Appointment
         Start = start;
         End = end;
     }
+    public static DateTime CheckDbNull(object dateTime)
+    {
+        if (dateTime == DBNull.Value)
+        {
+            return DateTime.MinValue;
+        }
+        return (DateTime)dateTime;
+    }
 
     #endregion
 }

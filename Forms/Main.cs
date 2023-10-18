@@ -84,8 +84,9 @@ public partial class Main : Form
                             appt.Customer_Id = (int)row["Customer_Id"];
                             appt.Staff_Id = (int)row["Staff_Id"];
                             appt.Service_Id = (int)row["Service_Id"];
-                            appt.Start = (DateTime)row["Start"];
-                            appt.End = (DateTime)row["End"];
+                            appt.Start = Appointment.CheckDbNull(row["Start"]);
+                            
+                            appt.End = Appointment.CheckDbNull(row["End"]);
                             appointments.Add(appt);
                         }
                         dgv.DataSource = appointmentsDataTable;

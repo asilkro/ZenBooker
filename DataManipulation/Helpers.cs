@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using log4net;
@@ -102,8 +103,17 @@ public class Helpers
     public static string? WhatKindOfAppt(int ApptId)
     {
         using var connection = new Builder().Connect();
-        var query = connection.Query<HomeAppointment>("appointment", e => e.Appointment_Id == ApptId)
-            .FirstOrDefault();
+        var fields = Field.Parse<HomeAppointment>(e => new
+        {
+            e.Appointment_Id,
+            e.InHomeService,
+            e.ServiceAddressId,
+        });
+        var query = connection.Query<HomeAppointment>(e => e.Appointment_Id == ApptId && e.ServiceAddressId != 0,
+            fields: fields).FirstOrDefault();
+
+        //var query = connection.Query<HomeAppointment>("appointment", e => e.Appointment_Id == ApptId && e.InHomeService == true)
+        //    .FirstOrDefault();
         string apptKind = null;
         switch (query?.InHomeService)
         {
@@ -146,12 +156,10 @@ public class Helpers
 
     public static string HashedString(string input)
     {
-        // First, make a new hash
         using SHA256 sha256Hash = SHA256.Create();
-        // This will need an array of bytes
         byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
-        // Convert byte array to a string
+        
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < bytes.Length; i++)
         {

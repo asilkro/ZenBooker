@@ -68,7 +68,7 @@ public class ServiceAddress
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Insert("[zth].[address]", address);
+            var id = connection.Insert("address", address);
             MessageBox.Show("Address id " + id + " created.", "Address Created");
             return true;
         }
@@ -84,7 +84,7 @@ public class ServiceAddress
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("[zth].[address]", addressId);
+            var id = connection.Delete("address", addressId);
             MessageBox.Show("Address id " + id + " removed.", "Address Removed");
             return true;
         }
@@ -102,7 +102,7 @@ public class ServiceAddress
             try
             {
                 {
-                    var updatedCx = connection.Update("[zth].[address]", address);
+                    var updatedCx = connection.Update("address", address);
                     MessageBox.Show("Address id " + updatedCx + " updated.", "Address Updated");
                 }
                 return true;

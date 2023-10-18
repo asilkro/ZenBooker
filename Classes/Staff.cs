@@ -45,7 +45,7 @@ public class Staff
         {
             try
             {
-                var id = connection.Insert("[zth].[staff]", staff);
+                var id = connection.Insert("staff", staff);
                 MessageBox.Show("Staff id " + id + " created.", "Staff Created");
                 return true;
             }
@@ -63,8 +63,8 @@ public class Staff
         {
             try
             {
-                var id = connection.Delete("[zth].[staff]", staffId);
-                MessageBox.Show("Staff id " + id + " removed.", "Customer Removed");
+                var id = connection.Delete("staff", staffId);
+                MessageBox.Show("Staff id " + id + " removed.", "Staff Removed");
                 return true;
             }
             catch (Exception e)
@@ -82,8 +82,8 @@ public class Staff
             try
             {
                 {
-                    var updatedStaff = connection.Update("[zth].[staff]", staff);
-                    MessageBox.Show("Staff id " + updatedStaff + " updated.", "Customer Updated");
+                    var updatedStaff = connection.Update("staff", staff);
+                    MessageBox.Show("Staff id " + updatedStaff + " updated.", "Staff Updated");
                 }
                 return true;
             }

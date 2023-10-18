@@ -29,8 +29,8 @@ public partial class FormAppointment : Form
     {
         apptIdTB.Text = appt.Appointment_Id.ToString();
         dateCalendar.SetDate(appt.Start.Date);
-        startDtPicker.Value = appt.Start;
-        endDtPicker.Value = appt.End;
+        startDtPicker.Value = appt.Start.ToLocalTime();
+        endDtPicker.Value = appt.End.ToLocalTime();
     }
 
     private void FillServiceFields(Appointment appt)

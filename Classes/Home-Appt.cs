@@ -43,7 +43,7 @@ public class HomeAppointment : Appointment
             try
             {
                 {
-                    var id = connection.Insert("[zth].[appointment]", homeAppointment);
+                    var id = connection.Insert("appointment", homeAppointment);
                     MessageBox.Show("Appointment with Id: " + id + " created.", "Appointment Created");
                 }
 
