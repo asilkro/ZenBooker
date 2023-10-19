@@ -31,11 +31,11 @@ public partial class FormOfficeAppt : Form
     {
         if (address != null)
         {
-            officeNameTB.Text = address.OfficeName;
+            officeNameTB.Text = address.Office_Name;
             officeCityTB.Text = address.City;
             officeCountryTB.Text = address.Country;
             officeStateTB.Text = address.State;
-            officeIdTB.Text = address.OfficeId.ToString();
+            officeIdTB.Text = address.Office_Id.ToString();
         }
     }
 
@@ -75,7 +75,7 @@ public partial class FormOfficeAppt : Form
         {
             if (int.TryParse(searchTerm, out int i))
             {
-                var officeAddress = connection.Query<Office>("[zth].[office]", e => e.OfficeId == i);
+                var officeAddress = connection.Query<Office>("[zth].[office]", e => e.Office_Id == i);
                 FillOfficeFromSearch(officeAddress.GetEnumerator().Current);
             }
         }

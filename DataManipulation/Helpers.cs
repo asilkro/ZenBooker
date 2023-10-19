@@ -83,7 +83,7 @@ public class Helpers
     {
         int.TryParse(apptId, out var i);
         using var connection = new Builder().Connect();
-        var query = connection.Query<Appointment>("[zth].[appointment]", e => e.Appointment_Id == i)
+        var query = connection.Query<Appointment>("appointment", e => e.Appointment_Id == i)
             .FirstOrDefault();
         if (query != null)
         {

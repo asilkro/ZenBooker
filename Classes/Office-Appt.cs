@@ -43,7 +43,7 @@ public class OfficeAppointment : Appointment
             try
             {
                 {
-                    var id = connection.Insert("[zth].[appointment]", officeAppointment);
+                    var id = connection.Insert("appointment", officeAppointment);
                     MessageBox.Show("Appointment with Id: " + id + " created.", "Appointment Created");
                 }
 
@@ -63,7 +63,7 @@ public class OfficeAppointment : Appointment
         {
             try
             {
-                var removedAppt = connection.Delete("[zth].[appointment]", officeApptId);
+                var removedAppt = connection.Delete("appointment", officeApptId);
                 MessageBox.Show(+removedAppt + " removed.", "Appointment Removed");
                 return true;
             }
@@ -82,8 +82,8 @@ public class OfficeAppointment : Appointment
             try
             {
                 {
-                    var updatedAppt = connection.Update("[zth].[appointment]", officeAppointment);
-                    MessageBox.Show(updatedAppt + " removed.", "Appointment Removed");
+                    var updatedAppt = connection.Update("appointment", officeAppointment);
+                    MessageBox.Show(updatedAppt + " updated.", "Appointment Updated");
                 }
                 return true;
             }

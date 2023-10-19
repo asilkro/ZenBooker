@@ -4,12 +4,11 @@ using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes;
 
-public class ServiceAddress
+public class Address
 {
     #region Properties
 
     public int AddressId { get; set; }
-    public int? RelatedCx { get; set; }
     public string Address1 { get; set; }
     public string? Address2 { get; set; }
     public string City { get; set; }
@@ -20,15 +19,14 @@ public class ServiceAddress
 
     #region Constructors
 
-    public ServiceAddress()
+    public Address()
     {
     }
 
-    public ServiceAddress(int addressId, int? relatedCx, string address1, string? address2,
+    public Address(int addressId, string address1, string? address2,
         string city, string? state, string country)
     {
         AddressId = addressId;
-        RelatedCx = relatedCx;
         Address1 = address1;
         Address2 = address2;
         City = city;
@@ -40,30 +38,7 @@ public class ServiceAddress
 
     #region SQL
 
-    public static void AssociateAddress(ServiceAddress address, int customerId)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            if (address.RelatedCx == customerId)
-            {
-                MessageBox.Show("Customer already has a service address attached for home service.", "Not required");
-            }
-
-            ;
-            if (address.RelatedCx == null)
-            {
-                address.RelatedCx = customerId;
-                UpdateAddress(address);
-            }
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-        }
-    }
-
-    public static bool InsertAddress(ServiceAddress address)
+    public static bool InsertAddress(Address address)
     {
         using var connection = new Builder().Connect();
         try
@@ -95,7 +70,7 @@ public class ServiceAddress
         }
     }
 
-    public static bool UpdateAddress(ServiceAddress address)
+    public static bool UpdateAddress(Address address)
     {
         using (var connection = new Builder().Connect())
         {

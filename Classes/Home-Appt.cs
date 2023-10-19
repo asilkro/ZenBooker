@@ -20,7 +20,7 @@ public class HomeAppointment : Appointment
     }
 
     public HomeAppointment(int appointmentId, int customerId, int staffId, int serviceId, DateTime start, DateTime end,
-        bool inHomeService, int serviceAddressId)
+        bool inHomeService, int service_Address_Id)
     {
         Appointment_Id = appointmentId;
         Customer_Id = customerId;
@@ -29,7 +29,7 @@ public class HomeAppointment : Appointment
         Start = start;
         End = end;
         InHomeService = inHomeService;
-        Service_Address_Id = serviceAddressId;
+        Service_Address_Id = service_Address_Id;
     }
 
     #endregion

@@ -36,7 +36,7 @@ public partial class FormHomeAppt : Form
 
     #region Additional Methods
 
-    private void FillCxFromSearch(ServiceAddress? address)
+    private void FillCxFromSearch(Address? address)
     {
         address1TB.Text = address?.Address1;
         address2TB.Text = address?.Address2;
@@ -56,7 +56,7 @@ public partial class FormHomeAppt : Form
         {
             if (int.TryParse(searchTerm, out int i))
             {
-                var serviceAddress = connection.Query<ServiceAddress>("[zth].[address]", e => e.RelatedCx == i);
+                var serviceAddress = connection.Query<Address>("address", e => e.AddressId == i);
                 FillCxFromSearch(serviceAddress.GetEnumerator().Current);
             }
         }
@@ -73,7 +73,7 @@ public partial class FormHomeAppt : Form
         try
         {
             var serviceAddress =
-                connection.Query<ServiceAddress>("[zth].[address]", e => e.AddressId == int.Parse(searchTerm));
+                connection.Query<Address>("[zth].[address]", e => e.AddressId == int.Parse(searchTerm));
             sd = serviceAddress.GetEnumerator().Current.AddressId;
             return sd;
         }

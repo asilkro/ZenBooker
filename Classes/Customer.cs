@@ -10,12 +10,11 @@ public class Customer
 {
     #region Properties / Fields
 
-    // All these are from the Database ERD
-    public int Customer_Id { get; set; } // PK, auto_increment, not_null
-    public string First { get; set; } // VARCHAR(32), PK, not_null
-    public string Last { get; set; } // VARCHAR(32) PK, not_null
-    public string Phone { get; set; } // VARCHAR(12), not_null
-    public string Email { get; set; } // VARCHAR(48) PK, not_null
+    public int Customer_Id { get; set; } // PK, auto_increment
+    public string First { get; set; } // VARCHAR(32), nn
+    public string Last { get; set; } // VARCHAR(32), nn
+    public string Phone { get; set; } // VARCHAR(12)
+    public string Email { get; set; } // VARCHAR(48)
     public int Preferred_Office { get; set; } // int, FK
 
     #endregion
@@ -61,7 +60,7 @@ public class Customer
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("[zth].[customer]", customerId);
+            var id = connection.Delete("customer", customerId);
             MessageBox.Show("Customer id " + id + " removed.", "Customer Removed");
             return true;
         }

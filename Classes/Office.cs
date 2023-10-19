@@ -8,11 +8,9 @@ public class Office
 {
     #region Properties / Fields
 
-    public int OfficeId { get; set; } // // PK, auto_increment, not_null
-    public string OfficeName { get; set; } // VARCHAR(32)
-    public string City { get; set; } // VARCHAR(32)
-    public string State { get; set; } // VARCHAR(32)
-    public string Country { get; set; } // VARCHAR(32)
+    public int Office_Id { get; set; } // // PK, auto_increment, not_null
+    public int Address_Id { get; set; }
+    public string Office_Name { get; set; } // VARCHAR(32)
 
     #endregion
 
@@ -24,8 +22,8 @@ public class Office
 
     public Office(int officeId, string officeName, string city, string state, string country)
     {
-        OfficeId = officeId;
-        OfficeName = officeName;
+        Office_Id = officeId;
+        Office_Name = officeName;
         City = city;
         State = state;
         Country = country;
@@ -41,7 +39,7 @@ public class Office
         {
             try
             {
-                var id = connection.Insert("[zth].[office]", office);
+                var id = connection.Insert("office", office);
                 MessageBox.Show("Office id " + id + " created.", "Office Created");
                 return true;
             }
@@ -59,7 +57,7 @@ public class Office
         {
             try
             {
-                var id = connection.Delete("[zth].[office]", officeId);
+                var id = connection.Delete("office", officeId);
                 MessageBox.Show("Office id " + id + " removed.", "Office Removed");
                 return true;
             }
@@ -78,7 +76,7 @@ public class Office
             try
             {
                 {
-                    var updatedOffice = connection.Update("[zth].[office]", office);
+                    var updatedOffice = connection.Update("office", office);
                     MessageBox.Show("Office id " + updatedOffice + " updated.", "Office Updated");
                 }
                 return true;

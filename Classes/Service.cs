@@ -39,8 +39,8 @@ public class Service
         {
             try
             {
-                var id = connection.Insert("[zth].[services]", service);
-                MessageBox.Show("Service " + id + " created.", "Service Created");
+                var id = connection.Insert("service", service);
+                MessageBox.Show("Service id: " + id + " created.", "Service Created");
                 return true;
             }
             catch (Exception e)
@@ -57,8 +57,8 @@ public class Service
         {
             try
             {
-                var id = connection.Delete("[zth].[services]", serviceId);
-                MessageBox.Show("Service id " + id + " removed.", "Service Removed");
+                var id = connection.Delete("service", serviceId);
+                MessageBox.Show("Service id: " + id + " removed.", "Service Removed");
                 return true;
             }
             catch (Exception e)
@@ -76,8 +76,8 @@ public class Service
             try
             {
                 {
-                    var updatedCx = connection.Update("[zth].[services]", service);
-                    MessageBox.Show("Service id " + updatedCx + " updated.", "Customer Updated");
+                    var updatedCx = connection.Update("service", service);
+                    MessageBox.Show("Service id: " + updatedCx + " updated.", "Service Updated");
                 }
                 return true;
             }

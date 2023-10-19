@@ -128,13 +128,13 @@ public partial class FormAppointment : Form
         using var connection = new Builder().Connect();
         if (int.TryParse(searchTerm, out var i))
         {
-            var iOffice = connection.Query<Office>("[zth].[office]", e => e.OfficeId == int.Parse(searchTerm))
+            var iOffice = connection.Query<Office>("[zth].[office]", e => e.Office_Id == int.Parse(searchTerm))
                 .FirstOrDefault();
             return iOffice;
         }
 
         var cOffice = connection.Query<Office>("[zth].[office]", e => e.City.Contains(searchTerm)).FirstOrDefault();
-        var nOffice = connection.Query<Office>("[zth].[office]", e => e.OfficeName.Contains(searchTerm))
+        var nOffice = connection.Query<Office>("[zth].[office]", e => e.Office_Name.Contains(searchTerm))
             .FirstOrDefault();
         if (cOffice != nOffice)
         {
@@ -208,8 +208,8 @@ public partial class FormAppointment : Form
                 MessageBox.Show("Unable to match to office. Check your entry and try again.", "Unable to match office");
                 break;
             case false:
-                officeIdTB.Text = office.OfficeId.ToString();
-                officeNameTB.Text = office.OfficeName;
+                officeIdTB.Text = office.Office_Id.ToString();
+                officeNameTB.Text = office.Office_Name;
                 officeCityTB.Text = office.City;
                 officeStateTB.Text = office.State;
                 officeCountryTB.Text = office.Country;
