@@ -20,13 +20,11 @@ public class Office
     {
     }
 
-    public Office(int officeId, string officeName, string city, string state, string country)
+    public Office(int officeId, int addressId,string officeName)
     {
         Office_Id = officeId;
+        Address_Id = addressId;
         Office_Name = officeName;
-        City = city;
-        State = state;
-        Country = country;
     }
 
     #endregion

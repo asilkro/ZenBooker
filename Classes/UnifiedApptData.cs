@@ -41,14 +41,15 @@ namespace ZenoBook.Classes
                 try
                 {
                     {
-                        var id = connection.Insert("appointment", homeAppointment);
-                        MessageBox.Show("Appointment with Id: " + id + " created.", "Appointment Created");
+                        var appt = connection.Query<UnifiedApptData>(e => e.Appointment_Id == apptId).GetEnumerator().Current;
+                        return appt;
                     }
 
                 }
                 catch (Exception e)
                 {
                     LogManager.GetLogger("LoggingRepo").Warn(e, e);
+                    return null;
                 }
             }
         }
