@@ -19,7 +19,7 @@ public partial class FormOfficeAppt : Form
         var cx = ReturnCustomer(appt.Customer_Id.ToString());
         if (cx != null)
         {
-            officeAppt.OfficeId = (cx.Preferred_Office);
+            officeAppt.Office_Id = (cx.Preferred_Office);
         }
 
         submitBtn.Enabled = false;
@@ -50,7 +50,7 @@ public partial class FormOfficeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        officeAppt.OfficeId = int.Parse(officeIdTB.Text);
+        officeAppt.Office_Id = int.Parse(officeIdTB.Text);
         officeAppt.InHomeService = false;
     }
 

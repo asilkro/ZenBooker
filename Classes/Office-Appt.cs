@@ -8,7 +8,7 @@ public class OfficeAppointment : Appointment
 {
     #region Properties / Fields
 
-    public int OfficeId { get; set; }
+    public int Office_Id { get; set; }
     public bool InHomeService { get; set; } // TODO: update SQL schema to support these
 
     #endregion
@@ -25,7 +25,7 @@ public class OfficeAppointment : Appointment
         Appointment_Id = appointmentId;
         Customer_Id = customerId;
         Staff_Id = staffId;
-        OfficeId = officeId;
+        Office_Id = officeId;
         Service_Id = serviceId;
         Start = start;
         End = end;

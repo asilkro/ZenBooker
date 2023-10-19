@@ -107,9 +107,9 @@ public class Helpers
         {
             e.Appointment_Id,
             e.InHomeService,
-            e.ServiceAddressId,
+            ServiceAddressId = e.Service_Address_Id,
         });
-        var query = connection.Query<HomeAppointment>(e => e.Appointment_Id == ApptId && e.ServiceAddressId != 0,
+        var query = connection.Query<HomeAppointment>(e => e.Appointment_Id == ApptId && e.Service_Address_Id != 0,
             fields: fields).FirstOrDefault();
 
         //var query = connection.Query<HomeAppointment>("appointment", e => e.Appointment_Id == ApptId && e.InHomeService == true)

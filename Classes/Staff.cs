@@ -12,7 +12,7 @@ public class Staff
     public string Name { get; set; } // PK, VARCHAR(32), not_null
     public int Phone { get; set; } // PK, not_null
     public string Email { get; set; } // VARCHAR(32)
-    public int OfficeId { get; set; } // FK, Office.OfficeId
+    public int OfficeId { get; set; } // FK, Office.Office_Id
 
     public int LoginId { get; set; } // FK, Users.UserId
     // TODO: Do I want to use this?

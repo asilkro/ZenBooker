@@ -8,8 +8,8 @@ public class HomeAppointment : Appointment
 {
     #region Properties / Fields
 
-    public bool InHomeService { get; set; } // TODO: update SQL schema to support these
-    public int ServiceAddressId { get; set; }
+    public bool InHomeService { get; set; }
+    public int Service_Address_Id { get; set; }
 
     #endregion
 
@@ -29,7 +29,7 @@ public class HomeAppointment : Appointment
         Start = start;
         End = end;
         InHomeService = inHomeService;
-        ServiceAddressId = serviceAddressId;
+        Service_Address_Id = serviceAddressId;
     }
 
     #endregion
