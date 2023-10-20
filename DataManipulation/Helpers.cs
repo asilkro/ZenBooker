@@ -92,7 +92,7 @@ public class Helpers
         }
     }
 
-    public static void WakeUpSQL(MySqlConnector.MySqlConnection conn)
+    public static void WakeUpSQL(MySqlConnection conn)
     {
         if (conn.State != ConnectionState.Open)
         {
@@ -125,6 +125,40 @@ public class Helpers
                 break;
         }
         return apptKind;
+    }
+
+    public static string WhatIsThisThing(string valueToCheck)
+    {
+        var space = ' ';
+        var atSign = '@';
+        string result = "default";
+
+        if (DateTime.TryParse(valueToCheck, out _))
+        {
+            result = "date";
+            return result; // If it parses as a date, treat as date
+        }
+
+        if (Int64.TryParse(valueToCheck, out _))
+        {
+            result = "integer";
+            return result; // If it parses as a number, treat as ID or a phone number
+        }
+
+        if (valueToCheck.Contains(atSign))
+        {
+            result = "email";
+            return result; // If it has an @ sign, treat as an email address
+        }
+
+        if (valueToCheck.Contains(space))
+        {
+            result = "name";
+            return result; // If it has a whitespace, treat as a name
+        }
+
+
+        return result;
     }
 
     public static string?

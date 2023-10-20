@@ -18,11 +18,18 @@ namespace ZenoBook.Classes
         #endregion
 
         #region Constructors
-        public UnifiedApptData(int appointment_Id, int customer_Id, int service_Id, DateTime start, DateTime end,
+
+        public UnifiedApptData()
+        {
+
+        }
+
+        public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int service_Id, DateTime start, DateTime end,
             int office_Id, int service_Address_Id, bool inHomeService)
         {
             Appointment_Id = appointment_Id;
             Customer_Id = customer_Id;
+            Staff_Id = staff_id;
             Service_Id = service_Id;
             Start = start;
             End = end;
@@ -34,7 +41,7 @@ namespace ZenoBook.Classes
 
         #region SQL
 
-        public static UnifiedApptData GetAppointment(int apptId)
+        public static UnifiedApptData? GetAppointment(int apptId)
         {
             using (var connection = new Builder().Connect())
             {
@@ -50,6 +57,27 @@ namespace ZenoBook.Classes
                 {
                     LogManager.GetLogger("LoggingRepo").Warn(e, e);
                     return null;
+                }
+            }
+        }
+
+        public static bool RemoveAppointment(int apptId)
+        {
+            using (var connection = new Builder().Connect())
+            {
+                try
+                {
+                    { 
+                        connection.Delete("appointment", apptId);
+                        MessageBox.Show("Appt id " + apptId + " removed.", "Appointment Removed");
+                        return true;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger("LoggingRepo").Warn(e, e);
+                    return false;
                 }
             }
         }
