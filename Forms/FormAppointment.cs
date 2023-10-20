@@ -9,6 +9,7 @@ public partial class FormAppointment : Form
     public FormAppointment()
     {
         InitializeComponent();
+        apptIdTB.Text = Helpers.AutoIncrementId("appointment");
     }
 
     public FormAppointment(Appointment appt)

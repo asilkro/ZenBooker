@@ -193,13 +193,21 @@ public class Helpers
         using var connection = new Builder().Connect();
         if (int.TryParse(searchTerm, out var i))
         {
-            var iService = connection.Query<Service>("service", e => e.Service_Id == int.Parse(searchTerm))
-                .GetEnumerator().Current;
+            var iService = connection.Query<Service>("service", e => e.Service_Id == i).FirstOrDefault();
+            if (iService == null)
+            {
+                return null;
+            }
             return iService;
         }
 
-        var service = connection.Query<Service>("service", e => e.Service_Name.Contains(searchTerm))
-            .GetEnumerator().Current;
+        var service = connection.Query<Service>("service", e => e.Service_Name == searchTerm)
+            .FirstOrDefault();
+        if (service == null)
+        {
+            return null;
+
+        }
         return service;
     }
 
