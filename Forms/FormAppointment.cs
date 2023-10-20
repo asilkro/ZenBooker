@@ -31,7 +31,7 @@ public partial class FormAppointment : Form
         FillCxFields(appt);
         FillStaffFields(appt);
         FillServiceFields(appt);
-        ReturnOffice(officeSearchTB.Text);
+        Helpers.ReturnOffice(officeSearchTB.Text);
     }
 
     private void FillDt(Appointment appt)
@@ -44,7 +44,7 @@ public partial class FormAppointment : Form
 
     private void FillServiceFields(Appointment appt)
     {
-        var service = ReturnService(appt.Service_Id.ToString());
+        var service = Helpers.ReturnService(appt.Service_Id.ToString());
         serviceIdTB.Text = appt.Service_Id.ToString();
         serviceNameTb.Text = service?.ServiceName;
         serviceDescTb.Text = service?.ServiceDesc;
@@ -52,14 +52,14 @@ public partial class FormAppointment : Form
 
     private void FillStaffFields(Appointment appt)
     {
-        var staff = ReturnStaff(appt.Staff_Id.ToString());
+        var staff = Helpers.ReturnStaff(appt.Staff_Id.ToString());
         staffIdTB.Text = appt.Staff_Id.ToString();
         staffNameTb.Text = staff?.Name;
     }
 
     private void FillCxFields(Appointment appt)
     {
-        var cx = ReturnCustomer(appt.Customer_Id.ToString());
+        var cx = Helpers.ReturnCustomer(appt.Customer_Id.ToString());
         cxIdTB.Text = appt.Customer_Id.ToString();
         string v = cx?.First + cx?.Last;
         cxNameTb.Text = v;
@@ -68,97 +68,13 @@ public partial class FormAppointment : Form
         officeSearchTB.Text = cx?.Preferred_Office.ToString();
     }
 
-    #region SQL
-
-    public Customer? ReturnCustomer(string searchTerm)
-    {
-        using var connection = new Builder().Connect();
-        var space = ' ';
-        var atSign = '@';
-
-        if (searchTerm.Contains(space))
-        {
-            var searchTerms = searchTerm.Split(' ', 2);
-            var first = searchTerms[0];
-            var last = searchTerms[1];
-            var sCustomer = connection.Query<Customer>("customer", e => e.First == first && e.Last == last)
-                .FirstOrDefault();
-            return sCustomer;
-        }
-
-        if (searchTerm.Contains(atSign))
-        {
-            var aCustomer = connection.Query<Customer>("customer", e => e.Email == searchTerm)
-                .FirstOrDefault();
-            return aCustomer;
-        }
-
-        if (int.TryParse(searchTerm, out var i))
-        {
-            var iCustomer = connection.Query<Customer>("customer", e => e.Customer_Id == i)
-                .FirstOrDefault();
-            return iCustomer;
-        }
-
-        return null;
-    }
-
-    public Staff? ReturnStaff(string searchTerm)
-    {
-        using var connection = new Builder().Connect();
-        var atSign = '@';
-        if (searchTerm.Contains(atSign))
-        {
-            var eStaff = connection.Query<Staff>("staff", e => e.Email == searchTerm).FirstOrDefault();
-            return eStaff;
-        }
-
-        var staff = connection.Query<Staff>("staff", e => e.Name == searchTerm).FirstOrDefault();
-        return staff;
-    }
-
-    public Service? ReturnService(string searchTerm)
-    {
-        using var connection = new Builder().Connect();
-        if (int.TryParse(searchTerm, out var i))
-        {
-            var iService = connection.Query<Service>("service", e => e.Service_Id == int.Parse(searchTerm))
-                .FirstOrDefault();
-            return iService;
-        }
-
-        var service = connection.Query<Service>("service", e => e.ServiceName.Contains(searchTerm))
-            .FirstOrDefault();
-        return service;
-    }
-
-    public Office? ReturnOffice(string searchTerm)
-    {
-        using var connection = new Builder().Connect();
-        if (int.TryParse(searchTerm, out var i))
-        {
-            var iOffice = connection.Query<Office>("office", e => e.Office_Id == int.Parse(searchTerm))
-                .FirstOrDefault();
-            return iOffice;
-        }
-
-        var nOffice = connection.Query<Office>("office", e => e.Office_Name.Contains(searchTerm))
-            .FirstOrDefault();
-        if (nOffice != null)
-        {
-            return nOffice;
-        }
-        return null;
-    }
-
-    #endregion
 
 
     #region Event Handlers
 
     private void cxSearchButton_Click(object sender, EventArgs e)
     {
-        var cx = ReturnCustomer(cxSearchTB.Text);
+        var cx = Helpers.ReturnCustomer(cxSearchTB.Text);
         switch (cx == null)
         {
             case true:
@@ -175,7 +91,7 @@ public partial class FormAppointment : Form
 
     private void staffSearchButton_Click(object sender, EventArgs e)
     {
-        var staff = ReturnStaff(staffSearchTB.Text);
+        var staff = Helpers.ReturnStaff(staffSearchTB.Text);
         switch (staff == null)
         {
             case true:
@@ -190,7 +106,7 @@ public partial class FormAppointment : Form
 
     private void serviceSearchButton_Click(object sender, EventArgs e)
     {
-        var service = ReturnService(serviceSearchTB.Text);
+        var service = Helpers.ReturnService(serviceSearchTB.Text);
         switch (service == null)
         {
             case true:
@@ -207,7 +123,7 @@ public partial class FormAppointment : Form
 
     private void officeSearchButton_Click(object sender, EventArgs e)
     {
-        var office = ReturnOffice(officeSearchTB.Text);
+        var office = Helpers.ReturnOffice(officeSearchTB.Text);
         switch (office == null)
         {
             case true:

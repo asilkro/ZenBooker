@@ -14,32 +14,6 @@ namespace ZenoBook.DataManipulation;
 
 public class Helpers
 {
-    public bool LoginIsValid(string username, string password)
-    {
-        var result = false;
-        using (var connection = new Builder().Connect())
-        {
-            WakeUpSQL(connection);
-            MySqlCommand sqlcmd = connection.CreateCommand();
-            sqlcmd.CommandText = "call zth.AuthenticateUser";
-            sqlcmd.Parameters.AddWithValue("@paramLogin", username);
-            sqlcmd.Parameters.AddWithValue("@paramPassword", password);
-            sqlcmd.Parameters.AddWithValue("@isAuthenticated", null).Direction = ParameterDirection.ReturnValue;
-            sqlcmd.CommandType = CommandType.StoredProcedure;
-
-
-            var outcome = (int) sqlcmd.ExecuteScalar();
-            if (outcome == 1)
-            {
-                result = true;
-            }
-
-            connection.Close();
-        }
-
-        return result;
-    }
-
     public bool ValidateLogin(string username, string password)
     {
         var result = false;
@@ -61,34 +35,7 @@ public class Helpers
                     return result;
                 }
             }
-
             return result;
-        }
-    }
-
-    public static void searchDataDGV(string valueToSearch, string tableToSearch, DataGridView dataGridViewToPop)
-    {
-        using var connection = new Builder().Connect();
-        var query = connection.CreateCommand();
-        query.CommandText = "SELECT * FROM @TABLE like '%\"+@SEARCHVALUE+\"%'";
-        query.Parameters.AddWithValue("@TABLE", tableToSearch);
-        query.Parameters.AddWithValue("@SEARCHVALUE", valueToSearch);
-        var da = new MySqlDataAdapter(query);
-        var dt = new DataTable("SearchResults");
-        da.Fill(dt);
-        dataGridViewToPop.DataSource = dt;
-    }
-
-    public void ExistingAppointment(string apptId)
-    {
-        int.TryParse(apptId, out var i);
-        using var connection = new Builder().Connect();
-        var query = connection.Query<Appointment>("appointment", e => e.Appointment_Id == i)
-            .FirstOrDefault();
-        if (query != null)
-        {
-            var formToReturn = new FormAppointment(query);
-            formToReturn.Activate();
         }
     }
 
@@ -98,33 +45,6 @@ public class Helpers
         {
             conn.Open();
         }
-    }
-
-    public static string? WhatKindOfAppt(int ApptId)
-    {
-        using var connection = new Builder().Connect();
-        var fields = Field.Parse<HomeAppointment>(e => new
-        {
-            e.Appointment_Id,
-            e.InHomeService,
-            ServiceAddressId = e.Service_Address_Id,
-        });
-        var query = connection.Query<HomeAppointment>(e => e.Appointment_Id == ApptId && e.Service_Address_Id != 0,
-            fields: fields).FirstOrDefault();
-
-        //var query = connection.Query<HomeAppointment>("appointment", e => e.Appointment_Id == ApptId && e.InHomeService == true)
-        //    .FirstOrDefault();
-        string apptKind = null;
-        switch (query?.InHomeService)
-        {
-            case true:
-                apptKind = "HomeAppointment";
-                break;
-            case false:
-                apptKind = "OfficeAppointment";
-                break;
-        }
-        return apptKind;
     }
 
     public static string WhatIsThisThing(string valueToCheck)
@@ -139,7 +59,7 @@ public class Helpers
             return result; // If it parses as a date, treat as date
         }
 
-        if (Int64.TryParse(valueToCheck, out _))
+        if (long.TryParse(valueToCheck, out _))
         {
             result = "integer";
             return result; // If it parses as a number, treat as ID or a phone number
@@ -160,34 +80,7 @@ public class Helpers
 
         return result;
     }
-
-    public static string?
-        AutoIncrementId(string tableName) //TODO: TEST THE AUTOINCREMENT - if it's not playing ball, yeet it
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            connection.Open();
-            var setupCommand = connection.CreateCommand();
-            setupCommand.CommandText = "SET @@SESSION.information_schema_stats_expiry = 0;";
-            setupCommand.ExecuteNonQuery(); //Makes sure autoincrement doesn't reset during this session
-
-            var autoIncrement = connection.CreateCommand();
-            autoIncrement.CommandText = "SELECT AUTO_INCREMENT FROM information_schema.tables " +
-                                        "WHERE table_name = @TABLE AND table_schema = DATABASE();";
-            autoIncrement.Parameters.AddWithValue("@TABLE", tableName);
-
-            var intAiNumber = autoIncrement.ExecuteScalar()?.ToString();
-            MessageBox.Show("Debug: Auto increment number is: " + intAiNumber);
-            return intAiNumber;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return null;
-        }
-    }
-
+    
     public static string HashedString(string input)
     {
         using SHA256 sha256Hash = SHA256.Create();
@@ -203,4 +96,114 @@ public class Helpers
 
         return builder.ToString();
     }
+
+    #region SQL
+
+    public static string?
+        AutoIncrementId(string tableName)
+    { 
+        using var connection = new Builder().Connect();
+        try
+        {
+            connection.Open();
+            var setupCommand = connection.CreateCommand();
+            setupCommand.CommandText = "SET @@SESSION.information_schema_stats_expiry = 0;";
+            setupCommand.ExecuteNonQuery(); //Makes sure autoincrement doesn't reset during this session
+
+            var autoIncrement = connection.CreateCommand();
+            autoIncrement.CommandText = "SELECT AUTO_INCREMENT FROM information_schema.tables " +
+                                        "WHERE table_name = @TABLE AND table_schema = DATABASE();";
+            autoIncrement.Parameters.AddWithValue("@TABLE", tableName);
+
+            var intAiNumber = autoIncrement.ExecuteScalar()?.ToString();
+            return intAiNumber;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return null;
+        }
+    }
+
+    public static Customer? ReturnCustomer(string searchTerm)
+    {
+        using var connection = new Builder().Connect();
+        var space = ' ';
+        var atSign = '@';
+
+        if (searchTerm.Contains(space))
+        {
+            var searchTerms = searchTerm.Split(' ', 2);
+            var first = searchTerms[0];
+            var last = searchTerms[1];
+            var sCustomer = connection.Query<Customer>("customer", e => e.First == first && e.Last == last)
+                .FirstOrDefault();
+            return sCustomer;
+        }
+
+        if (searchTerm.Contains(atSign))
+        {
+            var aCustomer = connection.Query<Customer>("customer", e => e.Email == searchTerm)
+                .FirstOrDefault();
+            return aCustomer;
+        }
+
+        if (int.TryParse(searchTerm, out var i))
+        {
+            var iCustomer = connection.Query<Customer>("customer", e => e.Customer_Id == i)
+                .FirstOrDefault();
+            return iCustomer;
+        }
+
+        return null;
+    }
+
+    public static Staff? ReturnStaff(string searchTerm)
+    {
+        using var connection = new Builder().Connect();
+        var atSign = '@';
+        if (searchTerm.Contains(atSign))
+        {
+            var eStaff = connection.Query<Staff>("staff", e => e.Email == searchTerm).FirstOrDefault();
+            return eStaff;
+        }
+
+        var staff = connection.Query<Staff>("staff", e => e.Name == searchTerm).FirstOrDefault();
+        return staff;
+    }
+
+    public static Service? ReturnService(string searchTerm)
+    {
+        using var connection = new Builder().Connect();
+        if (int.TryParse(searchTerm, out var i))
+        {
+            var iService = connection.Query<Service>("service", e => e.Service_Id == int.Parse(searchTerm))
+                .FirstOrDefault();
+            return iService;
+        }
+
+        var service = connection.Query<Service>("service", e => e.ServiceName.Contains(searchTerm))
+            .FirstOrDefault();
+        return service;
+    }
+
+    public static Office? ReturnOffice(string searchTerm)
+    {
+        using var connection = new Builder().Connect();
+        if (int.TryParse(searchTerm, out var i))
+        {
+            var iOffice = connection.Query<Office>("office", e => e.Office_Id == int.Parse(searchTerm))
+                .FirstOrDefault();
+            return iOffice;
+        }
+
+        var nOffice = connection.Query<Office>("office", e => e.Office_Name.Contains(searchTerm))
+            .FirstOrDefault();
+        if (nOffice != null)
+        {
+            return nOffice;
+        }
+        return null;
+    }
+    #endregion
 }
