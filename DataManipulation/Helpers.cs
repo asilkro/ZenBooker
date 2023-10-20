@@ -138,23 +138,31 @@ public class Helpers
             var last = searchTerms[1];
             var sCustomer = connection.Query<Customer>("customer", e => e.First == first && e.Last == last)
                 .FirstOrDefault();
-            return sCustomer;
+            if (sCustomer != null)
+            {
+                return sCustomer;
+            }
         }
 
         if (searchTerm.Contains(atSign))
         {
             var aCustomer = connection.Query<Customer>("customer", e => e.Email == searchTerm)
                 .FirstOrDefault();
-            return aCustomer;
+            if (aCustomer != null)
+            {
+                return aCustomer;
+            }
         }
 
         if (int.TryParse(searchTerm, out var i))
         {
             var iCustomer = connection.Query<Customer>("customer", e => e.Customer_Id == i)
                 .FirstOrDefault();
-            return iCustomer;
+            if (iCustomer != null)
+            {
+                return iCustomer;
+            }
         }
-
         return null;
     }
 
@@ -165,11 +173,19 @@ public class Helpers
         if (searchTerm.Contains(atSign))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.Email == searchTerm).FirstOrDefault();
-            return eStaff;
+            if (eStaff != null)
+            { 
+                return eStaff;
+            }
         }
 
         var staff = connection.Query<Staff>("staff", e => e.Name == searchTerm).FirstOrDefault();
-        return staff;
+        if (staff != null)
+        {
+            return staff;
+        }
+
+        return null;
     }
 
     public static Service? ReturnService(string searchTerm)
@@ -178,12 +194,12 @@ public class Helpers
         if (int.TryParse(searchTerm, out var i))
         {
             var iService = connection.Query<Service>("service", e => e.Service_Id == int.Parse(searchTerm))
-                .FirstOrDefault();
+                .GetEnumerator().Current;
             return iService;
         }
 
         var service = connection.Query<Service>("service", e => e.ServiceName.Contains(searchTerm))
-            .FirstOrDefault();
+            .GetEnumerator().Current;
         return service;
     }
 
@@ -193,17 +209,17 @@ public class Helpers
         if (int.TryParse(searchTerm, out var i))
         {
             var iOffice = connection.Query<Office>("office", e => e.Office_Id == int.Parse(searchTerm))
-                .FirstOrDefault();
+                .GetEnumerator().Current;
             return iOffice;
         }
 
         var nOffice = connection.Query<Office>("office", e => e.Office_Name.Contains(searchTerm))
-            .FirstOrDefault();
-        if (nOffice != null)
+            .GetEnumerator().Current;
+        if (nOffice == null)
         {
-            return nOffice;
+            return null;
         }
-        return null;
+        return nOffice;
     }
     #endregion
 }

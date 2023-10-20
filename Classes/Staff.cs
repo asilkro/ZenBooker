@@ -8,14 +8,15 @@ public class Staff
 {
     #region Properties / Fields
 
-    public int StaffId { get; set; } // PK, auto_increment, not_null
+    public int Staff_Id { get; set; } // PK, auto_increment, not_null
+    public int User_Id { get; set; } // FK, Users.UserId
+    public int Office_Id { get; set; } // FK, Office.Office_Id
     public string Name { get; set; } // PK, VARCHAR(32), not_null
     public int Phone { get; set; } // PK, not_null
     public string Email { get; set; } // VARCHAR(32)
-    public int OfficeId { get; set; } // FK, Office.Office_Id
 
-    public int LoginId { get; set; } // FK, Users.UserId
-    // TODO: Do I want to use this?
+
+    
 
     #endregion
 
@@ -25,14 +26,14 @@ public class Staff
     {
     }
 
-    public Staff(int staffId, string name, int phone, string email, int officeId, int loginId)
+    public Staff(int staffId, string name, int phone, string email, int officeId, int userId)
     {
-        StaffId = staffId;
+        Staff_Id = staffId;
         Name = name;
         Phone = phone;
         Email = email;
-        OfficeId = officeId;
-        LoginId = loginId;
+        Office_Id = officeId;
+        User_Id = userId;
     }
 
     #endregion

@@ -98,7 +98,7 @@ public partial class FormAppointment : Form
                 MessageBox.Show("No matching staff found. Check your entry and try again.", "No Staff Found");
                 break;
             case false:
-                staffIdTB.Text = staff.StaffId.ToString();
+                staffIdTB.Text = staff.Staff_Id.ToString();
                 staffNameTb.Text = staff.Name;
                 break;
         }
