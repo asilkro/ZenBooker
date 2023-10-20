@@ -10,7 +10,7 @@ public class Service
 
     public int Service_Id { get; set; } // PK, auto_increment, not_null, FK Service_Id on Appt
     public string Service_Name { get; set; } // VARCHAR(32)
-    public string Service_Desc { get; set; } // VARCHAR (64?)
+    public string Service_Description { get; set; } // VARCHAR (64?)
 
     #endregion
 
@@ -20,11 +20,11 @@ public class Service
     {
     }
 
-    public Service(int service_Id, string service_Name, string service_Desc)
+    public Service(int service_Id, string service_Name, string service_Description)
     {
         Service_Id = service_Id;
         Service_Name = service_Name;
-        Service_Desc = service_Desc;
+        Service_Description = service_Description;
     }
 
     #endregion
