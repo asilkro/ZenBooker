@@ -85,7 +85,6 @@ public partial class Main : Form
                             appt.Staff_Id = (int)row["Staff_Id"];
                             appt.Service_Id = (int)row["Service_Id"];
                             appt.Start = Appointment.CheckDbNull(row["Start"]);
-                            
                             appt.End = Appointment.CheckDbNull(row["End"]);
                             appointments.Add(appt);
                         }
@@ -241,45 +240,48 @@ public partial class Main : Form
             var selected = (int) apptsDataGridView["appointment_id", row].Value;
             using (var connection = new Builder().Connect())
             {
-                switch (Helpers.WhatKindOfAppt(selected))
+                var uAppt = UnifiedApptData.GetAppointment(selected);
+                switch (uAppt.Office_Id != 0 && !uAppt.InHomeService)
                 {
-                    case "HomeAppointment":
-                        HomeAppointment hAppt = connection.Query<HomeAppointment>(e => e.Appointment_Id == selected)
-                            .FirstOrDefault();
-                        var tempHAppt = new Appointment();
-                        tempHAppt.Customer_Id = hAppt.Customer_Id;
-                        tempHAppt.Appointment_Id = hAppt.Appointment_Id;
-                        tempHAppt.Service_Id = hAppt.Service_Id;
-                        tempHAppt.Staff_Id = hAppt.Staff_Id;
-                        tempHAppt.Start = hAppt.Start;
-                        tempHAppt.End = hAppt.End;
-                        var aForm = new FormAppointment(tempHAppt);
-                        aForm.ShowDialog();
-                        var hForm = new FormHomeAppt(hAppt,hAppt.Customer_Id,aForm);
-                        hForm.ShowDialog();
+                    case true:
+                        //This should be the case for a OfficeAppt
+                        OfficeAppointment officeAppt = new OfficeAppointment()
+                        {
+                            Appointment_Id = uAppt.Appointment_Id,
+                            Customer_Id = uAppt.Customer_Id,
+                            Staff_Id = uAppt.Staff_Id,
+                            Office_Id = uAppt.Office_Id,
+                            Service_Id = uAppt.Service_Id,
+                            Start = uAppt.Start,
+                            End = uAppt.End,
+                            InHomeService = false,
+                        };
+                        var apptOForm = new FormAppointment(officeAppt);
+                        var officeForm = new FormOfficeAppt(officeAppt);
+                        apptOForm.ShowDialog();
+                        officeForm.ShowDialog();
                         break;
-                    
-                    case "OfficeAppointment":
-                        OfficeAppointment oAppt = connection.Query<OfficeAppointment>(e => e.Appointment_Id == selected)
-                            .FirstOrDefault();
-                        var tempOAppt = new Appointment();
-                        tempOAppt.Customer_Id = oAppt.Customer_Id;
-                        tempOAppt.Appointment_Id = oAppt.Appointment_Id;
-                        tempOAppt.Service_Id = oAppt.Service_Id;
-                        tempOAppt.Staff_Id = oAppt.Staff_Id;
-                        tempOAppt.Start = oAppt.Start;
-                        tempOAppt.End = oAppt.End;
-                        var tForm = new FormAppointment(tempOAppt);
-                        tForm.ShowDialog();
-                        var oForm = new FormOfficeAppt(oAppt);
-                        oForm.ShowDialog();
+                    case false:
+                        HomeAppointment homeAppt = new HomeAppointment()
+                        {
+                            Appointment_Id = uAppt.Appointment_Id,
+                            Customer_Id = uAppt.Customer_Id,
+                            Staff_Id = uAppt.Staff_Id,
+                            Service_Id = uAppt.Service_Id,
+                            Start = uAppt.Start,
+                            End = uAppt.End,
+                            Service_Address_Id = uAppt.Service_Address_Id,
+                            InHomeService = true,
+                        };
+                        var apptHForm = new FormAppointment(homeAppt);
+                        var homeForm = new FormHomeAppt(homeAppt);
+                        apptHForm.ShowDialog();
+                        homeForm.ShowDialog();
                         break;
-
                 }
             }
         }
     }
-
 
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {

@@ -19,10 +19,11 @@ public class Appointment
     {
     }
 
-    protected Appointment(int appointment_Id, int customer_Id, int service_Id, DateTime start, DateTime end)
+    public Appointment(int appointment_Id, int customer_Id, int staff_id, int service_Id, DateTime start, DateTime end)
     {
         Appointment_Id = appointment_Id;
         Customer_Id = customer_Id;
+        Staff_Id = staff_id;
         Service_Id = service_Id;
         Start = start;
         End = end;

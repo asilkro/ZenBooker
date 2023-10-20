@@ -10,24 +10,11 @@ public partial class FormHomeAppt : Form
     private FormAppointment form1;
     private readonly HomeAppointment homeAppt;
 
-    public FormHomeAppt(Appointment appt, int? cxId, FormAppointment form1)
+    public FormHomeAppt(HomeAppointment appt)
     {
-        using (form1)
         {
             InitializeComponent();
-            homeAppt = new HomeAppointment(appt.Appointment_Id, appt.Customer_Id, appt.Staff_Id, appt.Service_Id,
-                appt.Start, appt.End, true, -1);
-            if (appt.Customer_Id != cxId)
-            {
-                if (cxId.HasValue)
-                {
-                    cxIdTB.Text = cxId.ToString();
-                    cxIdTB.BackColor = Color.CadetBlue;
-                }
-
-                cxIdTB.Text = appt.Customer_Id.ToString();
-                cxIdTB.BackColor = Color.PaleVioletRed; //Indicates mismatch
-            }
+            homeAppt = appt;
 
             ReturnServiceAddress(cxIdTB.Text);
             saveBtn.Enabled = false;
@@ -69,12 +56,12 @@ public partial class FormHomeAppt : Form
     public int? ReturnServiceAddyId(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        int sd;
+
         try
         {
             var serviceAddress =
-                connection.Query<Address>("[zth].[address]", e => e.AddressId == int.Parse(searchTerm));
-            sd = serviceAddress.GetEnumerator().Current.AddressId;
+                connection.Query<Address>("address", e => e.AddressId == int.Parse(searchTerm));
+            var sd = serviceAddress.GetEnumerator().Current.AddressId;
             return sd;
         }
         catch (Exception e)
