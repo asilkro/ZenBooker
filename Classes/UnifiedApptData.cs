@@ -48,7 +48,7 @@ namespace ZenoBook.Classes
                 try
                 {
                     {
-                        var appt = connection.Query<UnifiedApptData>(e => e.Appointment_Id == apptId).GetEnumerator().Current;
+                        var appt = connection.Query<UnifiedApptData>(e => e.Appointment_Id == apptId).FirstOrDefault();
                         return appt;
                     }
 

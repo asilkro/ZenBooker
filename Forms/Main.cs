@@ -40,46 +40,58 @@ public partial class Main : Form
         {
             var row = apptsDataGridView.Rows.IndexOf(selectedRow);
             var selected = (int) apptsDataGridView["appointment_id", row].Value;
-            using (var connection = new Builder().Connect())
+            using var connection = new Builder().Connect();
             {
                 var uAppt = UnifiedApptData.GetAppointment(selected);
-                switch (uAppt.Office_Id != 0 && !uAppt.InHomeService)
+                var apptFill = new Appointment();
+                if (uAppt != null)
                 {
-                    case true:
-                        //This should be the case for a OfficeAppt
-                        OfficeAppointment officeAppt = new OfficeAppointment()
-                        {
-                            Appointment_Id = uAppt.Appointment_Id,
-                            Customer_Id = uAppt.Customer_Id,
-                            Staff_Id = uAppt.Staff_Id,
-                            Office_Id = uAppt.Office_Id,
-                            Service_Id = uAppt.Service_Id,
-                            Start = uAppt.Start,
-                            End = uAppt.End,
-                            InHomeService = false,
-                        };
-                        var apptOForm = new FormAppointment(officeAppt);
-                        var officeForm = new FormOfficeAppt(officeAppt);
-                        apptOForm.ShowDialog();
-                        officeForm.ShowDialog();
-                        break;
-                    case false:
-                        HomeAppointment homeAppt = new HomeAppointment()
-                        {
-                            Appointment_Id = uAppt.Appointment_Id,
-                            Customer_Id = uAppt.Customer_Id,
-                            Staff_Id = uAppt.Staff_Id,
-                            Service_Id = uAppt.Service_Id,
-                            Start = uAppt.Start,
-                            End = uAppt.End,
-                            Service_Address_Id = uAppt.Service_Address_Id,
-                            InHomeService = true,
-                        };
-                        var apptHForm = new FormAppointment(homeAppt);
-                        var homeForm = new FormHomeAppt(homeAppt);
-                        apptHForm.ShowDialog();
-                        homeForm.ShowDialog();
-                        break;
+                    apptFill.Appointment_Id = uAppt.Appointment_Id;
+                    apptFill.Customer_Id = uAppt.Customer_Id;
+                    apptFill.Service_Id = uAppt.Service_Id;
+                    apptFill.Staff_Id = uAppt.Staff_Id;
+                    apptFill.Start = uAppt.Start;
+                    apptFill.End = uAppt.End;
+
+                    switch (uAppt.Office_Id != 0 && !uAppt.InHomeService)
+                    {
+                        case true:
+                            //This should be the case for a OfficeAppt
+                            OfficeAppointment officeAppt = new OfficeAppointment()
+                            {
+                                Appointment_Id = uAppt.Appointment_Id,
+                                Customer_Id = uAppt.Customer_Id,
+                                Staff_Id = uAppt.Staff_Id,
+                                Office_Id = uAppt.Office_Id,
+                                Service_Id = uAppt.Service_Id,
+                                Start = uAppt.Start,
+                                End = uAppt.End,
+                                InHomeService = false,
+                            };
+                            var apptOForm = new FormAppointment(apptFill);
+                            var officeForm = new FormOfficeAppt(officeAppt);
+                            apptOForm.ShowDialog();
+                            officeForm.ShowDialog();
+                            break;
+                        case false:
+                            HomeAppointment homeAppt = new HomeAppointment()
+                            {
+                                Appointment_Id = uAppt.Appointment_Id,
+                                Customer_Id = uAppt.Customer_Id,
+                                Staff_Id = uAppt.Staff_Id,
+                                Service_Id = uAppt.Service_Id,
+                                Start = uAppt.Start,
+                                End = uAppt.End,
+                                Service_Address_Id = uAppt.Service_Address_Id,
+                                InHomeService = true,
+                            };
+                            var apptHForm = new FormAppointment(apptFill);
+                            var homeForm = new FormHomeAppt(homeAppt);
+                            apptHForm.ShowDialog();
+                            homeForm.ShowDialog();
+                            break;
+                    }
+                
                 }
             }
         }
@@ -135,7 +147,7 @@ public partial class Main : Form
         var selectedRow = cxDataGridView.CurrentRow;
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
         int selected = (int) cxDataGridView["customer_id", row].Value;
-        if (selected != null)
+        if (selectedRow != null)
         {
             var result = Customer.DeleteCustomer(selected);
             if (result)
