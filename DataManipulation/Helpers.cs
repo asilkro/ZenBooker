@@ -169,23 +169,23 @@ public class Helpers
     public static Staff? ReturnStaff(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        var atSign = '@';
+        var atSign = '@'; 
         if (searchTerm.Contains(atSign))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.Email == searchTerm).FirstOrDefault();
-            if (eStaff != null)
-            { 
-                return eStaff;
+            if (eStaff == null)
+            {
+                return null;
             }
+            return eStaff;
         }
 
         var staff = connection.Query<Staff>("staff", e => e.Name == searchTerm).FirstOrDefault();
-        if (staff != null)
+        if (staff == null)
         {
-            return staff;
+            return null;
         }
-
-        return null;
+        return staff;
     }
 
     public static Service? ReturnService(string searchTerm)
@@ -198,7 +198,7 @@ public class Helpers
             return iService;
         }
 
-        var service = connection.Query<Service>("service", e => e.ServiceName.Contains(searchTerm))
+        var service = connection.Query<Service>("service", e => e.Service_Name.Contains(searchTerm))
             .GetEnumerator().Current;
         return service;
     }

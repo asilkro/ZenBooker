@@ -46,8 +46,8 @@ public partial class FormAppointment : Form
     {
         var service = Helpers.ReturnService(appt.Service_Id.ToString());
         serviceIdTB.Text = appt.Service_Id.ToString();
-        serviceNameTb.Text = service?.ServiceName;
-        serviceDescTb.Text = service?.ServiceDesc;
+        serviceNameTb.Text = service?.Service_Name;
+        serviceDescTb.Text = service?.Service_Desc;
     }
 
     private void FillStaffFields(Appointment appt)
@@ -115,8 +115,8 @@ public partial class FormAppointment : Form
                 break;
             case false:
                 serviceIdTB.Text = service.Service_Id.ToString();
-                serviceNameTb.Text = service.ServiceName;
-                serviceDescTb.Text = service.ServiceDesc;
+                serviceNameTb.Text = service.Service_Name;
+                serviceDescTb.Text = service.Service_Desc;
                 break;
         }
     }

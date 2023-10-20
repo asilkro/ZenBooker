@@ -9,9 +9,8 @@ public class Service
     #region Properties / Fields
 
     public int Service_Id { get; set; } // PK, auto_increment, not_null, FK Service_Id on Appt
-    public string ServiceName { get; set; } // VARCHAR(32)
-    public string ServiceDesc { get; set; } // VARCHAR (64?)
-    public bool HomeVisitService { get; set; }
+    public string Service_Name { get; set; } // VARCHAR(32)
+    public string Service_Desc { get; set; } // VARCHAR (64?)
 
     #endregion
 
@@ -21,12 +20,11 @@ public class Service
     {
     }
 
-    public Service(int serviceId, string serviceName, string serviceDesc, bool homeVisitService)
+    public Service(int service_Id, string service_Name, string service_Desc)
     {
-        Service_Id = serviceId;
-        ServiceName = serviceName;
-        ServiceDesc = serviceDesc;
-        HomeVisitService = homeVisitService;
+        Service_Id = service_Id;
+        Service_Name = service_Name;
+        Service_Desc = service_Desc;
     }
 
     #endregion

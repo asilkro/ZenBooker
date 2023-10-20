@@ -11,9 +11,9 @@ public class Staff
     public int Staff_Id { get; set; } // PK, auto_increment, not_null
     public int User_Id { get; set; } // FK, Users.UserId
     public int Office_Id { get; set; } // FK, Office.Office_Id
-    public string Name { get; set; } // PK, VARCHAR(32), not_null
-    public int Phone { get; set; } // PK, not_null
-    public string Email { get; set; } // VARCHAR(32)
+    public string Name { get; set; } // VARCHAR(45), not_null
+    public string Phone { get; set; } // VARCHAR(12)
+    public string Email { get; set; } // VARCHAR(45)
 
 
     
@@ -26,14 +26,14 @@ public class Staff
     {
     }
 
-    public Staff(int staffId, string name, int phone, string email, int officeId, int userId)
+    public Staff(int staff_Id, int user_Id, int office_Id, string name, string phone, string email)
     {
-        Staff_Id = staffId;
+        Staff_Id = staff_Id;
+        User_Id = user_Id;
+        Office_Id = office_Id;
         Name = name;
         Phone = phone;
         Email = email;
-        Office_Id = officeId;
-        User_Id = userId;
     }
 
     #endregion
