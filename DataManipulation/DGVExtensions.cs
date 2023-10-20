@@ -167,7 +167,7 @@ namespace ZenoBook.DataManipulation
                             appointmentsDataTable.Columns.Add("End", typeof(DateTime));
                             appointmentsDataTable.Columns.Add("Office_Id", typeof(int));
                             appointmentsDataTable.Columns.Add("Service_Address_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("InHomeService", typeof(bool));
+                            appointmentsDataTable.Columns.Add("InHomeService", typeof(int));
                             dataAdapter.Fill(appointmentsDataTable);
 
                             foreach (DataRow row in appointmentsDataTable.Rows)
@@ -181,7 +181,7 @@ namespace ZenoBook.DataManipulation
                                 uApptData.End = (DateTime)row["End"];
                                 uApptData.Office_Id = (int)row["Office_Id"];
                                 uApptData.Service_Address_Id = (int)row["Service_Address_Id"];
-                                uApptData.InHomeService = (bool)row["InHomeService"];
+                                uApptData.InHomeService = (int)row["InHomeService"];
                                 appointments.Add(uApptData);
                             }
                             dgv.DataSource = appointmentsDataTable;

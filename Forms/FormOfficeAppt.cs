@@ -41,7 +41,7 @@ public partial class FormOfficeAppt : Form
     private void validateBtn_Click(object sender, EventArgs e)
     {
         officeAppt.Office_Id = int.Parse(officeIdTB.Text);
-        officeAppt.InHomeService = false;
+        officeAppt.InHomeService = 1;
     }
 
     private void SaveBtn_Click(object sender, EventArgs e)

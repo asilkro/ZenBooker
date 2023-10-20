@@ -42,7 +42,12 @@ public partial class Main : Form
             var selected = (int) apptsDataGridView["appointment_id", row].Value;
             using var connection = new Builder().Connect();
             {
-                var uAppt = UnifiedApptData.GetAppointment(selected);
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+
+                var uAppt = connection.Query<UnifiedApptData>("appointment", selected).FirstOrDefault();
                 var apptFill = new Appointment();
                 if (uAppt != null)
                 {
@@ -53,7 +58,7 @@ public partial class Main : Form
                     apptFill.Start = uAppt.Start;
                     apptFill.End = uAppt.End;
 
-                    switch (uAppt.Office_Id != 0 && !uAppt.InHomeService)
+                    switch (uAppt.Office_Id != 0 && uAppt.InHomeService != 1)
                     {
                         case true:
                             //This should be the case for a OfficeAppt
@@ -66,7 +71,7 @@ public partial class Main : Form
                                 Service_Id = uAppt.Service_Id,
                                 Start = uAppt.Start,
                                 End = uAppt.End,
-                                InHomeService = false,
+                                InHomeService = 0,
                             };
                             var apptOForm = new FormAppointment(apptFill);
                             var officeForm = new FormOfficeAppt(officeAppt);
@@ -83,7 +88,7 @@ public partial class Main : Form
                                 Start = uAppt.Start,
                                 End = uAppt.End,
                                 Service_Address_Id = uAppt.Service_Address_Id,
-                                InHomeService = true,
+                                InHomeService = 1,
                             };
                             var apptHForm = new FormAppointment(apptFill);
                             var homeForm = new FormHomeAppt(homeAppt);
@@ -91,7 +96,7 @@ public partial class Main : Form
                             homeForm.ShowDialog();
                             break;
                     }
-                
+                connection.Close();
                 }
             }
         }

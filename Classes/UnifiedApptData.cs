@@ -1,6 +1,7 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace ZenoBook.Classes
         #region Properties
         public int Office_Id { get; set; }
         public int Service_Address_Id { get; set; }
-        public bool InHomeService { get; set; }
+        public int InHomeService { get; set; }
         #endregion
 
         #region Constructors
@@ -24,18 +25,18 @@ namespace ZenoBook.Classes
 
         }
 
-        public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int service_Id, DateTime start, DateTime end,
-            int office_Id, int service_Address_Id, bool inHomeService)
+        public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int office_Id, int service_Id, DateTime start, DateTime end,
+             int inHomeService, int service_Address_Id)
         {
             Appointment_Id = appointment_Id;
             Customer_Id = customer_Id;
             Staff_Id = staff_id;
+            Office_Id = office_Id;
             Service_Id = service_Id;
             Start = start;
             End = end;
-            Office_Id = office_Id;
-            Service_Address_Id = service_Address_Id;
             InHomeService = inHomeService;
+            Service_Address_Id = service_Address_Id;
         }
         #endregion
 
@@ -43,12 +44,31 @@ namespace ZenoBook.Classes
 
         public static UnifiedApptData? GetAppointment(int apptId)
         {
+            
             using (var connection = new Builder().Connect())
             {
                 try
                 {
                     {
-                        var appt = connection.Query<UnifiedApptData>(e => e.Appointment_Id == apptId).FirstOrDefault();
+                        if (connection.State != ConnectionState.Open)
+                        {
+                            connection.Open();
+                        }
+                        var fields = Field.Parse<UnifiedApptData>(e => new
+                        {
+                            e.Appointment_Id,
+                            e.Customer_Id,
+                            e.Staff_Id,
+                            e.Office_Id,
+                            e.Service_Id,
+                            e.Start,
+                            e.End,
+                            e.InHomeService,
+                            e.Service_Address_Id
+                        });
+                        UnifiedApptData appt = connection.Query<UnifiedApptData>(e => e.Appointment_Id == apptId, fields)
+                            .FirstOrDefault();
+                        connection.Close();
                         return appt;
                     }
 
