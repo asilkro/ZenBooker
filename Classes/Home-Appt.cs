@@ -8,8 +8,8 @@ public class HomeAppointment : Appointment
 {
     #region Properties / Fields
 
-    public byte InHomeService { get; set; }
-    public int Service_Address_Id { get; set; }
+    public byte inhomeservice { get; set; }
+    public int service_address_id { get; set; }
 
     #endregion
 
@@ -20,16 +20,16 @@ public class HomeAppointment : Appointment
     }
 
     public HomeAppointment(int appointmentId, int customerId, int staffId, int serviceId, DateTime start, DateTime end,
-        byte inHomeService, int service_Address_Id)
+        byte inhomeservice, int service_Address_Id)
     {
-        Appointment_Id = appointmentId;
-        Customer_Id = customerId;
-        Staff_Id = staffId;
-        Service_Id = serviceId;
-        Start = start;
-        End = end;
-        InHomeService = inHomeService;
-        Service_Address_Id = service_Address_Id;
+        appointment_id = appointmentId;
+        customer_id = customerId;
+        staff_id = staffId;
+        service_id = serviceId;
+        base.start = start;
+        base.end = end;
+        inhomeservice = inhomeservice;
+        service_address_id = service_Address_Id;
     }
 
     #endregion

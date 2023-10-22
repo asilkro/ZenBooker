@@ -37,31 +37,31 @@ public partial class FormAppointment : Form
 
     private void FillDt(Appointment appt)
     {
-        apptIdTB.Text = appt.Appointment_Id.ToString();
-        dateCalendar.SetDate(appt.Start.Date);
-        startDtPicker.Value = appt.Start.ToLocalTime();
-        endDtPicker.Value = appt.End.ToLocalTime();
+        apptIdTB.Text = appt.appointment_id.ToString();
+        dateCalendar.SetDate(appt.start.Date);
+        startDtPicker.Value = appt.start.ToLocalTime();
+        endDtPicker.Value = appt.end.ToLocalTime();
     }
 
     private void FillServiceFields(Appointment appt)
     {
-        var service = Helpers.ReturnService(appt.Service_Id.ToString());
-        serviceIdTB.Text = appt.Service_Id.ToString();
+        var service = Helpers.ReturnService(appt.service_id.ToString());
+        serviceIdTB.Text = appt.service_id.ToString();
         serviceNameTb.Text = service?.Service_Name;
         serviceDescTb.Text = service?.Service_Description;
     }
 
     private void FillStaffFields(Appointment appt)
     {
-        var staff = Helpers.ReturnStaff(appt.Staff_Id.ToString());
-        staffIdTB.Text = appt.Staff_Id.ToString();
+        var staff = Helpers.ReturnStaff(appt.staff_id.ToString());
+        staffIdTB.Text = appt.staff_id.ToString();
         staffNameTb.Text = staff?.Name;
     }
 
     private void FillCxFields(Appointment appt)
     {
-        var cx = Helpers.ReturnCustomer(appt.Customer_Id.ToString());
-        cxIdTB.Text = appt.Customer_Id.ToString();
+        var cx = Helpers.ReturnCustomer(appt.customer_id.ToString());
+        cxIdTB.Text = appt.customer_id.ToString();
         string v = cx?.First + cx?.Last;
         cxNameTb.Text = v;
         cxEmailTB.Text = cx?.Email;

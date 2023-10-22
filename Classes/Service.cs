@@ -8,7 +8,7 @@ public class Service
 {
     #region Properties / Fields
 
-    public int Service_Id { get; set; } // PK, auto_increment, not_null, FK Service_Id on Appt
+    public int Service_Id { get; set; } // PK, auto_increment, not_null, FK service_id on Appt
     public string Service_Name { get; set; } // VARCHAR(32)
     public string Service_Description { get; set; } // VARCHAR (64?)
 

@@ -52,27 +52,27 @@ public partial class Main : Form
                 var apptFill = new Appointment();
                 if (uAppt != null)
                 {
-                    apptFill.Appointment_Id = uAppt.Appointment_Id;
-                    apptFill.Customer_Id = uAppt.Customer_Id;
-                    apptFill.Service_Id = uAppt.Service_Id;
-                    apptFill.Staff_Id = uAppt.Staff_Id;
-                    apptFill.Start = uAppt.Start;
-                    apptFill.End = uAppt.End;
+                    apptFill.appointment_id = uAppt.appointment_id;
+                    apptFill.customer_id = uAppt.customer_id;
+                    apptFill.service_id = uAppt.service_id;
+                    apptFill.staff_id = uAppt.staff_id;
+                    apptFill.start = uAppt.start;
+                    apptFill.end = uAppt.end;
 
-                    switch (uAppt.Office_Id != 0 && uAppt.InHomeService != 1)
+                    switch (uAppt.office_id != 0 && uAppt.inhomeservice != 1)
                     {
                         case true:
                             //This should be the case for a OfficeAppt
                             OfficeAppointment officeAppt = new OfficeAppointment()
                             {
-                                Appointment_Id = uAppt.Appointment_Id,
-                                Customer_Id = uAppt.Customer_Id,
-                                Staff_Id = uAppt.Staff_Id,
-                                Office_Id = uAppt.Office_Id,
-                                Service_Id = uAppt.Service_Id,
-                                Start = uAppt.Start,
-                                End = uAppt.End,
-                                InHomeService = 0,
+                                appointment_id = uAppt.appointment_id,
+                                customer_id = uAppt.customer_id,
+                                staff_id = uAppt.staff_id,
+                                office_id = uAppt.office_id,
+                                service_id = uAppt.service_id,
+                                start = uAppt.start,
+                                end = uAppt.end,
+                                inhomeservice = 0,
                             };
                             var apptOForm = new FormAppointment(apptFill);
                             var officeForm = new FormOfficeAppt(officeAppt);
@@ -82,14 +82,14 @@ public partial class Main : Form
                         case false:
                             HomeAppointment homeAppt = new HomeAppointment()
                             {
-                                Appointment_Id = uAppt.Appointment_Id,
-                                Customer_Id = uAppt.Customer_Id,
-                                Staff_Id = uAppt.Staff_Id,
-                                Service_Id = uAppt.Service_Id,
-                                Start = uAppt.Start,
-                                End = uAppt.End,
-                                Service_Address_Id = uAppt.Service_Address_Id,
-                                InHomeService = 1,
+                                appointment_id = uAppt.appointment_id,
+                                customer_id = uAppt.customer_id,
+                                staff_id = uAppt.staff_id,
+                                service_id = uAppt.service_id,
+                                start = uAppt.start,
+                                end = uAppt.end,
+                                service_address_id = uAppt.service_address_id,
+                                inhomeservice = 1,
                             };
                             var apptHForm = new FormAppointment(apptFill);
                             var homeForm = new FormHomeAppt(homeAppt);

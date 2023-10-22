@@ -212,7 +212,7 @@
             startLbl.Name = "startLbl";
             startLbl.Size = new Size(56, 25);
             startLbl.TabIndex = 24;
-            startLbl.Text = "Start";
+            startLbl.Text = "start";
             // 
             // endLbl
             // 
@@ -222,7 +222,7 @@
             endLbl.Name = "endLbl";
             endLbl.Size = new Size(46, 25);
             endLbl.TabIndex = 25;
-            endLbl.Text = "End";
+            endLbl.Text = "end";
             // 
             // serviceSearchButton
             // 

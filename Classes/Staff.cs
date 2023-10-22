@@ -10,7 +10,7 @@ public class Staff
 
     public int Staff_Id { get; set; } // PK, auto_increment, not_null
     public int User_Id { get; set; } // FK, Users.UserId
-    public int Office_Id { get; set; } // FK, Office.Office_Id
+    public int Office_Id { get; set; } // FK, Office.office_id
     public string Name { get; set; } // VARCHAR(45), not_null
     public string Phone { get; set; } // VARCHAR(12)
     public string Email { get; set; } // VARCHAR(45)

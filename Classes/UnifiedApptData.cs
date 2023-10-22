@@ -13,9 +13,9 @@ namespace ZenoBook.Classes
     public class UnifiedApptData : Appointment
     {
         #region Properties
-        public int Office_Id { get; set; }
-        public int Service_Address_Id { get; set; }
-        public byte InHomeService { get; set; }
+        public int office_id { get; set; }
+        public int service_address_id { get; set; }
+        public byte inhomeservice { get; set; }
         #endregion
 
         #region Constructors
@@ -26,17 +26,17 @@ namespace ZenoBook.Classes
         }
 
         public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int office_Id, int service_Id, DateTime start, DateTime end,
-             byte inHomeService, int service_Address_Id)
+             byte inhomeservice, int service_Address_Id)
         {
-            Appointment_Id = appointment_Id;
-            Customer_Id = customer_Id;
-            Staff_Id = staff_id;
-            Office_Id = office_Id;
-            Service_Id = service_Id;
-            Start = start;
-            End = end;
-            InHomeService = inHomeService;
-            Service_Address_Id = service_Address_Id;
+            base.appointment_id = appointment_Id;
+            base.customer_id = customer_Id;
+            base.staff_id = staff_id;
+            this.office_id = office_Id;
+            base.service_id = service_Id;
+            base.start = start;
+            base.end = end;
+            this.inhomeservice = inhomeservice;
+            this.service_address_id = service_Address_Id;
         }
         #endregion
 
@@ -56,17 +56,17 @@ namespace ZenoBook.Classes
                         }
                         var fields = Field.Parse<UnifiedApptData>(e => new
                         {
-                            e.Appointment_Id,
-                            e.Customer_Id,
-                            e.Staff_Id,
-                            e.Office_Id,
-                            e.Service_Id,
-                            e.Start,
-                            e.End,
-                            e.InHomeService,
-                            e.Service_Address_Id
+                            Appointment_Id = e.appointment_id,
+                            Customer_Id = e.customer_id,
+                            Staff_Id = e.staff_id,
+                            Office_Id = e.office_id,
+                            Service_Id = e.service_id,
+                            Start = e.start,
+                            End = e.end,
+                            InHomeService = e.inhomeservice,
+                            Service_Address_Id = e.service_address_id
                         });
-                        UnifiedApptData appt = connection.Query<UnifiedApptData>(e => e.Appointment_Id == apptId, fields)
+                        UnifiedApptData appt = connection.Query<UnifiedApptData>(e => e.appointment_id == apptId, fields)
                             .FirstOrDefault();
                         connection.Close();
                         return appt;

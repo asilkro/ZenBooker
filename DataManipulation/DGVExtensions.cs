@@ -134,7 +134,7 @@ namespace ZenoBook.DataManipulation
                         case "customer":
                             var customers = new List<Customer>();
                             DataTable customerDataTable = new DataTable();
-                            customerDataTable.Columns.Add("Customer_Id", typeof(int));
+                            customerDataTable.Columns.Add("customer_id", typeof(int));
                             customerDataTable.Columns.Add("First", typeof(string));
                             customerDataTable.Columns.Add("Last", typeof(string));
                             customerDataTable.Columns.Add("Phone", typeof(string));
@@ -145,7 +145,7 @@ namespace ZenoBook.DataManipulation
                             foreach (DataRow row in customerDataTable.Rows)
                             {
                                 Customer cx = new Customer();
-                                cx.Customer_Id = (int)row["Customer_Id"];
+                                cx.Customer_Id = (int)row["customer_id"];
                                 cx.First = row["First"].ToString();
                                 cx.Last = row["Last"].ToString();
                                 cx.Phone = row["Phone"].ToString();
@@ -159,29 +159,29 @@ namespace ZenoBook.DataManipulation
                         case "appointment":
                             var appointments = new List<UnifiedApptData>();
                             DataTable appointmentsDataTable = new DataTable();
-                            appointmentsDataTable.Columns.Add("Appointment_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("Customer_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("Staff_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("Service_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("Start", typeof(DateTime));
-                            appointmentsDataTable.Columns.Add("End", typeof(DateTime));
-                            appointmentsDataTable.Columns.Add("Office_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("Service_Address_Id", typeof(int));
-                            appointmentsDataTable.Columns.Add("InHomeService", typeof(int));
+                            appointmentsDataTable.Columns.Add("appointment_id", typeof(int));
+                            appointmentsDataTable.Columns.Add("customer_id", typeof(int));
+                            appointmentsDataTable.Columns.Add("staff_id", typeof(int));
+                            appointmentsDataTable.Columns.Add("service_id", typeof(int));
+                            appointmentsDataTable.Columns.Add("start", typeof(DateTime));
+                            appointmentsDataTable.Columns.Add("end", typeof(DateTime));
+                            appointmentsDataTable.Columns.Add("office_id", typeof(int));
+                            appointmentsDataTable.Columns.Add("service_address_id", typeof(int));
+                            appointmentsDataTable.Columns.Add("inhomeservice", typeof(int));
                             dataAdapter.Fill(appointmentsDataTable);
 
                             foreach (DataRow row in appointmentsDataTable.Rows)
                             {
                                 UnifiedApptData uApptData = new UnifiedApptData();
-                                uApptData.Appointment_Id = (int)row["Appointment_Id"]; // Set the correct property names
-                                uApptData.Customer_Id = (int)row["Customer_Id"];
-                                uApptData.Staff_Id = (int)row["Staff_Id"];
-                                uApptData.Service_Id = (int)row["Service_Id"];
-                                uApptData.Start = (DateTime)row["Start"];
-                                uApptData.End = (DateTime)row["End"];
-                                uApptData.Office_Id = (int)row["Office_Id"];
-                                uApptData.Service_Address_Id = (int)row["Service_Address_Id"];
-                                uApptData.InHomeService = (byte)(int)row["InHomeService"];
+                                uApptData.appointment_id = (int)row["appointment_id"]; // Set the correct property names
+                                uApptData.customer_id = (int)row["customer_id"];
+                                uApptData.staff_id = (int)row["staff_id"];
+                                uApptData.service_id = (int)row["service_id"];
+                                uApptData.start = (DateTime)row["start"];
+                                uApptData.end = (DateTime)row["end"];
+                                uApptData.office_id = (int)row["office_id"];
+                                uApptData.service_address_id = (int)row["service_address_id"];
+                                uApptData.inhomeservice = (byte)(int)row["inhomeservice"];
                                 appointments.Add(uApptData);
                             }
                             dgv.DataSource = appointmentsDataTable;

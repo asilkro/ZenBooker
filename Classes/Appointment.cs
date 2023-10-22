@@ -4,12 +4,12 @@ public class Appointment
 {
     #region Properties / Fields
 
-    public int Appointment_Id { get; set; } // PK, auto_increment, not_null
-    public int Customer_Id { get; set; } // FK, Customer.Customer_Id
-    public int Staff_Id { get; set; } // FK, Staff.Staff_Id
-    public int Service_Id { get; set; } // FK, Service.Service_Id
-    public DateTime Start { get; set; } //
-    public DateTime End { get; set; } //
+    public int appointment_id { get; set; } // PK, auto_increment, not_null
+    public int customer_id { get; set; } // FK, Customer.customer_id
+    public int staff_id { get; set; } // FK, Staff.staff_id
+    public int service_id { get; set; } // FK, Service.service_id
+    public DateTime start { get; set; } //
+    public DateTime end { get; set; } //
 
     #endregion
 
@@ -21,12 +21,12 @@ public class Appointment
 
     public Appointment(int appointment_Id, int customer_Id, int staff_id, int service_Id, DateTime start, DateTime end)
     {
-        Appointment_Id = appointment_Id;
-        Customer_Id = customer_Id;
-        Staff_Id = staff_id;
-        Service_Id = service_Id;
-        Start = start;
-        End = end;
+        appointment_id = appointment_Id;
+        customer_id = customer_Id;
+        this.staff_id = staff_id;
+        service_id = service_Id;
+        this.start = start;
+        this.end = end;
     }
     public static DateTime CheckDbNull(object dateTime)
     {
