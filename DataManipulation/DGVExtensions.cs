@@ -155,7 +155,7 @@ namespace ZenoBook.DataManipulation
                             }
                             dgv.DataSource = customerDataTable;
                             break;
-
+                            
                         case "appointment":
                             var appointments = new List<UnifiedApptData>();
                             DataTable appointmentsDataTable = new DataTable();
@@ -181,7 +181,7 @@ namespace ZenoBook.DataManipulation
                                 uApptData.End = (DateTime)row["End"];
                                 uApptData.Office_Id = (int)row["Office_Id"];
                                 uApptData.Service_Address_Id = (int)row["Service_Address_Id"];
-                                uApptData.InHomeService = (int)row["InHomeService"];
+                                uApptData.InHomeService = (byte)(int)row["InHomeService"];
                                 appointments.Add(uApptData);
                             }
                             dgv.DataSource = appointmentsDataTable;

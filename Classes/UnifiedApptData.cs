@@ -15,7 +15,7 @@ namespace ZenoBook.Classes
         #region Properties
         public int Office_Id { get; set; }
         public int Service_Address_Id { get; set; }
-        public int InHomeService { get; set; }
+        public byte InHomeService { get; set; }
         #endregion
 
         #region Constructors
@@ -26,7 +26,7 @@ namespace ZenoBook.Classes
         }
 
         public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int office_Id, int service_Id, DateTime start, DateTime end,
-             int inHomeService, int service_Address_Id)
+             byte inHomeService, int service_Address_Id)
         {
             Appointment_Id = appointment_Id;
             Customer_Id = customer_Id;

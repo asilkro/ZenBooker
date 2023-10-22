@@ -47,7 +47,8 @@ public partial class Main : Form
                     connection.Open();
                 }
 
-                var uAppt = connection.Query<UnifiedApptData>("appointment", selected).FirstOrDefault();
+                var uAppt = UnifiedApptData.GetAppointment(selected);
+
                 var apptFill = new Appointment();
                 if (uAppt != null)
                 {
