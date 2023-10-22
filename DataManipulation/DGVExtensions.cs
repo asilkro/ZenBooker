@@ -181,7 +181,7 @@ namespace ZenoBook.DataManipulation
                                 uApptData.end = (DateTime)row["end"];
                                 uApptData.office_id = (int)row["office_id"];
                                 uApptData.service_address_id = (int)row["service_address_id"];
-                                uApptData.inhomeservice = (byte)(int)row["inhomeservice"];
+                                uApptData.inhomeservice = (sbyte)(int)row["inhomeservice"];
                                 appointments.Add(uApptData);
                             }
                             dgv.DataSource = appointmentsDataTable;

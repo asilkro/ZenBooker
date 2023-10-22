@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using RepoDb;
 using ZenoBook.DataManipulation;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
+using System.Windows.Forms;
 
 namespace ZenoBook.Classes
 {
@@ -15,7 +17,7 @@ namespace ZenoBook.Classes
         #region Properties
         public int office_id { get; set; }
         public int service_address_id { get; set; }
-        public byte inhomeservice { get; set; }
+        public sbyte inhomeservice { get; set; }
         #endregion
 
         #region Constructors
@@ -26,7 +28,7 @@ namespace ZenoBook.Classes
         }
 
         public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int office_Id, int service_Id, DateTime start, DateTime end,
-             byte inhomeservice, int service_Address_Id)
+             sbyte inhomeservice, int service_Address_Id)
         {
             base.appointment_id = appointment_Id;
             base.customer_id = customer_Id;
@@ -54,20 +56,20 @@ namespace ZenoBook.Classes
                         {
                             connection.Open();
                         }
+
                         var fields = Field.Parse<UnifiedApptData>(e => new
                         {
-                            Appointment_Id = e.appointment_id,
-                            Customer_Id = e.customer_id,
-                            Staff_Id = e.staff_id,
-                            Office_Id = e.office_id,
-                            Service_Id = e.service_id,
-                            Start = e.start,
-                            End = e.end,
-                            InHomeService = e.inhomeservice,
-                            Service_Address_Id = e.service_address_id
+                            e.appointment_id,
+                            e.customer_id,
+                            e.staff_id,
+                            e.office_id,
+                            e.service_id,
+                            e.start,
+                            e.end,
+                            e.inhomeservice,
+                            e.service_address_id
                         });
-                        UnifiedApptData appt = connection.Query<UnifiedApptData>(e => e.appointment_id == apptId, fields)
-                            .FirstOrDefault();
+                        var appt = connection.ExecuteQuery<UnifiedApptData>("SELECT * FROM appointment WHERE (appointment_id = @appointment_id);", new { appointment_id = apptId }).FirstOrDefault();
                         connection.Close();
                         return appt;
                     }

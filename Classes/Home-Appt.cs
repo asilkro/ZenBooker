@@ -8,7 +8,7 @@ public class HomeAppointment : Appointment
 {
     #region Properties / Fields
 
-    public byte inhomeservice { get; set; }
+    public sbyte inhomeservice { get; set; }
     public int service_address_id { get; set; }
 
     #endregion

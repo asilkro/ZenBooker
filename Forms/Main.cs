@@ -72,7 +72,7 @@ public partial class Main : Form
                                 service_id = uAppt.service_id,
                                 start = uAppt.start,
                                 end = uAppt.end,
-                                inhomeservice = 0,
+                                inhomeservice = uAppt.inhomeservice,
                             };
                             var apptOForm = new FormAppointment(apptFill);
                             var officeForm = new FormOfficeAppt(officeAppt);
@@ -89,7 +89,7 @@ public partial class Main : Form
                                 start = uAppt.start,
                                 end = uAppt.end,
                                 service_address_id = uAppt.service_address_id,
-                                inhomeservice = 1,
+                                inhomeservice = uAppt.inhomeservice,
                             };
                             var apptHForm = new FormAppointment(apptFill);
                             var homeForm = new FormHomeAppt(homeAppt);

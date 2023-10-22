@@ -16,15 +16,6 @@ public partial class FormAppointment : Form
     {
         UpdateTbs(appt);
     }
-    public FormAppointment(HomeAppointment hAppt)
-    {
-        UpdateTbs(hAppt);
-    }
-    public FormAppointment(OfficeAppointment oAppt)
-    {
-        UpdateTbs(oAppt);
-    }
-
 
     public void UpdateTbs(Appointment appt)
     {

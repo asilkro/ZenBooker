@@ -24,7 +24,7 @@ public class Appointment
         appointment_id = appointment_Id;
         customer_id = customer_Id;
         this.staff_id = staff_id;
-        service_id = service_Id;
+        this.service_id = service_Id;
         this.start = start;
         this.end = end;
     }
