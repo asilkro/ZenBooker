@@ -1,7 +1,9 @@
 {
   "profiles": {
     "ZenoBook": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "hotReloadEnabled": true,
+      "sqlDebugging": true
     }
   }
 }

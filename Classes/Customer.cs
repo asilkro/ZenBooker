@@ -88,5 +88,6 @@ public class Customer
             return false;
         }
     }
+
     #endregion
 }

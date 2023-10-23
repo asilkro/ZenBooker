@@ -15,20 +15,22 @@ namespace ZenoBook.Classes
     public class UnifiedApptData : Appointment
     {
         #region Properties
+
         public int office_id { get; set; }
         public int service_address_id { get; set; }
         public sbyte inhomeservice { get; set; }
+
         #endregion
 
         #region Constructors
 
         public UnifiedApptData()
         {
-
         }
 
-        public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int office_Id, int service_Id, DateTime start, DateTime end,
-             sbyte inhomeservice, int service_Address_Id)
+        public UnifiedApptData(int appointment_Id, int customer_Id, int staff_id, int office_Id, int service_Id,
+            DateTime start, DateTime end,
+            sbyte inhomeservice, int service_Address_Id)
         {
             base.appointment_id = appointment_Id;
             base.customer_id = customer_Id;
@@ -40,13 +42,13 @@ namespace ZenoBook.Classes
             this.inhomeservice = inhomeservice;
             this.service_address_id = service_Address_Id;
         }
+
         #endregion
 
         #region SQL
 
         public static UnifiedApptData? GetAppointment(int apptId)
         {
-            
             using (var connection = new Builder().Connect())
             {
                 try
@@ -69,11 +71,13 @@ namespace ZenoBook.Classes
                             e.inhomeservice,
                             e.service_address_id
                         });
-                        var appt = connection.ExecuteQuery<UnifiedApptData>("SELECT * FROM appointment WHERE (appointment_id = @appointment_id);", new { appointment_id = apptId }).FirstOrDefault();
+                        var appt = connection
+                            .ExecuteQuery<UnifiedApptData>(
+                                "SELECT * FROM appointment WHERE (appointment_id = @appointment_id);",
+                                new {appointment_id = apptId}).FirstOrDefault();
                         connection.Close();
                         return appt;
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -89,12 +93,11 @@ namespace ZenoBook.Classes
             {
                 try
                 {
-                    { 
+                    {
                         connection.Delete("appointment", apptId);
                         MessageBox.Show("Appt id " + apptId + " removed.", "Appointment Removed");
                         return true;
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -105,8 +108,5 @@ namespace ZenoBook.Classes
         }
 
         #endregion
-
     }
-
-
 }

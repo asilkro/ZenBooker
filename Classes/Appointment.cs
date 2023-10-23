@@ -28,13 +28,15 @@ public class Appointment
         this.start = start;
         this.end = end;
     }
+
     public static DateTime CheckDbNull(object dateTime)
     {
         if (dateTime == DBNull.Value)
         {
             return DateTime.MinValue;
         }
-        return (DateTime)dateTime;
+
+        return (DateTime) dateTime;
     }
 
     #endregion

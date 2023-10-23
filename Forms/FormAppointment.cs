@@ -1,5 +1,4 @@
-﻿using RepoDb;
-using ZenoBook.Classes;
+﻿using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms;
@@ -14,6 +13,7 @@ public partial class FormAppointment : Form
 
     public FormAppointment(Appointment appt)
     {
+        InitializeComponent();
         UpdateTbs(appt);
     }
 
@@ -30,8 +30,10 @@ public partial class FormAppointment : Form
     {
         apptIdTB.Text = appt.appointment_id.ToString();
         dateCalendar.SetDate(appt.start.Date);
-        startDtPicker.Value = appt.start.ToLocalTime();
-        endDtPicker.Value = appt.end.ToLocalTime();
+        startDtPicker.Format = DateTimePickerFormat.Time;
+        startDtPicker.Value = appt.start;
+        endDtPicker.Format = DateTimePickerFormat.Time;
+        endDtPicker.Value = appt.end;
     }
 
     private void FillServiceFields(Appointment appt)
@@ -53,13 +55,12 @@ public partial class FormAppointment : Form
     {
         var cx = Helpers.ReturnCustomer(appt.customer_id.ToString());
         cxIdTB.Text = appt.customer_id.ToString();
-        string v = cx?.First + cx?.Last;
+        var v = cx?.First + cx?.Last;
         cxNameTb.Text = v;
         cxEmailTB.Text = cx?.Email;
-        cxPhoneTB.Text = cx?.Phone.ToString();
+        cxPhoneTB.Text = cx?.Phone;
         officeSearchTB.Text = cx?.Preferred_Office.ToString();
     }
-
 
 
     #region Event Handlers

@@ -15,9 +15,6 @@ public class Staff
     public string Phone { get; set; } // VARCHAR(12)
     public string Email { get; set; } // VARCHAR(45)
 
-
-    
-
     #endregion
 
     #region Constructors

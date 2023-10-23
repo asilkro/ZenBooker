@@ -17,7 +17,7 @@ namespace ZenoBook.DataManipulation
         {
             var list = new List<T>();
             for (int i = 0; i < rows.Count; i++)
-                list.Add((T)rows[i].DataBoundItem);
+                list.Add((T) rows[i].DataBoundItem);
             return list;
         }
 
@@ -107,7 +107,8 @@ namespace ZenoBook.DataManipulation
         }
 
 
-        public static void populateDGV(DataGridView dgv, string tableName) //, string? where) //Maybe expand to include clauses?
+        public static void
+            populateDGV(DataGridView dgv, string tableName) //, string? where) //Maybe expand to include clauses?
         {
             {
                 var selectQuery = "SELECT * FROM " + tableName + ";";
@@ -126,6 +127,7 @@ namespace ZenoBook.DataManipulation
                         connection.Open();
                         break;
                 }
+
                 var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
                 using (dataAdapter)
                 {
@@ -145,17 +147,20 @@ namespace ZenoBook.DataManipulation
                             foreach (DataRow row in customerDataTable.Rows)
                             {
                                 Customer cx = new Customer();
-                                cx.Customer_Id = (int)row["customer_id"];
+                                cx.Customer_Id = (int) row["customer_id"];
                                 cx.First = row["First"].ToString();
                                 cx.Last = row["Last"].ToString();
                                 cx.Phone = row["Phone"].ToString();
                                 cx.Email = row["Email"].ToString();
-                                cx.Preferred_Office = Convert.IsDBNull(row["Preferred_Office"]) ? 0 : (int)row["Preferred_Office"];
+                                cx.Preferred_Office = Convert.IsDBNull(row["Preferred_Office"])
+                                    ? 0
+                                    : (int) row["Preferred_Office"];
                                 customers.Add(cx);
                             }
+
                             dgv.DataSource = customerDataTable;
                             break;
-                            
+
                         case "appointment":
                             var appointments = new List<UnifiedApptData>();
                             DataTable appointmentsDataTable = new DataTable();
@@ -173,17 +178,19 @@ namespace ZenoBook.DataManipulation
                             foreach (DataRow row in appointmentsDataTable.Rows)
                             {
                                 UnifiedApptData uApptData = new UnifiedApptData();
-                                uApptData.appointment_id = (int)row["appointment_id"]; // Set the correct property names
-                                uApptData.customer_id = (int)row["customer_id"];
-                                uApptData.staff_id = (int)row["staff_id"];
-                                uApptData.service_id = (int)row["service_id"];
-                                uApptData.start = (DateTime)row["start"];
-                                uApptData.end = (DateTime)row["end"];
-                                uApptData.office_id = (int)row["office_id"];
-                                uApptData.service_address_id = (int)row["service_address_id"];
-                                uApptData.inhomeservice = (sbyte)(int)row["inhomeservice"];
+                                uApptData.appointment_id =
+                                    (int) row["appointment_id"]; // Set the correct property names
+                                uApptData.customer_id = (int) row["customer_id"];
+                                uApptData.staff_id = (int) row["staff_id"];
+                                uApptData.service_id = (int) row["service_id"];
+                                uApptData.start = (DateTime) row["start"];
+                                uApptData.end = (DateTime) row["end"];
+                                uApptData.office_id = (int) row["office_id"];
+                                uApptData.service_address_id = (int) row["service_address_id"];
+                                uApptData.inhomeservice = (sbyte) (int) row["inhomeservice"];
                                 appointments.Add(uApptData);
                             }
+
                             dgv.DataSource = appointmentsDataTable;
                             break;
                     }
@@ -192,6 +199,5 @@ namespace ZenoBook.DataManipulation
                 connection.Close();
             }
         }
-
     }
 }

@@ -20,7 +20,7 @@ public class Office
     {
     }
 
-    public Office(int officeId, int addressId,string officeName)
+    public Office(int officeId, int addressId, string officeName)
     {
         Office_Id = officeId;
         Address_Id = addressId;

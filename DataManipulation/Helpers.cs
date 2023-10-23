@@ -35,6 +35,7 @@ public class Helpers
                     return result;
                 }
             }
+
             return result;
         }
     }
@@ -80,13 +81,13 @@ public class Helpers
 
         return result;
     }
-    
+
     public static string HashedString(string input)
     {
         using SHA256 sha256Hash = SHA256.Create();
         byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
-        
+
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < bytes.Length; i++)
         {
@@ -101,7 +102,7 @@ public class Helpers
 
     public static string?
         AutoIncrementId(string tableName)
-    { 
+    {
         using var connection = new Builder().Connect();
         try
         {
@@ -163,13 +164,14 @@ public class Helpers
                 return iCustomer;
             }
         }
+
         return null;
     }
 
     public static Staff? ReturnStaff(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        var atSign = '@'; 
+        var atSign = '@';
         if (searchTerm.Contains(atSign))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.Email == searchTerm).FirstOrDefault();
@@ -177,6 +179,7 @@ public class Helpers
             {
                 return null;
             }
+
             return eStaff;
         }
 
@@ -185,6 +188,7 @@ public class Helpers
         {
             return null;
         }
+
         return staff;
     }
 
@@ -198,6 +202,7 @@ public class Helpers
             {
                 return null;
             }
+
             return iService;
         }
 
@@ -206,8 +211,8 @@ public class Helpers
         if (service == null)
         {
             return null;
-
         }
+
         return service;
     }
 
@@ -227,7 +232,9 @@ public class Helpers
         {
             return null;
         }
+
         return nOffice;
     }
+
     #endregion
 }

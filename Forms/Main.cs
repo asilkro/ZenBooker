@@ -97,7 +97,8 @@ public partial class Main : Form
                             homeForm.ShowDialog();
                             break;
                     }
-                connection.Close();
+
+                    connection.Close();
                 }
             }
         }
@@ -109,7 +110,7 @@ public partial class Main : Form
         if (selectedRow != null)
         {
             var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int)apptsDataGridView["appointment_id", row].Value;
+            var selected = (int) apptsDataGridView["appointment_id", row].Value;
             using (var connection = new Builder().Connect())
             {
                 var result = UnifiedApptData.RemoveAppointment(selected);
@@ -133,7 +134,7 @@ public partial class Main : Form
         if (selectedRow != null)
         {
             var row = cxDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int)cxDataGridView["customer_id", row].Value;
+            var selected = (int) cxDataGridView["customer_id", row].Value;
             {
                 using (var connection = new Builder().Connect())
                 {
@@ -166,10 +167,12 @@ public partial class Main : Form
     private void apptSearchBtn_Click(object sender, EventArgs e)
     {
         DGVExtensions.searchDGV(apptsDataGridView, "appointment", apptSearchTB.Text);
-    } 
-    private void cxSearchBtn_Click(object sender, EventArgs e) 
-    { 
+    }
+
+    private void cxSearchBtn_Click(object sender, EventArgs e)
+    {
         DGVExtensions.searchDGV(cxDataGridView, "customer", cxSearchTB.Text);
     }
+
     #endregion
 }
