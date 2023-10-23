@@ -78,6 +78,7 @@
             saveBtn.TabIndex = 5;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += saveBtn_Click;
             // 
             // cancelBtn
             // 
@@ -322,7 +323,7 @@
             // 
             // apptIdTB
             // 
-            apptIdTB.Location = new Point(679, 278);
+            apptIdTB.Location = new Point(679, 282);
             apptIdTB.Name = "apptIdTB";
             apptIdTB.PlaceholderText = "Appt Id";
             apptIdTB.ReadOnly = true;

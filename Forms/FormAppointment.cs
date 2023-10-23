@@ -17,7 +17,7 @@ public partial class FormAppointment : Form
     {
         InitializeComponent();
         UpdateTbs(appt);
-        if (appt is {inhomeservice: 1, office_id: 0})
+        if (appt is { inhomeservice: 1, office_id: 0 })
         {
             homeRadioBtn.Checked = true;
             HideOfficeStuff();
@@ -132,7 +132,7 @@ public partial class FormAppointment : Form
                 break;
             case false:
                 cxIdTB.Text = cx.customer_id.ToString();
-                cxNameTb.Text = cx.first + cx.last;
+                cxNameTb.Text = cx.first + " " + cx.last;
                 cxEmailTB.Text = cx.email;
                 cxPhoneTB.Text = cx.phone;
                 break;
@@ -240,4 +240,38 @@ public partial class FormAppointment : Form
     }
 
     #endregion
+
+    private void saveBtn_Click(object sender, EventArgs e)
+    {
+        if (homeRadioBtn.Checked == officeRadioBtn.Checked)
+        {
+            MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
+        }
+
+        if (homeRadioBtn.Checked)
+        {
+            var homeAppt = new HomeAppointment();
+            homeAppt.customer_id = int.Parse(cxIdTB.Text);
+            homeAppt.staff_id = int.Parse(staffIdTB.Text);
+            homeAppt.service_id = int.Parse(serviceIdTB.Text);
+            homeAppt.start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay;
+            homeAppt.end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay;
+            homeAppt.inhomeservice = 1;
+            homeAppt.service_address_id = int.Parse(addressIdTB.Text);
+            HomeAppointment.InsertHomeAppt(homeAppt);
+        }
+
+        if (officeRadioBtn.Checked)
+        {
+            var officeAppt = new OfficeAppointment();
+            officeAppt.customer_id = int.Parse(cxIdTB.Text);
+            officeAppt.staff_id = int.Parse(staffIdTB.Text);
+            officeAppt.office_id = int.Parse(officeIdTB.Text);
+            officeAppt.service_id = int.Parse(serviceIdTB.Text);
+            officeAppt.start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay;
+            officeAppt.end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay;
+            officeAppt.inhomeservice = 0;
+            OfficeAppointment.InsertOfficeAppt(officeAppt);
+        }
+    }
 }
