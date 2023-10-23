@@ -59,6 +59,14 @@
             officeRadioBtn = new RadioButton();
             homeRadioBtn = new RadioButton();
             mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
+            cityTB = new TextBox();
+            address2TB = new TextBox();
+            countryTB = new TextBox();
+            stateTB = new TextBox();
+            address1TB = new TextBox();
+            addressIdTB = new TextBox();
+            homeSearchBtn = new Button();
+            saSearchTB = new TextBox();
             SuspendLayout();
             // 
             // saveBtn
@@ -254,7 +262,7 @@
             serviceDescTb.Name = "serviceDescTb";
             serviceDescTb.PlaceholderText = "Service Description";
             serviceDescTb.ReadOnly = true;
-            serviceDescTb.Size = new Size(490, 23);
+            serviceDescTb.Size = new Size(491, 23);
             serviceDescTb.TabIndex = 30;
             // 
             // serviceNameTb
@@ -296,9 +304,9 @@
             // officeSearchButton
             // 
             officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            officeSearchButton.Location = new Point(439, 255);
+            officeSearchButton.Location = new Point(440, 255);
             officeSearchButton.Name = "officeSearchButton";
-            officeSearchButton.Size = new Size(75, 26);
+            officeSearchButton.Size = new Size(74, 26);
             officeSearchButton.TabIndex = 32;
             officeSearchButton.Text = "Search";
             officeSearchButton.UseVisualStyleBackColor = true;
@@ -314,7 +322,7 @@
             // 
             // apptIdTB
             // 
-            apptIdTB.Location = new Point(650, 364);
+            apptIdTB.Location = new Point(679, 278);
             apptIdTB.Name = "apptIdTB";
             apptIdTB.PlaceholderText = "Appt Id";
             apptIdTB.ReadOnly = true;
@@ -351,6 +359,73 @@
             mySqlCommandBuilder1.QuotePrefix = "`";
             mySqlCommandBuilder1.QuoteSuffix = "`";
             // 
+            // cityTB
+            // 
+            cityTB.Location = new Point(23, 403);
+            cityTB.Name = "cityTB";
+            cityTB.PlaceholderText = "City";
+            cityTB.Size = new Size(408, 23);
+            cityTB.TabIndex = 52;
+            // 
+            // address2TB
+            // 
+            address2TB.Location = new Point(23, 376);
+            address2TB.Name = "address2TB";
+            address2TB.PlaceholderText = "Address Line 2 (Optional)";
+            address2TB.Size = new Size(408, 23);
+            address2TB.TabIndex = 51;
+            // 
+            // countryTB
+            // 
+            countryTB.Location = new Point(126, 430);
+            countryTB.Name = "countryTB";
+            countryTB.PlaceholderText = "Country";
+            countryTB.Size = new Size(305, 23);
+            countryTB.TabIndex = 50;
+            // 
+            // stateTB
+            // 
+            stateTB.Location = new Point(23, 430);
+            stateTB.Name = "stateTB";
+            stateTB.PlaceholderText = "State";
+            stateTB.Size = new Size(94, 23);
+            stateTB.TabIndex = 49;
+            // 
+            // address1TB
+            // 
+            address1TB.Location = new Point(23, 348);
+            address1TB.Name = "address1TB";
+            address1TB.PlaceholderText = "Address Line 1";
+            address1TB.Size = new Size(408, 23);
+            address1TB.TabIndex = 48;
+            // 
+            // addressIdTB
+            // 
+            addressIdTB.Location = new Point(440, 348);
+            addressIdTB.Name = "addressIdTB";
+            addressIdTB.PlaceholderText = "Address Id";
+            addressIdTB.ReadOnly = true;
+            addressIdTB.Size = new Size(76, 23);
+            addressIdTB.TabIndex = 47;
+            // 
+            // homeSearchBtn
+            // 
+            homeSearchBtn.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            homeSearchBtn.Location = new Point(438, 316);
+            homeSearchBtn.Name = "homeSearchBtn";
+            homeSearchBtn.Size = new Size(75, 26);
+            homeSearchBtn.TabIndex = 54;
+            homeSearchBtn.Text = "Search";
+            homeSearchBtn.UseVisualStyleBackColor = true;
+            // 
+            // saSearchTB
+            // 
+            saSearchTB.Location = new Point(23, 320);
+            saSearchTB.Name = "saSearchTB";
+            saSearchTB.PlaceholderText = "If Cx has previously had a home appt, search here";
+            saSearchTB.Size = new Size(408, 23);
+            saSearchTB.TabIndex = 53;
+            // 
             // FormAppointment
             // 
             AcceptButton = saveBtn;
@@ -358,6 +433,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
             ClientSize = new Size(784, 495);
+            Controls.Add(homeSearchBtn);
+            Controls.Add(saSearchTB);
+            Controls.Add(cityTB);
+            Controls.Add(address2TB);
+            Controls.Add(countryTB);
+            Controls.Add(stateTB);
+            Controls.Add(address1TB);
+            Controls.Add(addressIdTB);
             Controls.Add(homeRadioBtn);
             Controls.Add(officeRadioBtn);
             Controls.Add(apptIdTB);
@@ -426,5 +509,13 @@
         private RadioButton officeRadioBtn;
         private RadioButton homeRadioBtn;
         private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
+        private TextBox cityTB;
+        private TextBox address2TB;
+        private TextBox countryTB;
+        private TextBox stateTB;
+        private TextBox address1TB;
+        private TextBox addressIdTB;
+        private Button homeSearchBtn;
+        private TextBox saSearchTB;
     }
 }

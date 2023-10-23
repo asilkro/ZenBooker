@@ -62,6 +62,60 @@ public partial class FormAppointment : Form
         officeSearchTB.Text = cx?.preferred_office.ToString();
     }
 
+    private void ShowHideFields()
+    {
+        if (homeRadioBtn.Checked)
+        {
+            HideOfficeStuff();
+            ShowHomeStuff();
+        }
+
+        if (officeRadioBtn.Checked)
+        {
+            HideHomeStuff();
+            ShowOfficeStuff();
+        }
+    }
+
+    private void HideOfficeStuff()
+    {
+        officeIdTB.Hide();
+        officeNameTB.Hide();
+        officeSearchButton.Hide();
+        officeSearchTB.Hide();
+    }
+
+    private void HideHomeStuff()
+    {
+        addressIdTB.Hide();
+        address1TB.Hide();
+        address2TB.Hide();
+        cityTB.Hide();
+        stateTB.Hide();
+        countryTB.Hide();
+        homeSearchBtn.Hide();
+        saSearchTB.Hide();
+    }
+
+    private void ShowOfficeStuff()
+    {
+        officeIdTB.Show();
+        officeNameTB.Show();
+        officeSearchButton.Show();
+        officeSearchTB.Show();
+    }
+
+    private void ShowHomeStuff()
+    {
+        addressIdTB.Show();
+        address1TB.Show();
+        address2TB.Show();
+        cityTB.Show();
+        stateTB.Show();
+        countryTB.Show();
+        homeSearchBtn.Show();
+        saSearchTB.Show();
+    }
 
     #region Event Handlers
 
@@ -139,24 +193,30 @@ public partial class FormAppointment : Form
             {
                 case true:
                     homeRadioBtn.Checked = false;
+                    HideHomeStuff();
+                    ShowOfficeStuff();
                     break;
                 case false:
                     homeRadioBtn.Checked = true;
+                    HideOfficeStuff();
+                    ShowHomeStuff();
                     break;
             }
         }
 
-        if (sender.Equals(homeRadioBtn))
+        if (!sender.Equals(homeRadioBtn)) return;
+        switch (homeRadioBtn.Checked)
         {
-            switch (homeRadioBtn.Checked)
-            {
-                case true:
-                    officeRadioBtn.Checked = false;
-                    break;
-                case false:
-                    officeRadioBtn.Checked = true;
-                    break;
-            }
+            case true:
+                officeRadioBtn.Checked = false;
+                HideOfficeStuff();
+                ShowHomeStuff();
+                break;
+            case false:
+                officeRadioBtn.Checked = true;
+                HideHomeStuff();
+                ShowOfficeStuff();
+                break;
         }
     }
 }
