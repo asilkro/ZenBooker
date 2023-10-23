@@ -73,9 +73,7 @@ public partial class Main : Form
                         inhomeservice = uAppt.inhomeservice
                     };
                     var apptOForm = new FormAppointment(apptFill);
-                    var officeForm = new FormOfficeAppt(officeAppt);
                     apptOForm.ShowDialog();
-                    officeForm.ShowDialog();
                     break;
                 case false:
                     var homeAppt = new HomeAppointment
@@ -90,9 +88,7 @@ public partial class Main : Form
                         inhomeservice = uAppt.inhomeservice
                     };
                     var apptHForm = new FormAppointment(apptFill);
-                    var homeForm = new FormHomeAppt(homeAppt);
                     apptHForm.ShowDialog();
-                    homeForm.ShowDialog();
                     break;
             }
 

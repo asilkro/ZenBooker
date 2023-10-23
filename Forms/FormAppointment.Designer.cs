@@ -417,6 +417,7 @@
             homeSearchBtn.TabIndex = 54;
             homeSearchBtn.Text = "Search";
             homeSearchBtn.UseVisualStyleBackColor = true;
+            homeSearchBtn.Click += homeSearchBtn_Click;
             // 
             // saSearchTB
             // 

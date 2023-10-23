@@ -100,8 +100,7 @@ public class Helpers
 
     #region SQL
 
-    public static string?
-        AutoIncrementId(string tableName)
+    public static string? AutoIncrementId(string tableName)
     {
         using var connection = new Builder().Connect();
         try
@@ -234,6 +233,20 @@ public class Helpers
         }
 
         return nOffice;
+    }
+
+    public static Address? ReturnAddress(string searchTerm)
+    {
+        using var connection = new Builder().Connect();
+        if (int.TryParse(searchTerm, out var i))
+        {
+            var officeById = connection.Query<Address>("address", e => e.address_id == i).GetEnumerator().Current;
+            return officeById;
+        }
+
+        var officeByAddress1 = connection.Query<Address>("address", e => e.address1.Contains(searchTerm))
+            .GetEnumerator().Current;
+        return officeByAddress1 ?? null;
     }
 
     #endregion

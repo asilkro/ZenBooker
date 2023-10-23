@@ -62,21 +62,7 @@ public partial class FormAppointment : Form
         officeSearchTB.Text = cx?.preferred_office.ToString();
     }
 
-    private void ShowHideFields()
-    {
-        if (homeRadioBtn.Checked)
-        {
-            HideOfficeStuff();
-            ShowHomeStuff();
-        }
-
-        if (officeRadioBtn.Checked)
-        {
-            HideHomeStuff();
-            ShowOfficeStuff();
-        }
-    }
-
+    #region Logic for Radio Buttons / Visibility of Relevant Options
     private void HideOfficeStuff()
     {
         officeIdTB.Hide();
@@ -116,6 +102,10 @@ public partial class FormAppointment : Form
         homeSearchBtn.Show();
         saSearchTB.Show();
     }
+
+
+    #endregion
+
 
     #region Event Handlers
 
@@ -183,8 +173,6 @@ public partial class FormAppointment : Form
         }
     }
 
-    #endregion
-
     private void CheckedChanged(object sender, EventArgs e)
     {
         if (sender.Equals(officeRadioBtn))
@@ -219,4 +207,24 @@ public partial class FormAppointment : Form
                 break;
         }
     }
+
+    private void homeSearchBtn_Click(object sender, EventArgs e)
+    {
+        var result = Helpers.ReturnAddress(saSearchTB.Text);
+        if (result == null)
+        {
+            MessageBox.Show("Not found, try the address ID or the first line of the address again.", "Address not found");
+        }
+        if (result != null)
+        {
+            addressIdTB.Text = result.address_id.ToString();
+            address1TB.Text = result.address1;
+            address2TB.Text = result.address2;
+            cityTB.Text = result.city;
+            stateTB.Text = result.state;
+            countryTB.Text = result.country;
+        }
+    }
+
+    #endregion
 }

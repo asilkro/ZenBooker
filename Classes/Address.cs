@@ -8,12 +8,12 @@ public class Address
 {
     #region Properties
 
-    public int AddressId { get; set; }
-    public string Address1 { get; set; }
-    public string? Address2 { get; set; }
-    public string City { get; set; }
-    public string? State { get; set; }
-    public string Country { get; set; }
+    public int address_id { get; set; }
+    public string address1 { get; set; }
+    public string? address2 { get; set; }
+    public string city { get; set; }
+    public string? state { get; set; }
+    public string country { get; set; }
 
     #endregion
 
@@ -26,12 +26,12 @@ public class Address
     public Address(int addressId, string address1, string? address2,
         string city, string? state, string country)
     {
-        AddressId = addressId;
-        Address1 = address1;
-        Address2 = address2;
-        City = city;
-        State = state;
-        Country = country;
+        address_id = addressId;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.country = country;
     }
 
     #endregion
