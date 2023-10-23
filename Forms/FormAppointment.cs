@@ -17,6 +17,19 @@ public partial class FormAppointment : Form
     {
         InitializeComponent();
         UpdateTbs(appt);
+        if (appt is {inhomeservice: 1, office_id: 0})
+        {
+            homeRadioBtn.Checked = true;
+            HideOfficeStuff();
+            ShowHomeStuff();
+        }
+
+        if (appt.inhomeservice == 0 && appt.office_id != 0)
+        {
+            officeRadioBtn.Checked = true;
+            HideHomeStuff();
+            ShowOfficeStuff();
+        }
     }
 
     public void UpdateTbs(UnifiedApptData appt)
