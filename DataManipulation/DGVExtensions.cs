@@ -147,12 +147,12 @@ namespace ZenoBook.DataManipulation
                             foreach (DataRow row in customerDataTable.Rows)
                             {
                                 Customer cx = new Customer();
-                                cx.Customer_Id = (int) row["customer_id"];
-                                cx.First = row["First"].ToString();
-                                cx.Last = row["Last"].ToString();
-                                cx.Phone = row["Phone"].ToString();
-                                cx.Email = row["Email"].ToString();
-                                cx.Preferred_Office = Convert.IsDBNull(row["Preferred_Office"])
+                                cx.customer_id = (int) row["customer_id"];
+                                cx.first = row["First"].ToString();
+                                cx.last = row["Last"].ToString();
+                                cx.phone = row["Phone"].ToString();
+                                cx.email = row["Email"].ToString();
+                                cx.preferred_office = Convert.IsDBNull(row["Preferred_Office"])
                                     ? 0
                                     : (int) row["Preferred_Office"];
                                 customers.Add(cx);

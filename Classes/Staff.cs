@@ -8,29 +8,25 @@ public class Staff
 {
     #region Properties / Fields
 
-    public int Staff_Id { get; set; } // PK, auto_increment, not_null
-    public int User_Id { get; set; } // FK, Users.UserId
-    public int Office_Id { get; set; } // FK, Office.office_id
-    public string Name { get; set; } // VARCHAR(45), not_null
-    public string Phone { get; set; } // VARCHAR(12)
-    public string Email { get; set; } // VARCHAR(45)
+    public int staff_id { get; set; } // PK, auto_increment, not_null
+    public int user_id { get; set; } // FK, Users.UserId
+    public int office_id { get; set; } // FK, Office.office_id
+    public string name { get; set; } // VARCHAR(45), not_null
+    public string phone { get; set; } // VARCHAR(12)
+    public string email { get; set; } // VARCHAR(45)
 
     #endregion
 
     #region Constructors
 
-    public Staff()
-    {
-    }
-
     public Staff(int staff_Id, int user_Id, int office_Id, string name, string phone, string email)
     {
-        Staff_Id = staff_Id;
-        User_Id = user_Id;
-        Office_Id = office_Id;
-        Name = name;
-        Phone = phone;
-        Email = email;
+        staff_id = staff_Id;
+        user_id = user_Id;
+        office_id = office_Id;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
     }
 
     #endregion

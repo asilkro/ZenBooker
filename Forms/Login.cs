@@ -29,7 +29,7 @@ public partial class Login : Form
         {
             case true:
                 var main = new Main();
-                main.ShowDialog();
+                main.Show();
                 Hide();
                 break;
             case false:

@@ -20,7 +20,7 @@ public class HomeAppointment : Appointment
     }
 
     public HomeAppointment(int appointmentId, int customerId, int staffId, int serviceId, DateTime start, DateTime end,
-        byte inhomeservice, int service_Address_Id)
+        sbyte inhomeservice, int service_Address_Id)
     {
         appointment_id = appointmentId;
         customer_id = customerId;
@@ -28,7 +28,7 @@ public class HomeAppointment : Appointment
         service_id = serviceId;
         base.start = start;
         base.end = end;
-        inhomeservice = inhomeservice;
+        this.inhomeservice = inhomeservice;
         service_address_id = service_Address_Id;
     }
 

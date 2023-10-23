@@ -24,12 +24,12 @@ public partial class FormCustomer : Form
     {
         _existingCx = customer;
         InitializeComponent();
-        tbFirstName.Text = customer.First;
-        tbLastName.Text = customer.Last;
-        tbPhone.Text = customer.Phone;
-        tbEmail.Text = customer.Email;
-        tbOffice.Text = customer.Preferred_Office.ToString();
-        cxIdTB.Text = customer.Customer_Id.ToString();
+        tbFirstName.Text = customer.first;
+        tbLastName.Text = customer.last;
+        tbPhone.Text = customer.phone;
+        tbEmail.Text = customer.email;
+        tbOffice.Text = customer.preferred_office.ToString();
+        cxIdTB.Text = customer.customer_id.ToString();
 
         saveBtn.Enabled = false;
         saveBtn.Visible = false;

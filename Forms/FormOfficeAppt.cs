@@ -24,8 +24,8 @@ public partial class FormOfficeAppt : Form
     {
         if (address != null)
         {
-            officeNameTB.Text = address.Office_Name;
-            officeIdTB.Text = address.Office_Id.ToString();
+            officeNameTB.Text = address.office_name;
+            officeIdTB.Text = address.office_id.ToString();
         }
     }
 
@@ -69,21 +69,21 @@ public partial class FormOfficeAppt : Form
             var searchTerms = searchTerm.Split(' ', 2);
             var first = searchTerms[0];
             var last = searchTerms[1];
-            var sCustomer = connection.Query<Customer>("customer", e => e.First == first && e.Last == last)
+            var sCustomer = connection.Query<Customer>("customer", e => e.first == first && e.last == last)
                 .FirstOrDefault();
             return sCustomer;
         }
 
         if (searchTerm.Contains(atSign))
         {
-            var aCustomer = connection.Query<Customer>("customer", e => e.Email == searchTerm)
+            var aCustomer = connection.Query<Customer>("customer", e => e.email == searchTerm)
                 .FirstOrDefault();
             return aCustomer;
         }
 
         if (int.TryParse(searchTerm, out var i))
         {
-            var iCustomer = connection.Query<Customer>("customer", e => e.Customer_Id == i)
+            var iCustomer = connection.Query<Customer>("customer", e => e.customer_id == i)
                 .FirstOrDefault();
             return iCustomer;
         }

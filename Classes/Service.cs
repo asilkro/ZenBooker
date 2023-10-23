@@ -16,10 +16,6 @@ public class Service
 
     #region Constructors
 
-    public Service()
-    {
-    }
-
     public Service(int service_Id, string service_Name, string service_Description)
     {
         Service_Id = service_Id;
@@ -38,7 +34,7 @@ public class Service
             try
             {
                 var id = connection.Insert("service", service);
-                MessageBox.Show("Service id: " + id + " created.", "Service Created");
+                MessageBox.Show("Service id: " + service.Service_Id + " created.", "Service Created");
                 return true;
             }
             catch (Exception e)
@@ -56,7 +52,7 @@ public class Service
             try
             {
                 var id = connection.Delete("service", serviceId);
-                MessageBox.Show("Service id: " + id + " removed.", "Service Removed");
+                MessageBox.Show("Service id: " + serviceId + " removed.", "Service Removed");
                 return true;
             }
             catch (Exception e)
@@ -74,8 +70,8 @@ public class Service
             try
             {
                 {
-                    var updatedCx = connection.Update("service", service);
-                    MessageBox.Show("Service id: " + updatedCx + " updated.", "Service Updated");
+                    var updatedService = connection.Update("service", service);
+                    MessageBox.Show("Service id: " + service.Service_Id + " updated.", "Service Updated");
                 }
                 return true;
             }

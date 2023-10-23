@@ -137,7 +137,7 @@ public class Helpers
             var searchTerms = searchTerm.Split(' ', 2);
             var first = searchTerms[0];
             var last = searchTerms[1];
-            var sCustomer = connection.Query<Customer>("customer", e => e.First == first && e.Last == last)
+            var sCustomer = connection.Query<Customer>("customer", e => e.first == first && e.last == last)
                 .FirstOrDefault();
             if (sCustomer != null)
             {
@@ -147,7 +147,7 @@ public class Helpers
 
         if (searchTerm.Contains(atSign))
         {
-            var aCustomer = connection.Query<Customer>("customer", e => e.Email == searchTerm)
+            var aCustomer = connection.Query<Customer>("customer", e => e.email == searchTerm)
                 .FirstOrDefault();
             if (aCustomer != null)
             {
@@ -157,7 +157,7 @@ public class Helpers
 
         if (int.TryParse(searchTerm, out var i))
         {
-            var iCustomer = connection.Query<Customer>("customer", e => e.Customer_Id == i)
+            var iCustomer = connection.Query<Customer>("customer", e => e.customer_id == i)
                 .FirstOrDefault();
             if (iCustomer != null)
             {
@@ -174,7 +174,7 @@ public class Helpers
         var atSign = '@';
         if (searchTerm.Contains(atSign))
         {
-            var eStaff = connection.Query<Staff>("staff", e => e.Email == searchTerm).FirstOrDefault();
+            var eStaff = connection.Query<Staff>("staff", e => e.email == searchTerm).FirstOrDefault();
             if (eStaff == null)
             {
                 return null;
@@ -183,7 +183,7 @@ public class Helpers
             return eStaff;
         }
 
-        var staff = connection.Query<Staff>("staff", e => e.Name == searchTerm).FirstOrDefault();
+        var staff = connection.Query<Staff>("staff", e => e.name == searchTerm).FirstOrDefault();
         if (staff == null)
         {
             return null;
@@ -221,12 +221,12 @@ public class Helpers
         using var connection = new Builder().Connect();
         if (int.TryParse(searchTerm, out var i))
         {
-            var iOffice = connection.Query<Office>("office", e => e.Office_Id == int.Parse(searchTerm))
+            var iOffice = connection.Query<Office>("office", e => e.office_id == int.Parse(searchTerm))
                 .GetEnumerator().Current;
             return iOffice;
         }
 
-        var nOffice = connection.Query<Office>("office", e => e.Office_Name.Contains(searchTerm))
+        var nOffice = connection.Query<Office>("office", e => e.office_name.Contains(searchTerm))
             .GetEnumerator().Current;
         if (nOffice == null)
         {

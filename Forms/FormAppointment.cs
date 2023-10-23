@@ -48,18 +48,18 @@ public partial class FormAppointment : Form
     {
         var staff = Helpers.ReturnStaff(appt.staff_id.ToString());
         staffIdTB.Text = appt.staff_id.ToString();
-        staffNameTb.Text = staff?.Name;
+        staffNameTb.Text = staff?.name;
     }
 
     private void FillCxFields(Appointment appt)
     {
         var cx = Helpers.ReturnCustomer(appt.customer_id.ToString());
         cxIdTB.Text = appt.customer_id.ToString();
-        var v = cx?.First + cx?.Last;
+        var v = cx?.first + cx?.last;
         cxNameTb.Text = v;
-        cxEmailTB.Text = cx?.Email;
-        cxPhoneTB.Text = cx?.Phone;
-        officeSearchTB.Text = cx?.Preferred_Office.ToString();
+        cxEmailTB.Text = cx?.email;
+        cxPhoneTB.Text = cx?.phone;
+        officeSearchTB.Text = cx?.preferred_office.ToString();
     }
 
 
@@ -74,10 +74,10 @@ public partial class FormAppointment : Form
                 MessageBox.Show("No matching customer found. Check your entry and try again.", "No Customer Found");
                 break;
             case false:
-                cxIdTB.Text = cx.Customer_Id.ToString();
-                cxNameTb.Text = cx.First + cx.Last;
-                cxEmailTB.Text = cx.Email;
-                cxPhoneTB.Text = cx.Phone;
+                cxIdTB.Text = cx.customer_id.ToString();
+                cxNameTb.Text = cx.first + cx.last;
+                cxEmailTB.Text = cx.email;
+                cxPhoneTB.Text = cx.phone;
                 break;
         }
     }
@@ -91,8 +91,8 @@ public partial class FormAppointment : Form
                 MessageBox.Show("No matching staff found. Check your entry and try again.", "No Staff Found");
                 break;
             case false:
-                staffIdTB.Text = staff.Staff_Id.ToString();
-                staffNameTb.Text = staff.Name;
+                staffIdTB.Text = staff.staff_id.ToString();
+                staffNameTb.Text = staff.name;
                 break;
         }
     }
@@ -123,8 +123,8 @@ public partial class FormAppointment : Form
                 MessageBox.Show("Unable to match to office. Check your entry and try again.", "Unable to match office");
                 break;
             case false:
-                officeIdTB.Text = office.Office_Id.ToString();
-                officeNameTB.Text = office.Office_Name;
+                officeIdTB.Text = office.office_id.ToString();
+                officeNameTB.Text = office.office_name;
                 break;
         }
     }
