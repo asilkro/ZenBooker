@@ -86,7 +86,7 @@ public partial class FormHomeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        _homeAppt.service_address_id = (int) ReturnServiceAddyId(homeAppt.customer_id.ToString())!;
+        _homeAppt.service_address_id = (int) ReturnServiceAddyId(_homeAppt.customer_id.ToString())!;
         saveBtn.Enabled = true;
     }
 

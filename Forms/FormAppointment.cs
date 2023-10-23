@@ -9,15 +9,17 @@ public partial class FormAppointment : Form
     {
         InitializeComponent();
         apptIdTB.Text = Helpers.AutoIncrementId("appointment");
+        startDtPicker.Format = DateTimePickerFormat.Time;
+        endDtPicker.Format = DateTimePickerFormat.Time;
     }
 
-    public FormAppointment(Appointment appt)
+    public FormAppointment(UnifiedApptData appt)
     {
         InitializeComponent();
         UpdateTbs(appt);
     }
 
-    public void UpdateTbs(Appointment appt)
+    public void UpdateTbs(UnifiedApptData appt)
     {
         FillDt(appt);
         FillCxFields(appt);
@@ -26,13 +28,11 @@ public partial class FormAppointment : Form
         Helpers.ReturnOffice(officeSearchTB.Text);
     }
 
-    private void FillDt(Appointment appt)
+    private void FillDt(UnifiedApptData appt)
     {
         apptIdTB.Text = appt.appointment_id.ToString();
         dateCalendar.SetDate(appt.start.Date);
-        startDtPicker.Format = DateTimePickerFormat.Time;
         startDtPicker.Value = appt.start;
-        endDtPicker.Format = DateTimePickerFormat.Time;
         endDtPicker.Value = appt.end;
     }
 
@@ -130,4 +130,33 @@ public partial class FormAppointment : Form
     }
 
     #endregion
+
+    private void CheckedChanged(object sender, EventArgs e)
+    {
+        if (sender.Equals(officeRadioBtn))
+        {
+            switch (officeRadioBtn.Checked)
+            {
+                case true:
+                    homeRadioBtn.Checked = false;
+                    break;
+                case false:
+                    homeRadioBtn.Checked = true;
+                    break;
+            }
+        }
+
+        if (sender.Equals(homeRadioBtn))
+        {
+            switch (homeRadioBtn.Checked)
+            {
+                case true:
+                    officeRadioBtn.Checked = false;
+                    break;
+                case false:
+                    officeRadioBtn.Checked = true;
+                    break;
+            }
+        }
+    }
 }

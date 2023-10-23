@@ -58,6 +58,7 @@
             apptIdTB = new TextBox();
             officeRadioBtn = new RadioButton();
             homeRadioBtn = new RadioButton();
+            mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
             SuspendLayout();
             // 
             // saveBtn
@@ -95,8 +96,8 @@
             startDtPicker.CustomFormat = "HH:mm tt";
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             startDtPicker.Format = DateTimePickerFormat.Custom;
-            startDtPicker.Location = new Point(675, 194);
-            startDtPicker.MinDate = DateTime.Today;
+            startDtPicker.Location = new Point(601, 203);
+            startDtPicker.MinDate = new DateTime(2023, 10, 23, 0, 0, 0, 0);
             startDtPicker.Name = "startDtPicker";
             startDtPicker.ShowUpDown = true;
             startDtPicker.Size = new Size(100, 29);
@@ -108,13 +109,12 @@
             endDtPicker.CustomFormat = "HH:mm tt";
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             endDtPicker.Format = DateTimePickerFormat.Custom;
-            endDtPicker.Location = new Point(675, 224);
-            endDtPicker.MinDate = DateTime.Today;
+            endDtPicker.Location = new Point(601, 233);
+            endDtPicker.MinDate = new DateTime(2023, 10, 23, 0, 0, 0, 0);
             endDtPicker.Name = "endDtPicker";
             endDtPicker.ShowUpDown = true;
             endDtPicker.Size = new Size(100, 29);
             endDtPicker.TabIndex = 9;
-            endDtPicker.Value = new DateTime(2023, 9, 17, 15, 0, 0, 0);
             // 
             // cxSearchTB
             // 
@@ -127,7 +127,7 @@
             // cxSearchButton
             // 
             cxSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            cxSearchButton.Location = new Point(438, 31);
+            cxSearchButton.Location = new Point(438, 32);
             cxSearchButton.Name = "cxSearchButton";
             cxSearchButton.Size = new Size(75, 26);
             cxSearchButton.TabIndex = 15;
@@ -159,22 +159,22 @@
             cxEmailTB.Name = "cxEmailTB";
             cxEmailTB.PlaceholderText = "Customer Email";
             cxEmailTB.ReadOnly = true;
-            cxEmailTB.Size = new Size(409, 23);
+            cxEmailTB.Size = new Size(253, 23);
             cxEmailTB.TabIndex = 18;
             // 
             // cxPhoneTB
             // 
-            cxPhoneTB.Location = new Point(23, 115);
+            cxPhoneTB.Location = new Point(312, 87);
             cxPhoneTB.Name = "cxPhoneTB";
             cxPhoneTB.PlaceholderText = "Customer Phone";
             cxPhoneTB.ReadOnly = true;
-            cxPhoneTB.Size = new Size(409, 23);
+            cxPhoneTB.Size = new Size(201, 23);
             cxPhoneTB.TabIndex = 19;
             // 
             // staffSearchButton
             // 
             staffSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            staffSearchButton.Location = new Point(438, 147);
+            staffSearchButton.Location = new Point(438, 113);
             staffSearchButton.Name = "staffSearchButton";
             staffSearchButton.Size = new Size(75, 26);
             staffSearchButton.TabIndex = 21;
@@ -184,7 +184,7 @@
             // 
             // staffSearchTB
             // 
-            staffSearchTB.Location = new Point(23, 150);
+            staffSearchTB.Location = new Point(23, 116);
             staffSearchTB.Name = "staffSearchTB";
             staffSearchTB.PlaceholderText = "Enter the staff member's name or email then click this button -->";
             staffSearchTB.Size = new Size(409, 23);
@@ -192,7 +192,7 @@
             // 
             // staffNameTb
             // 
-            staffNameTb.Location = new Point(23, 177);
+            staffNameTb.Location = new Point(23, 145);
             staffNameTb.Name = "staffNameTb";
             staffNameTb.PlaceholderText = "Staff Member";
             staffNameTb.ReadOnly = true;
@@ -201,7 +201,7 @@
             // 
             // staffIdTB
             // 
-            staffIdTB.Location = new Point(440, 177);
+            staffIdTB.Location = new Point(440, 142);
             staffIdTB.Name = "staffIdTB";
             staffIdTB.PlaceholderText = "Staff Id";
             staffIdTB.ReadOnly = true;
@@ -212,7 +212,7 @@
             // 
             startLbl.AutoSize = true;
             startLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            startLbl.Location = new Point(613, 195);
+            startLbl.Location = new Point(539, 204);
             startLbl.Name = "startLbl";
             startLbl.Size = new Size(53, 25);
             startLbl.TabIndex = 24;
@@ -222,7 +222,7 @@
             // 
             endLbl.AutoSize = true;
             endLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            endLbl.Location = new Point(623, 228);
+            endLbl.Location = new Point(539, 237);
             endLbl.Name = "endLbl";
             endLbl.Size = new Size(46, 25);
             endLbl.TabIndex = 25;
@@ -231,7 +231,7 @@
             // serviceSearchButton
             // 
             serviceSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            serviceSearchButton.Location = new Point(440, 206);
+            serviceSearchButton.Location = new Point(438, 171);
             serviceSearchButton.Name = "serviceSearchButton";
             serviceSearchButton.Size = new Size(75, 26);
             serviceSearchButton.TabIndex = 27;
@@ -241,7 +241,7 @@
             // 
             // serviceSearchTB
             // 
-            serviceSearchTB.Location = new Point(23, 209);
+            serviceSearchTB.Location = new Point(23, 174);
             serviceSearchTB.Name = "serviceSearchTB";
             serviceSearchTB.PlaceholderText = "Enter a service name or ID then click this button -->";
             serviceSearchTB.Size = new Size(409, 23);
@@ -249,7 +249,7 @@
             // 
             // serviceDescTb
             // 
-            serviceDescTb.Location = new Point(23, 264);
+            serviceDescTb.Location = new Point(22, 230);
             serviceDescTb.Name = "serviceDescTb";
             serviceDescTb.PlaceholderText = "Service Description";
             serviceDescTb.ReadOnly = true;
@@ -258,7 +258,7 @@
             // 
             // serviceNameTb
             // 
-            serviceNameTb.Location = new Point(23, 236);
+            serviceNameTb.Location = new Point(22, 202);
             serviceNameTb.Name = "serviceNameTb";
             serviceNameTb.PlaceholderText = "Service Name";
             serviceNameTb.ReadOnly = true;
@@ -267,7 +267,7 @@
             // 
             // serviceIdTB
             // 
-            serviceIdTB.Location = new Point(440, 236);
+            serviceIdTB.Location = new Point(439, 202);
             serviceIdTB.Name = "serviceIdTB";
             serviceIdTB.PlaceholderText = "Service Id";
             serviceIdTB.ReadOnly = true;
@@ -276,7 +276,7 @@
             // 
             // officeNameTB
             // 
-            officeNameTB.Location = new Point(23, 329);
+            officeNameTB.Location = new Point(22, 286);
             officeNameTB.Name = "officeNameTB";
             officeNameTB.PlaceholderText = "Office Name";
             officeNameTB.ReadOnly = true;
@@ -285,7 +285,7 @@
             // 
             // officeIdTB
             // 
-            officeIdTB.Location = new Point(444, 329);
+            officeIdTB.Location = new Point(443, 286);
             officeIdTB.Name = "officeIdTB";
             officeIdTB.PlaceholderText = "Office Id";
             officeIdTB.ReadOnly = true;
@@ -295,7 +295,7 @@
             // officeSearchButton
             // 
             officeSearchButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            officeSearchButton.Location = new Point(440, 298);
+            officeSearchButton.Location = new Point(439, 255);
             officeSearchButton.Name = "officeSearchButton";
             officeSearchButton.Size = new Size(75, 26);
             officeSearchButton.TabIndex = 32;
@@ -305,7 +305,7 @@
             // 
             // officeSearchTB
             // 
-            officeSearchTB.Location = new Point(23, 302);
+            officeSearchTB.Location = new Point(22, 259);
             officeSearchTB.Name = "officeSearchTB";
             officeSearchTB.PlaceholderText = "Enter an office name or ID then click this button -->";
             officeSearchTB.Size = new Size(409, 23);
@@ -313,7 +313,7 @@
             // 
             // apptIdTB
             // 
-            apptIdTB.Location = new Point(537, 200);
+            apptIdTB.Location = new Point(650, 364);
             apptIdTB.Name = "apptIdTB";
             apptIdTB.PlaceholderText = "Appt Id";
             apptIdTB.ReadOnly = true;
@@ -330,6 +330,7 @@
             officeRadioBtn.TabStop = true;
             officeRadioBtn.Text = "Office Appointment";
             officeRadioBtn.UseVisualStyleBackColor = true;
+            officeRadioBtn.CheckedChanged += CheckedChanged;
             // 
             // homeRadioBtn
             // 
@@ -341,6 +342,13 @@
             homeRadioBtn.TabStop = true;
             homeRadioBtn.Text = "Home Appointment";
             homeRadioBtn.UseVisualStyleBackColor = true;
+            homeRadioBtn.CheckedChanged += CheckedChanged;
+            // 
+            // mySqlCommandBuilder1
+            // 
+            mySqlCommandBuilder1.DataAdapter = null;
+            mySqlCommandBuilder1.QuotePrefix = "`";
+            mySqlCommandBuilder1.QuoteSuffix = "`";
             // 
             // FormAppointment
             // 
@@ -416,5 +424,6 @@
         private TextBox apptIdTB;
         private RadioButton officeRadioBtn;
         private RadioButton homeRadioBtn;
+        private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
     }
 }

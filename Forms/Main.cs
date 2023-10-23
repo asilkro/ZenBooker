@@ -23,7 +23,7 @@ public partial class Main : Form
     private void logoutBtn_Click(object sender, EventArgs e)
     {
         var newLogin = new Login();
-        newLogin.ShowDialog();
+        newLogin.Show();
         this.Close();
     }
 
@@ -48,7 +48,7 @@ public partial class Main : Form
 
             var uAppt = UnifiedApptData.GetAppointment(selected);
 
-            var apptFill = new Appointment();
+            var apptFill = new UnifiedApptData();
             if (uAppt == null) return;
             apptFill.appointment_id = uAppt.appointment_id;
             apptFill.customer_id = uAppt.customer_id;
