@@ -56,7 +56,8 @@
             officeSearchButton = new Button();
             officeSearchTB = new TextBox();
             apptIdTB = new TextBox();
-            mySqlDataAdapter1 = new MySqlConnector.MySqlDataAdapter();
+            officeRadioBtn = new RadioButton();
+            homeRadioBtn = new RadioButton();
             SuspendLayout();
             // 
             // saveBtn
@@ -91,24 +92,27 @@
             // startDtPicker
             // 
             startDtPicker.Checked = false;
-            startDtPicker.CustomFormat = "HH:mm";
+            startDtPicker.CustomFormat = "HH:mm tt";
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             startDtPicker.Format = DateTimePickerFormat.Custom;
             startDtPicker.Location = new Point(675, 194);
+            startDtPicker.MinDate = DateTime.Today;
             startDtPicker.Name = "startDtPicker";
-            startDtPicker.Size = new Size(75, 29);
+            startDtPicker.ShowUpDown = true;
+            startDtPicker.Size = new Size(100, 29);
             startDtPicker.TabIndex = 8;
-            startDtPicker.Value = new DateTime(2023, 9, 17, 14, 0, 0, 0);
             // 
             // endDtPicker
             // 
             endDtPicker.Checked = false;
-            endDtPicker.CustomFormat = "HH:mm";
+            endDtPicker.CustomFormat = "HH:mm tt";
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             endDtPicker.Format = DateTimePickerFormat.Custom;
             endDtPicker.Location = new Point(675, 224);
+            endDtPicker.MinDate = DateTime.Today;
             endDtPicker.Name = "endDtPicker";
-            endDtPicker.Size = new Size(75, 29);
+            endDtPicker.ShowUpDown = true;
+            endDtPicker.Size = new Size(100, 29);
             endDtPicker.TabIndex = 9;
             endDtPicker.Value = new DateTime(2023, 9, 17, 15, 0, 0, 0);
             // 
@@ -210,7 +214,7 @@
             startLbl.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             startLbl.Location = new Point(613, 195);
             startLbl.Name = "startLbl";
-            startLbl.Size = new Size(56, 25);
+            startLbl.Size = new Size(53, 25);
             startLbl.TabIndex = 24;
             startLbl.Text = "start";
             // 
@@ -316,13 +320,27 @@
             apptIdTB.Size = new Size(71, 23);
             apptIdTB.TabIndex = 38;
             // 
-            // mySqlDataAdapter1
+            // officeRadioBtn
             // 
-            mySqlDataAdapter1.DeleteCommand = null;
-            mySqlDataAdapter1.InsertCommand = null;
-            mySqlDataAdapter1.SelectCommand = null;
-            mySqlDataAdapter1.UpdateBatchSize = 0;
-            mySqlDataAdapter1.UpdateCommand = null;
+            officeRadioBtn.AutoSize = true;
+            officeRadioBtn.Location = new Point(535, 282);
+            officeRadioBtn.Name = "officeRadioBtn";
+            officeRadioBtn.Size = new Size(131, 19);
+            officeRadioBtn.TabIndex = 39;
+            officeRadioBtn.TabStop = true;
+            officeRadioBtn.Text = "Office Appointment";
+            officeRadioBtn.UseVisualStyleBackColor = true;
+            // 
+            // homeRadioBtn
+            // 
+            homeRadioBtn.AutoSize = true;
+            homeRadioBtn.Location = new Point(535, 307);
+            homeRadioBtn.Name = "homeRadioBtn";
+            homeRadioBtn.Size = new Size(132, 19);
+            homeRadioBtn.TabIndex = 40;
+            homeRadioBtn.TabStop = true;
+            homeRadioBtn.Text = "Home Appointment";
+            homeRadioBtn.UseVisualStyleBackColor = true;
             // 
             // FormAppointment
             // 
@@ -331,6 +349,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
             ClientSize = new Size(784, 495);
+            Controls.Add(homeRadioBtn);
+            Controls.Add(officeRadioBtn);
             Controls.Add(apptIdTB);
             Controls.Add(officeNameTB);
             Controls.Add(officeIdTB);
@@ -394,6 +414,7 @@
         private Button officeSearchButton;
         private TextBox officeSearchTB;
         private TextBox apptIdTB;
-        private MySqlConnector.MySqlDataAdapter mySqlDataAdapter1;
+        private RadioButton officeRadioBtn;
+        private RadioButton homeRadioBtn;
     }
 }

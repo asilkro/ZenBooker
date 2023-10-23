@@ -39,7 +39,9 @@ public partial class FormCustomer : Form
     private void validateBtn_Click(object sender, EventArgs e)
     {
         var isThereAProblem = true;
-        foreach (Control c in Controls)
+        for (var index = 0; index < Controls.Count; index++)
+        {
+            var c = Controls[index];
             if (c is TextBox)
                 if (!string.IsNullOrWhiteSpace(c.Text) &&
                     !string.IsNullOrEmpty(c.Text))
@@ -47,50 +49,35 @@ public partial class FormCustomer : Form
                     isThereAProblem = false;
                     break;
                 }
+        }
 
         if (int.TryParse(cxIdTB.Text, out _))
         {
             isThereAProblem = false;
         }
 
-        if (Int64.TryParse(tbPhone.Text, out _))
+        if (int.TryParse(tbPhone.Text, out _))
         {
             isThereAProblem = false;
         }
 
-        if (!isThereAProblem)
-        {
-            validateBtn.Enabled = false;
-            validateBtn.Visible = false;
-            saveBtn.Enabled = true;
-            saveBtn.Visible = true;
-        }
+        if (isThereAProblem) return;
+        validateBtn.Enabled = false;
+        validateBtn.Visible = false;
+        saveBtn.Enabled = true;
+        saveBtn.Visible = true;
     }
 
     private void saveBtn_Click(object sender, EventArgs e)
     {
-        bool result;
-        switch (_existingCx)
+        var result = _existingCx switch
         {
-            case null:
-                result = Customer.InsertCustomer(new Customer(
-                    customer_Id: int.Parse(cxIdTB.Text),
-                    first: tbFirstName.Text,
-                    last: tbLastName.Text,
-                    phone: tbPhone.Text,
-                    email: tbEmail.Text,
-                    int.Parse(tbOffice.Text)));
-                break;
-            case not null:
-                result = Customer.UpdateCustomer((new Customer(
-                    customer_Id: int.Parse(cxIdTB.Text),
-                    first: tbFirstName.Text,
-                    last: tbLastName.Text,
-                    phone: tbPhone.Text,
-                    email: tbEmail.Text,
-                    int.Parse(tbOffice.Text))));
-                break;
-        }
+            null => Customer.InsertCustomer(new Customer(customer_Id: int.Parse(cxIdTB.Text), first: tbFirstName.Text,
+                last: tbLastName.Text, phone: tbPhone.Text, email: tbEmail.Text, int.Parse(tbOffice.Text))),
+            not null => Customer.UpdateCustomer(new Customer(customer_Id: int.Parse(cxIdTB.Text),
+                first: tbFirstName.Text, last: tbLastName.Text, phone: tbPhone.Text, email: tbEmail.Text,
+                int.Parse(tbOffice.Text)))
+        };
 
         if (result)
         {

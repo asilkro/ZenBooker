@@ -8,13 +8,13 @@ namespace ZenoBook.Forms;
 public partial class FormHomeAppt : Form
 {
     private FormAppointment form1;
-    private readonly HomeAppointment homeAppt;
+    private readonly HomeAppointment _homeAppt;
 
     public FormHomeAppt(HomeAppointment appt)
     {
         {
             InitializeComponent();
-            homeAppt = appt;
+            _homeAppt = appt;
 
             ReturnServiceAddress(cxIdTB.Text);
             saveBtn.Enabled = false;
@@ -41,11 +41,9 @@ public partial class FormHomeAppt : Form
         using var connection = new Builder().Connect();
         try
         {
-            if (int.TryParse(searchTerm, out int i))
-            {
-                var serviceAddress = connection.Query<Address>("address", e => e.AddressId == i);
-                FillCxFromSearch(serviceAddress.GetEnumerator().Current);
-            }
+            if (!int.TryParse(searchTerm, out var i)) return;
+            var serviceAddress = connection.Query<Address>("address", e => e.AddressId == i);
+            FillCxFromSearch(serviceAddress.GetEnumerator().Current);
         }
         catch (Exception e)
         {
@@ -88,17 +86,15 @@ public partial class FormHomeAppt : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        homeAppt.service_address_id = (int) ReturnServiceAddyId(homeAppt.customer_id.ToString())!;
+        _homeAppt.service_address_id = (int) ReturnServiceAddyId(homeAppt.customer_id.ToString())!;
         saveBtn.Enabled = true;
     }
 
     private void saveBtn_Click(object sender, EventArgs e)
     {
-        if (HomeAppointment.InsertHomeAppt(homeAppt))
-        {
-            Close();
-            form1.Close();
-        }
+        if (!HomeAppointment.InsertHomeAppt(_homeAppt)) return;
+        Close();
+        form1.Close();
     }
 
     #endregion

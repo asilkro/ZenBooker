@@ -36,90 +36,81 @@ public partial class Main : Form
     private void UpdateApptBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = apptsDataGridView.CurrentRow;
-        if (selectedRow != null)
+        if (selectedRow == null) return;
+        var row = apptsDataGridView.Rows.IndexOf(selectedRow);
+        var selected = (int) apptsDataGridView["appointment_id", row].Value;
+        using var connection = new Builder().Connect();
         {
-            var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int) apptsDataGridView["appointment_id", row].Value;
-            using var connection = new Builder().Connect();
+            if (connection.State != ConnectionState.Open)
             {
-                if (connection.State != ConnectionState.Open)
-                {
-                    connection.Open();
-                }
-
-                var uAppt = UnifiedApptData.GetAppointment(selected);
-
-                var apptFill = new Appointment();
-                if (uAppt != null)
-                {
-                    apptFill.appointment_id = uAppt.appointment_id;
-                    apptFill.customer_id = uAppt.customer_id;
-                    apptFill.service_id = uAppt.service_id;
-                    apptFill.staff_id = uAppt.staff_id;
-                    apptFill.start = uAppt.start;
-                    apptFill.end = uAppt.end;
-
-                    switch (uAppt.office_id != 0 && uAppt.inhomeservice != 1)
-                    {
-                        case true:
-                            //This should be the case for a OfficeAppt
-                            OfficeAppointment officeAppt = new OfficeAppointment()
-                            {
-                                appointment_id = uAppt.appointment_id,
-                                customer_id = uAppt.customer_id,
-                                staff_id = uAppt.staff_id,
-                                office_id = uAppt.office_id,
-                                service_id = uAppt.service_id,
-                                start = uAppt.start,
-                                end = uAppt.end,
-                                inhomeservice = uAppt.inhomeservice,
-                            };
-                            var apptOForm = new FormAppointment(apptFill);
-                            var officeForm = new FormOfficeAppt(officeAppt);
-                            apptOForm.ShowDialog();
-                            officeForm.ShowDialog();
-                            break;
-                        case false:
-                            HomeAppointment homeAppt = new HomeAppointment()
-                            {
-                                appointment_id = uAppt.appointment_id,
-                                customer_id = uAppt.customer_id,
-                                staff_id = uAppt.staff_id,
-                                service_id = uAppt.service_id,
-                                start = uAppt.start,
-                                end = uAppt.end,
-                                service_address_id = uAppt.service_address_id,
-                                inhomeservice = uAppt.inhomeservice,
-                            };
-                            var apptHForm = new FormAppointment(apptFill);
-                            var homeForm = new FormHomeAppt(homeAppt);
-                            apptHForm.ShowDialog();
-                            homeForm.ShowDialog();
-                            break;
-                    }
-
-                    connection.Close();
-                }
+                connection.Open();
             }
+
+            var uAppt = UnifiedApptData.GetAppointment(selected);
+
+            var apptFill = new Appointment();
+            if (uAppt == null) return;
+            apptFill.appointment_id = uAppt.appointment_id;
+            apptFill.customer_id = uAppt.customer_id;
+            apptFill.service_id = uAppt.service_id;
+            apptFill.staff_id = uAppt.staff_id;
+            apptFill.start = uAppt.start;
+            apptFill.end = uAppt.end;
+
+            switch (uAppt.office_id != 0 && uAppt.inhomeservice != 1)
+            {
+                case true:
+                    //This should be the case for a OfficeAppt
+                    var officeAppt = new OfficeAppointment
+                    {
+                        appointment_id = uAppt.appointment_id,
+                        customer_id = uAppt.customer_id,
+                        staff_id = uAppt.staff_id,
+                        office_id = uAppt.office_id,
+                        service_id = uAppt.service_id,
+                        start = uAppt.start,
+                        end = uAppt.end,
+                        inhomeservice = uAppt.inhomeservice
+                    };
+                    var apptOForm = new FormAppointment(apptFill);
+                    var officeForm = new FormOfficeAppt(officeAppt);
+                    apptOForm.ShowDialog();
+                    officeForm.ShowDialog();
+                    break;
+                case false:
+                    var homeAppt = new HomeAppointment
+                    {
+                        appointment_id = uAppt.appointment_id,
+                        customer_id = uAppt.customer_id,
+                        staff_id = uAppt.staff_id,
+                        service_id = uAppt.service_id,
+                        start = uAppt.start,
+                        end = uAppt.end,
+                        service_address_id = uAppt.service_address_id,
+                        inhomeservice = uAppt.inhomeservice
+                    };
+                    var apptHForm = new FormAppointment(apptFill);
+                    var homeForm = new FormHomeAppt(homeAppt);
+                    apptHForm.ShowDialog();
+                    homeForm.ShowDialog();
+                    break;
+            }
+
+            connection.Close();
         }
     }
 
     private void RemoveApptBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = apptsDataGridView.CurrentRow;
-        if (selectedRow != null)
-        {
-            var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int) apptsDataGridView["appointment_id", row].Value;
-            using (var connection = new Builder().Connect())
+        if (selectedRow == null) return;
+        var row = apptsDataGridView.Rows.IndexOf(selectedRow);
+        var selected = (int) apptsDataGridView["appointment_id", row].Value;
+        var result = UnifiedApptData.RemoveAppointment(selected);
+            if (result)
             {
-                var result = UnifiedApptData.RemoveAppointment(selected);
-                if (result)
-                {
-                    DGVExtensions.populateDGV(apptsDataGridView, "appointment");
-                }
+                DGVExtensions.populateDGV(apptsDataGridView, "appointment");
             }
-        }
     }
 
     private void CxCreateBtn_Click(object sender, EventArgs e)
@@ -131,20 +122,16 @@ public partial class Main : Form
     private void UpdateCxBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = cxDataGridView.CurrentRow;
-        if (selectedRow != null)
+        if (selectedRow == null) return;
+        var row = cxDataGridView.Rows.IndexOf(selectedRow);
+        var selected = (int) cxDataGridView["customer_id", row].Value;
         {
-            var row = cxDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int) cxDataGridView["customer_id", row].Value;
+            using (var connection = new Builder().Connect())
             {
-                using (var connection = new Builder().Connect())
-                {
-                    var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
-                    if (customer != null)
-                    {
-                        var cxForm = new FormCustomer(customer);
-                        cxForm.ShowDialog();
-                    }
-                }
+                var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
+                if (customer == null) return;
+                var cxForm = new FormCustomer(customer);
+                cxForm.ShowDialog();
             }
         }
     }
@@ -153,14 +140,12 @@ public partial class Main : Form
     {
         var selectedRow = cxDataGridView.CurrentRow;
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
-        int selected = (int) cxDataGridView["customer_id", row].Value;
-        if (selectedRow != null)
+        var selected = (int) cxDataGridView["customer_id", row].Value;
+        if (selectedRow == null) return;
+        var result = Customer.DeleteCustomer(selected);
+        if (result)
         {
-            var result = Customer.DeleteCustomer(selected);
-            if (result)
-            {
-                DGVExtensions.populateDGV(cxDataGridView, "customer");
-            }
+            DGVExtensions.populateDGV(cxDataGridView, "customer");
         }
     }
 
