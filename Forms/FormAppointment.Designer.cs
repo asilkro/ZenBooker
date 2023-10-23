@@ -87,6 +87,7 @@
             dateCalendar.Location = new Point(539, 34);
             dateCalendar.Margin = new Padding(9, 8, 9, 8);
             dateCalendar.MaxSelectionCount = 1;
+            dateCalendar.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
             dateCalendar.Name = "dateCalendar";
             dateCalendar.TabIndex = 7;
             // 
@@ -97,7 +98,7 @@
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             startDtPicker.Format = DateTimePickerFormat.Custom;
             startDtPicker.Location = new Point(601, 203);
-            startDtPicker.MinDate = new DateTime(2023, 10, 23, 0, 0, 0, 0);
+            startDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
             startDtPicker.Name = "startDtPicker";
             startDtPicker.ShowUpDown = true;
             startDtPicker.Size = new Size(100, 29);
@@ -110,7 +111,7 @@
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             endDtPicker.Format = DateTimePickerFormat.Custom;
             endDtPicker.Location = new Point(601, 233);
-            endDtPicker.MinDate = new DateTime(2023, 10, 23, 0, 0, 0, 0);
+            endDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
             endDtPicker.Name = "endDtPicker";
             endDtPicker.ShowUpDown = true;
             endDtPicker.Size = new Size(100, 29);

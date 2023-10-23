@@ -7,7 +7,6 @@ namespace ZenoBook.Forms;
 
 public partial class FormHomeAppt : Form
 {
-    private FormAppointment form1;
     private readonly HomeAppointment _homeAppt;
 
     public FormHomeAppt(HomeAppointment appt)
@@ -94,7 +93,6 @@ public partial class FormHomeAppt : Form
     {
         if (!HomeAppointment.InsertHomeAppt(_homeAppt)) return;
         Close();
-        form1.Close();
     }
 
     #endregion
