@@ -8,8 +8,6 @@ namespace ZenoBook.Forms;
 
 public partial class FormCustomer : Form
 {
-    private readonly Customer? _existingCx;
-
     public FormCustomer()
     {
         InitializeComponent();
@@ -21,7 +19,6 @@ public partial class FormCustomer : Form
 
     public FormCustomer(Customer customer)
     {
-        _existingCx = customer;
         InitializeComponent();
         tbFirstName.Text = customer.first;
         tbLastName.Text = customer.last;
@@ -84,18 +81,22 @@ public partial class FormCustomer : Form
 
     private void saveBtn_Click(object sender, EventArgs e)
     {
-        var result = _existingCx switch
+        var cx = new Customer
         {
-            null => Customer.InsertCustomer(new Customer(customer_Id: int.Parse(cxIdTB.Text), first: tbFirstName.Text,
-                last: tbLastName.Text, phone: tbPhone.Text, email: tbEmail.Text, int.Parse(tbOffice.Text))),
-            not null => Customer.UpdateCustomer(new Customer(customer_Id: int.Parse(cxIdTB.Text),
-                first: tbFirstName.Text, last: tbLastName.Text, phone: tbPhone.Text, email: tbEmail.Text,
-                int.Parse(tbOffice.Text)))
+            first = tbFirstName.Text,
+            last = tbLastName.Text,
+            phone = tbPhone.Text,
+            email = tbEmail.Text,
+            preferred_office = int.Parse(tbOffice.Text)
         };
-
-        if (result)
+        if (!Helpers.DoesThisCxExist(cx))
         {
-            this.Close();
+            Customer.InsertCustomer(cx);
+        }
+        else
+        {
+            cx.customer_id = int.Parse(cxIdTB.Text);
+            Customer.UpdateCustomer(cx);
         }
     }
 }
