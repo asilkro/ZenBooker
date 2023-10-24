@@ -14,30 +14,28 @@ namespace ZenoBook.DataManipulation;
 
 public class Helpers
 {
-    public bool ValidateLogin(string username, string password)
+    public static bool ValidateLogin(string username, string password)
     {
         var result = false;
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        if (connection.State != ConnectionState.Open)
         {
-            if (connection.State != ConnectionState.Open)
+            connection.Open();
+            var fields = new[]
             {
-                connection.Open();
-                var fields = new[]
-                {
-                    new QueryField("login", username),
-                    new QueryField("password", HashedString(password))
-                };
-                var existing = connection.Exists("user", fields);
-                if (existing)
-                {
-                    result = true;
-                    connection.Close();
-                    return result;
-                }
+                new QueryField("login", username),
+                new QueryField("password", HashedString(password))
+            };
+            var existing = connection.Exists("user", fields);
+            if (existing)
+            {
+                result = true;
+                connection.Close();
+                return result;
             }
-
-            return result;
         }
+
+        return result;
     }
 
     public static void WakeUpSQL(MySqlConnection conn)
@@ -88,7 +86,7 @@ public class Helpers
         byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new();
         for (int i = 0; i < bytes.Length; i++)
         {
             builder.Append(bytes[i].ToString("x2")); //format string to match format in DB; could be changed

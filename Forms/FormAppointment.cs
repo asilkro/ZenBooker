@@ -248,13 +248,15 @@ public partial class FormAppointment : Form
 
         if (homeRadioBtn.Checked)
         {
-            var homeAppt = new HomeAppointment();
-            homeAppt.customer_id = int.Parse(cxIdTB.Text);
-            homeAppt.staff_id = int.Parse(staffIdTB.Text);
-            homeAppt.service_id = int.Parse(serviceIdTB.Text);
-            homeAppt.start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay;
-            homeAppt.end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay;
-            homeAppt.inhomeservice = 1;
+            var homeAppt = new HomeAppointment
+            {
+                customer_id = int.Parse(cxIdTB.Text),
+                staff_id = int.Parse(staffIdTB.Text),
+                service_id = int.Parse(serviceIdTB.Text),
+                start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+                end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+                inhomeservice = 1
+            };
             var tempAddy = makeAddressFromTbs();
             
             if (!Helpers.DoesThisAddressExist(tempAddy))
@@ -268,26 +270,30 @@ public partial class FormAppointment : Form
 
         if (officeRadioBtn.Checked)
         {
-            var officeAppt = new OfficeAppointment();
-            officeAppt.customer_id = int.Parse(cxIdTB.Text);
-            officeAppt.staff_id = int.Parse(staffIdTB.Text);
-            officeAppt.office_id = int.Parse(officeIdTB.Text);
-            officeAppt.service_id = int.Parse(serviceIdTB.Text);
-            officeAppt.start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay;
-            officeAppt.end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay;
-            officeAppt.inhomeservice = 0;
+            var officeAppt = new OfficeAppointment
+            {
+                customer_id = int.Parse(cxIdTB.Text),
+                staff_id = int.Parse(staffIdTB.Text),
+                office_id = int.Parse(officeIdTB.Text),
+                service_id = int.Parse(serviceIdTB.Text),
+                start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+                end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+                inhomeservice = 0
+            };
             OfficeAppointment.InsertOfficeAppt(officeAppt);
         }
     }
 
     internal virtual Address makeAddressFromTbs()
     {
-        var tempAddy = new Address();
-        tempAddy.address1 = address1TB.Text;
-        tempAddy.address2 = address2TB.Text;
-        tempAddy.city = cityTB.Text;
-        tempAddy.state = stateTB.Text;
-        tempAddy.country = countryTB.Text;
+        var tempAddy = new Address
+        {
+            address1 = address1TB.Text,
+            address2 = address2TB.Text,
+            city = cityTB.Text,
+            state = stateTB.Text,
+            country = countryTB.Text
+        };
         return tempAddy;
     }
 

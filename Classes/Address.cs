@@ -74,21 +74,19 @@ public class Address
 
     public static bool UpdateAddress(Address address)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var updatedCx = connection.Update("address", address);
-                    MessageBox.Show("Address id " + updatedCx + " updated.", "Address Updated");
-                }
-                return true;
+                var updatedCx = connection.Update("address", address);
+                MessageBox.Show("Address id " + updatedCx + " updated.", "Address Updated");
             }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 

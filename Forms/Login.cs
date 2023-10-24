@@ -23,8 +23,9 @@ public partial class Login : Form
     private void loginBtn_Click(object sender, EventArgs e)
     {
         using var connection = new Builder().Connect();
-
-        var result = new Helpers().ValidateLogin(loginTB.Text, pwTB.Text);
+        var username = loginTB.Text;
+        var password = pwTB.Text;
+        var result = Helpers.ValidateLogin(username,password);
         switch (result)
         {
             case true:
@@ -33,7 +34,7 @@ public partial class Login : Form
                 Hide();
                 break;
             case false:
-                MessageBox.Show("Username/password not correct. Check and try again.");
+                MessageBox.Show("The login failed, check your credentials and try again.", "Login failed");
                 break;
         }
     }
