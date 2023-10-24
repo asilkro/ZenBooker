@@ -9,6 +9,7 @@ public partial class FormAppointment : Form
     {
         InitializeComponent();
         apptIdTB.Text = Helpers.AutoIncrementId("appointment");
+        cxIdTB.Text = Helpers.AutoIncrementId("customer");
         startDtPicker.Format = DateTimePickerFormat.Time;
         endDtPicker.Format = DateTimePickerFormat.Time;
     }
@@ -245,7 +246,7 @@ public partial class FormAppointment : Form
         {
             MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
         }
-
+        
         if (homeRadioBtn.Checked)
         {
             var homeAppt = new HomeAppointment

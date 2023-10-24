@@ -8,7 +8,6 @@ using RepoDb;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.Forms;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ZenoBook.DataManipulation;
 
@@ -36,14 +35,6 @@ public class Helpers
         }
 
         return result;
-    }
-
-    public static void WakeUpSQL(MySqlConnection conn)
-    {
-        if (conn.State != ConnectionState.Open)
-        {
-            conn.Open();
-        }
     }
 
     public static string WhatIsThisThing(string valueToCheck)
@@ -259,6 +250,22 @@ public class Helpers
             new QueryField("country",addy.country)
         };
         var result = connection.Exists("address", fields);
+        return result;
+    }
+
+
+    public static bool DoesThisCxExist(Customer cx)
+    {
+        using var connection = new Builder().Connect();
+        var fields = new[]
+        {
+            new QueryField("first",cx.first),
+            new QueryField("last",cx.last),
+            new QueryField("phone",cx.phone),
+            new QueryField("state",cx.email),
+        };
+
+        var result = connection.Exists("customer", fields);
         return result;
     }
 

@@ -8,13 +8,12 @@ namespace ZenoBook.Forms;
 
 public partial class FormCustomer : Form
 {
-    private Customer? _existingCx;
+    private readonly Customer? _existingCx;
 
     public FormCustomer()
     {
         InitializeComponent();
-        saveBtn.Enabled = false;
-        saveBtn.Visible = false;
+        validToggle(false);
         // cxIdTB.Visible = false; // Simpler user experience without this visible when a Cx hasn't been created yet,
         // as it might not be known what the ID is.
         cxIdTB.Text = Helpers.AutoIncrementId("customer"); //TODO: RELIES ON AUTOINCREMENT WHICH MAY BE FLAKY
@@ -34,11 +33,35 @@ public partial class FormCustomer : Form
         saveBtn.Enabled = false;
         saveBtn.Visible = false;
     }
-
+    
+    private void validToggle(bool valid)
+    {
+        switch (valid)
+        {
+            case true:
+                validateBtn.Enabled = false;
+                validateBtn.Visible = false;
+                saveBtn.Enabled = true;
+                saveBtn.Visible = true;
+                break;
+            case false:
+                validateBtn.Enabled = true;
+                validateBtn.Visible = true;
+                saveBtn.Enabled = false;
+                saveBtn.Visible = false;
+                break;
+        }
+    }
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        var isThereAProblem = true;
+        isThereAProblem(out var valid);
+        validToggle(valid);
+    }
+
+    public bool isThereAProblem(out bool problem)
+    {
+        problem = true;
         for (var index = 0; index < Controls.Count; index++)
         {
             var c = Controls[index];
@@ -46,26 +69,17 @@ public partial class FormCustomer : Form
                 if (!string.IsNullOrWhiteSpace(c.Text) &&
                     !string.IsNullOrEmpty(c.Text))
                 {
-                    isThereAProblem = false;
+                    problem = false;
                     break;
                 }
         }
 
-        if (int.TryParse(cxIdTB.Text, out _))
-        {
-            isThereAProblem = false;
-        }
+        if (int.TryParse(cxIdTB.Text, out _)) { problem = false; }
 
-        if (int.TryParse(tbPhone.Text, out _))
-        {
-            isThereAProblem = false;
-        }
+        if (int.TryParse(tbPhone.Text, out _)) { problem = false; }
 
-        if (isThereAProblem) return;
-        validateBtn.Enabled = false;
-        validateBtn.Visible = false;
-        saveBtn.Enabled = true;
-        saveBtn.Visible = true;
+        if (problem) return true;
+        return false;
     }
 
     private void saveBtn_Click(object sender, EventArgs e)
