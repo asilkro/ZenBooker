@@ -49,7 +49,7 @@ public partial class FormAppointment : Form
         endDtPicker.Value = appt.end;
     }
 
-    private void FillServiceFields(Appointment appt)
+    private void FillServiceFields(UnifiedApptData appt)
     {
         var service = Helpers.ReturnService(appt.service_id.ToString());
         serviceIdTB.Text = appt.service_id.ToString();
@@ -57,7 +57,7 @@ public partial class FormAppointment : Form
         serviceDescTb.Text = service?.Service_Description;
     }
 
-    private void FillStaffFields(Appointment appt)
+    private void FillStaffFields(UnifiedApptData appt)
     {
         var staff = Helpers.ReturnStaff(appt.staff_id.ToString());
         staffIdTB.Text = appt.staff_id.ToString();
@@ -115,6 +115,42 @@ public partial class FormAppointment : Form
         homeSearchBtn.Show();
         saSearchTB.Show();
     }
+
+    private void CheckedChanged(object sender, EventArgs e)
+    {
+        if (sender.Equals(officeRadioBtn))
+        {
+            switch (officeRadioBtn.Checked)
+            {
+                case true:
+                    homeRadioBtn.Checked = false;
+                    HideHomeStuff();
+                    ShowOfficeStuff();
+                    break;
+                case false:
+                    homeRadioBtn.Checked = true;
+                    HideOfficeStuff();
+                    ShowHomeStuff();
+                    break;
+            }
+        }
+
+        if (!sender.Equals(homeRadioBtn)) return;
+        switch (homeRadioBtn.Checked)
+        {
+            case true:
+                officeRadioBtn.Checked = false;
+                HideOfficeStuff();
+                ShowHomeStuff();
+                break;
+            case false:
+                officeRadioBtn.Checked = true;
+                HideHomeStuff();
+                ShowOfficeStuff();
+                break;
+        }
+    }
+
 
 
     #endregion
@@ -186,41 +222,6 @@ public partial class FormAppointment : Form
         }
     }
 
-    private void CheckedChanged(object sender, EventArgs e)
-    {
-        if (sender.Equals(officeRadioBtn))
-        {
-            switch (officeRadioBtn.Checked)
-            {
-                case true:
-                    homeRadioBtn.Checked = false;
-                    HideHomeStuff();
-                    ShowOfficeStuff();
-                    break;
-                case false:
-                    homeRadioBtn.Checked = true;
-                    HideOfficeStuff();
-                    ShowHomeStuff();
-                    break;
-            }
-        }
-
-        if (!sender.Equals(homeRadioBtn)) return;
-        switch (homeRadioBtn.Checked)
-        {
-            case true:
-                officeRadioBtn.Checked = false;
-                HideOfficeStuff();
-                ShowHomeStuff();
-                break;
-            case false:
-                officeRadioBtn.Checked = true;
-                HideHomeStuff();
-                ShowOfficeStuff();
-                break;
-        }
-    }
-
     private void homeSearchBtn_Click(object sender, EventArgs e)
     {
         var result = Helpers.ReturnAddress(saSearchTB.Text);
@@ -238,9 +239,6 @@ public partial class FormAppointment : Form
             countryTB.Text = result.country;
         }
     }
-
-    #endregion
-
     private void saveBtn_Click(object sender, EventArgs e)
     {
         if (homeRadioBtn.Checked == officeRadioBtn.Checked)
@@ -257,6 +255,13 @@ public partial class FormAppointment : Form
             homeAppt.start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay;
             homeAppt.end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay;
             homeAppt.inhomeservice = 1;
+            var tempAddy = makeAddressFromTbs();
+            
+            if (!Helpers.DoesThisAddressExist(tempAddy))
+            {
+                Address.InsertAddress(tempAddy, out var tempSid);
+                addressIdTB.Text = tempSid.ToString();
+            }
             homeAppt.service_address_id = int.Parse(addressIdTB.Text);
             HomeAppointment.InsertHomeAppt(homeAppt);
         }
@@ -274,4 +279,17 @@ public partial class FormAppointment : Form
             OfficeAppointment.InsertOfficeAppt(officeAppt);
         }
     }
+
+    internal virtual Address makeAddressFromTbs()
+    {
+        var tempAddy = new Address();
+        tempAddy.address1 = address1TB.Text;
+        tempAddy.address2 = address2TB.Text;
+        tempAddy.city = cityTB.Text;
+        tempAddy.state = stateTB.Text;
+        tempAddy.country = countryTB.Text;
+        return tempAddy;
+    }
+
+    #endregion
 }

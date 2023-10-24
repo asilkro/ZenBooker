@@ -249,5 +249,20 @@ public class Helpers
         return officeByAddress1 ?? null;
     }
 
+    public static bool DoesThisAddressExist(Address addy)
+    {
+        using var connection = new Builder().Connect();
+        var fields = new []
+        {
+            new QueryField("address1",addy.address1),
+            new QueryField("address2",addy.address2),
+            new QueryField("city",addy.city),
+            new QueryField("state",addy.state),
+            new QueryField("country",addy.country)
+        };
+        var result = connection.Exists("address", fields);
+        return result;
+    }
+
     #endregion
 }

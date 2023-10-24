@@ -23,10 +23,10 @@ public class Address
     {
     }
 
-    public Address(int addressId, string address1, string? address2,
+    public Address(int address_Id, string address1, string? address2,
         string city, string? state, string country)
     {
-        address_id = addressId;
+        address_id = address_Id;
         this.address1 = address1;
         this.address2 = address2;
         this.city = city;
@@ -38,18 +38,20 @@ public class Address
 
     #region SQL
 
-    public static bool InsertAddress(Address address)
+    public static bool InsertAddress(Address address, out int addressId)
     {
         using var connection = new Builder().Connect();
         try
         {
             var id = connection.Insert("address", address);
             MessageBox.Show("Address id " + id + " created.", "Address Created");
+            addressId = (int)id;
             return true;
         }
         catch (Exception e)
         {
             LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            addressId = -1;
             return false;
         }
     }
