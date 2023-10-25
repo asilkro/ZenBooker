@@ -10,8 +10,8 @@ public partial class Main : Form
     public Main()
     {
         InitializeComponent();
-        DGVExtensions.populateDGV(apptsDataGridView, "appointment");
-        DGVExtensions.populateDGV(cxDataGridView, "customer");
+        Helpers.populateDGV(apptsDataGridView, "appointment");
+        Helpers.populateDGV(cxDataGridView, "customer");
     }
 
 
@@ -102,7 +102,7 @@ public partial class Main : Form
         var result = UnifiedApptData.RemoveAppointment(selected);
             if (result)
             {
-                DGVExtensions.populateDGV(apptsDataGridView, "appointment");
+                Helpers.populateDGV(apptsDataGridView, "appointment");
             }
     }
 
@@ -133,21 +133,21 @@ public partial class Main : Form
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
         var selected = (int) cxDataGridView["customer_id", row].Value;
         if (selectedRow == null) return;
-        var result = Customer.DeleteCustomer(selected);
+        var result = Helpers.DeleteCustomer(selected);
         if (result)
         {
-            DGVExtensions.populateDGV(cxDataGridView, "customer");
+            Helpers.populateDGV(cxDataGridView, "customer");
         }
     }
 
     private void apptSearchBtn_Click(object sender, EventArgs e)
     {
-        DGVExtensions.searchDGV(apptsDataGridView, "appointment", apptSearchTB.Text);
+        Helpers.searchDGV(apptsDataGridView, "appointment", apptSearchTB.Text);
     }
 
     private void cxSearchBtn_Click(object sender, EventArgs e)
     {
-        DGVExtensions.searchDGV(cxDataGridView, "customer", cxSearchTB.Text);
+        Helpers.searchDGV(cxDataGridView, "customer", cxSearchTB.Text);
     }
 
     #endregion

@@ -52,8 +52,8 @@ public partial class FormAppointment : Form
     {
         var service = Helpers.ReturnService(appt.service_id.ToString());
         serviceIdTB.Text = appt.service_id.ToString();
-        serviceNameTb.Text = service?.Service_Name;
-        serviceDescTb.Text = service?.Service_Description;
+        serviceNameTb.Text = service?.service_name;
+        serviceDescTb.Text = service?.service_description;
     }
 
     private void FillStaffFields(UnifiedApptData appt)
@@ -199,9 +199,9 @@ public partial class FormAppointment : Form
                     "Unable to match service");
                 break;
             case false:
-                serviceIdTB.Text = service.Service_Id.ToString();
-                serviceNameTb.Text = service.Service_Name;
-                serviceDescTb.Text = service.Service_Description;
+                serviceIdTB.Text = service.service_id.ToString();
+                serviceNameTb.Text = service.service_name;
+                serviceDescTb.Text = service.service_description;
                 break;
         }
     }
@@ -260,7 +260,7 @@ public partial class FormAppointment : Form
             
             if (!Helpers.DoesThisAddressExist(tempAddy))
             {
-                Address.InsertAddress(tempAddy, out var tempSid);
+                Helpers.InsertAddress(tempAddy, out var tempSid);
                 addressIdTB.Text = tempSid.ToString();
             }
             homeAppt.service_address_id = int.Parse(addressIdTB.Text);

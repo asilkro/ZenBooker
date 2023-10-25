@@ -83,7 +83,7 @@ public partial class FormCustomer : Form
         };
         if (!Helpers.DoesThisCxExist(cx))
         {
-            if (Customer.InsertCustomer(cx))
+            if (Helpers.InsertCustomer(cx))
             {
                 Close();
             }
@@ -91,7 +91,7 @@ public partial class FormCustomer : Form
         else
         {
             cx.customer_id = int.Parse(cxIdTB.Text);
-            if (Customer.UpdateCustomer(cx))
+            if (Helpers.UpdateCustomer(cx))
             {
                 Close();
             }

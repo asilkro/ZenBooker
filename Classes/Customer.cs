@@ -1,8 +1,4 @@
-﻿using log4net;
-using RepoDb;
-using ZenoBook.DataManipulation;
-
-namespace ZenoBook.Classes;
+﻿namespace ZenoBook.Classes;
 
 public class Customer
 {
@@ -32,60 +28,5 @@ public class Customer
         this.email = email;
         preferred_office = preferred_Office;
     }
-
-    #endregion
-
-    #region SQL
-
-    public static bool InsertCustomer(Customer customer)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            var id = connection.Insert("customer", customer);
-            MessageBox.Show("Customer id " + id + " created.", "Customer Created");
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
-    public static bool DeleteCustomer(int customerId)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            var id = connection.Delete("customer", customerId);
-            MessageBox.Show("Customer id " + id + " removed.", "Customer Removed");
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
-    public static bool UpdateCustomer(Customer customer)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            {
-                var updatedCx = connection.Update("customer", customer);
-                MessageBox.Show("Customer id " + updatedCx + " updated.", "Customer Updated");
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
     #endregion
 }
