@@ -2,7 +2,7 @@
 
 internal partial class Builder
 {
-    // These values should not be altered.
+    // These values should only be altered to match changes to the SQL server configuration.
 
     private const string _serveraddress = "localhost";
     private const string _database = "zth";

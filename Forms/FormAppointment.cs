@@ -18,7 +18,7 @@ public partial class FormAppointment : Form
     {
         InitializeComponent();
         UpdateTbs(appt);
-        if (appt is {inhomeservice: 1, office_id: 0})
+        if (appt is { inhomeservice: 1, office_id: 0 })
         {
             homeRadioBtn.Checked = true;
             HideOfficeStuff();

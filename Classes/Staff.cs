@@ -15,6 +15,10 @@ public class Staff
 
     #region Constructors
 
+    public Staff()
+    {
+    }
+
     public Staff(int staff_Id, int user_Id, int office_Id, string name, string phone, string email)
     {
         staff_id = staff_Id;

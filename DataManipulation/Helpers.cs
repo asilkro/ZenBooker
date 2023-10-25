@@ -301,6 +301,18 @@ public class Helpers
     }
 
     //Service
+    public static bool DoesThisServiceExist(Service svc)
+    {
+        using var connection = new Builder().Connect();
+        var fields = new[]
+        {
+            new QueryField("service_name", svc.service_name),
+            new QueryField("service_description",svc.service_description)
+        };
+
+        var result = connection.Exists("service", fields);
+        return result;
+    }
     public static Service? ReturnService(string searchTerm)
     {
         using var connection = new Builder().Connect();
@@ -392,7 +404,7 @@ public class Helpers
         return staff;
     }
 
-    public bool InsertStaff(Staff staff)
+    public static bool InsertStaff(Staff staff)
     {
         using var connection = new Builder().Connect();
         try
@@ -408,7 +420,7 @@ public class Helpers
         }
     }
 
-    public bool DeleteStaff(int staffId)
+    public static bool DeleteStaff(int staffId)
     {
         using var connection = new Builder().Connect();
         try
@@ -424,7 +436,7 @@ public class Helpers
         }
     }
 
-    public bool UpdateStaff(Staff staff)
+    public static bool UpdateStaff(Staff staff)
     {
         using var connection = new Builder().Connect();
         try
@@ -567,7 +579,7 @@ public class Helpers
         return nOffice;
     }
 
-    public bool InsertOffice(Office office)
+    public static bool InsertOffice(Office office)
     {
         using var connection = new Builder().Connect();
         try
@@ -583,7 +595,7 @@ public class Helpers
         }
     }
 
-    public bool DeleteOffice(int officeId)
+    public static bool DeleteOffice(int officeId)
     {
         using var connection = new Builder().Connect();
         try
@@ -599,7 +611,7 @@ public class Helpers
         }
     }
 
-    public bool UpdateOffice(Office office)
+    public static bool UpdateOffice(Office office)
     {
         using var connection = new Builder().Connect();
         try

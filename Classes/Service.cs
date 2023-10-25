@@ -12,6 +12,7 @@ public class Service
 
     #region Constructor
 
+    public Service(){}
     public Service(int service_Id, string service_Name, string service_Description)
     {
         service_id = service_Id;

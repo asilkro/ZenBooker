@@ -72,7 +72,7 @@
             // saveBtn
             // 
             saveBtn.BackColor = Color.LightSteelBlue;
-            saveBtn.Location = new Point(525, 419);
+            saveBtn.Location = new Point(535, 419);
             saveBtn.Name = "saveBtn";
             saveBtn.Size = new Size(100, 44);
             saveBtn.TabIndex = 5;

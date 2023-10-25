@@ -35,7 +35,7 @@ public partial class Main : Form
         var selectedRow = apptsDataGridView.CurrentRow;
         if (selectedRow == null) return;
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-        var selected = (int) apptsDataGridView["appointment_id", row].Value;
+        var selected = (int)apptsDataGridView["appointment_id", row].Value;
         using var connection = new Builder().Connect();
         {
             if (connection.State != ConnectionState.Open)
@@ -98,7 +98,7 @@ public partial class Main : Form
         var selectedRow = apptsDataGridView.CurrentRow;
         if (selectedRow == null) return;
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-        var selected = (int) apptsDataGridView["appointment_id", row].Value;
+        var selected = (int)apptsDataGridView["appointment_id", row].Value;
         var result = UnifiedApptData.RemoveAppointment(selected);
         if (result)
         {
@@ -106,7 +106,7 @@ public partial class Main : Form
         }
     }
 
-    private void CxCreateBtn_Click(object sender, EventArgs e)
+    private void CreateCxBtnClick(object sender, EventArgs e)
     {
         var cxForm = new FormCustomer();
         cxForm.ShowDialog();
@@ -117,7 +117,7 @@ public partial class Main : Form
         var selectedRow = cxDataGridView.CurrentRow;
         if (selectedRow == null) return;
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
-        var selected = (int) cxDataGridView["customer_id", row].Value;
+        var selected = (int)cxDataGridView["customer_id", row].Value;
         {
             using var connection = new Builder().Connect();
             var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
@@ -131,7 +131,7 @@ public partial class Main : Form
     {
         var selectedRow = cxDataGridView.CurrentRow;
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
-        var selected = (int) cxDataGridView["customer_id", row].Value;
+        var selected = (int)cxDataGridView["customer_id", row].Value;
         if (selectedRow == null) return;
         var result = Helpers.DeleteCustomer(selected);
         if (result)
@@ -151,4 +151,10 @@ public partial class Main : Form
     }
 
     #endregion
+
+    private void Logo_Click(object sender, EventArgs e)
+    {
+        var adminForm = new Admin();
+        adminForm.ShowDialog();
+    }
 }
