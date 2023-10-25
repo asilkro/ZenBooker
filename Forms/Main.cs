@@ -1,5 +1,5 @@
-﻿using System.Data;
-using RepoDb;
+﻿using RepoDb;
+using System.Data;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -100,10 +100,10 @@ public partial class Main : Form
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
         var selected = (int) apptsDataGridView["appointment_id", row].Value;
         var result = UnifiedApptData.RemoveAppointment(selected);
-            if (result)
-            {
-                Helpers.populateDGV(apptsDataGridView, "appointment");
-            }
+        if (result)
+        {
+            Helpers.populateDGV(apptsDataGridView, "appointment");
+        }
     }
 
     private void CxCreateBtn_Click(object sender, EventArgs e)

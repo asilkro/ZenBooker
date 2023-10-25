@@ -1,6 +1,6 @@
 ﻿using log4net;
-using System.Data;
 using RepoDb;
+using System.Data;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Classes;

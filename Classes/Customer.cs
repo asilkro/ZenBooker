@@ -28,5 +28,6 @@ public class Customer
         this.email = email;
         preferred_office = preferred_Office;
     }
+
     #endregion
 }

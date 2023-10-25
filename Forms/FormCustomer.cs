@@ -23,7 +23,7 @@ public partial class FormCustomer : Form
         cxIdTB.Text = customer.customer_id.ToString();
         validToggle(false);
     }
-    
+
     private void validToggle(bool valid)
     {
         switch (valid)
@@ -64,9 +64,15 @@ public partial class FormCustomer : Form
                 }
         }
 
-        if (int.TryParse(cxIdTB.Text, out _)) { problem = false; }
+        if (int.TryParse(cxIdTB.Text, out _))
+        {
+            problem = false;
+        }
 
-        if (int.TryParse(tbPhone.Text, out _)) { problem = false; }
+        if (int.TryParse(tbPhone.Text, out _))
+        {
+            problem = false;
+        }
 
         return problem;
     }

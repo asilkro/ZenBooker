@@ -22,5 +22,6 @@ public class Office
         address_id = addressId;
         office_name = officeName;
     }
+
     #endregion
 }

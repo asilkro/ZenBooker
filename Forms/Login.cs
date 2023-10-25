@@ -23,7 +23,7 @@ public partial class Login : Form
         using var connection = new Builder().Connect();
         var username = loginTB.Text;
         var password = pwTB.Text;
-        var result = Helpers.ValidateLogin(username,password);
+        var result = Helpers.ValidateLogin(username, password);
         switch (result)
         {
             case true:

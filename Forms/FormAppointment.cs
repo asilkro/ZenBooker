@@ -18,7 +18,7 @@ public partial class FormAppointment : Form
     {
         InitializeComponent();
         UpdateTbs(appt);
-        if (appt is { inhomeservice: 1, office_id: 0 })
+        if (appt is {inhomeservice: 1, office_id: 0})
         {
             homeRadioBtn.Checked = true;
             HideOfficeStuff();
@@ -75,6 +75,7 @@ public partial class FormAppointment : Form
     }
 
     #region Logic for Radio Buttons / Visibility of Relevant Options
+
     private void HideOfficeStuff()
     {
         officeIdTB.Hide();
@@ -150,10 +151,7 @@ public partial class FormAppointment : Form
         }
     }
 
-
-
     #endregion
-
 
     #region Event Handlers
 
@@ -226,25 +224,26 @@ public partial class FormAppointment : Form
         var result = Helpers.ReturnAddress(saSearchTB.Text);
         if (result == null)
         {
-            MessageBox.Show("Not found, try the address ID or the first line of the address again.", "Address not found");
+            MessageBox.Show("Not found, try the address ID or the first line of the address again.",
+                "Address not found");
         }
-        if (result != null)
-        {
-            addressIdTB.Text = result.address_id.ToString();
-            address1TB.Text = result.address1;
-            address2TB.Text = result.address2;
-            cityTB.Text = result.city;
-            stateTB.Text = result.state;
-            countryTB.Text = result.country;
-        }
+
+        if (result == null) return;
+        addressIdTB.Text = result.address_id.ToString();
+        address1TB.Text = result.address1;
+        address2TB.Text = result.address2;
+        cityTB.Text = result.city;
+        stateTB.Text = result.state;
+        countryTB.Text = result.country;
     }
+
     private void saveBtn_Click(object sender, EventArgs e)
     {
         if (homeRadioBtn.Checked == officeRadioBtn.Checked)
         {
             MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
         }
-        
+
         if (homeRadioBtn.Checked)
         {
             var homeAppt = new HomeAppointment
@@ -257,30 +256,29 @@ public partial class FormAppointment : Form
                 inhomeservice = 1
             };
             var tempAddy = makeAddressFromTbs();
-            
+
             if (!Helpers.DoesThisAddressExist(tempAddy))
             {
                 Helpers.InsertAddress(tempAddy, out var tempSid);
                 addressIdTB.Text = tempSid.ToString();
             }
+
             homeAppt.service_address_id = int.Parse(addressIdTB.Text);
             HomeAppointment.InsertHomeAppt(homeAppt);
         }
 
-        if (officeRadioBtn.Checked)
+        if (!officeRadioBtn.Checked) return;
+        var officeAppt = new OfficeAppointment
         {
-            var officeAppt = new OfficeAppointment
-            {
-                customer_id = int.Parse(cxIdTB.Text),
-                staff_id = int.Parse(staffIdTB.Text),
-                office_id = int.Parse(officeIdTB.Text),
-                service_id = int.Parse(serviceIdTB.Text),
-                start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
-                end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
-                inhomeservice = 0
-            };
-            OfficeAppointment.InsertOfficeAppt(officeAppt);
-        }
+            customer_id = int.Parse(cxIdTB.Text),
+            staff_id = int.Parse(staffIdTB.Text),
+            office_id = int.Parse(officeIdTB.Text),
+            service_id = int.Parse(serviceIdTB.Text),
+            start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+            end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+            inhomeservice = 0
+        };
+        OfficeAppointment.InsertOfficeAppt(officeAppt);
     }
 
     internal virtual Address makeAddressFromTbs()

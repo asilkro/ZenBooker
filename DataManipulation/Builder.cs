@@ -2,26 +2,18 @@
 
 namespace ZenoBook.DataManipulation;
 
-public class Builder
+internal partial class Builder
 {
-    private const string _database = "zth";
-    private const string _password = "Zenobook4zenobia";
-
-    private const string _serveraddress = "localhost";
-
-    // These values should not be altered.
-    private const string _username = "zthstaff";
-
-    public static string ConnectionString()
+    protected static string ConnectionString()
     {
         var csb = new MySqlConnectionStringBuilder
         {
             UserID = _username,
             Password = _password,
             Server = _serveraddress,
-            Database = _database
+            Database = _database,
+            SslMode = MySqlSslMode.Required
         };
-
         var connString = csb.ToString();
 
         return connString;
