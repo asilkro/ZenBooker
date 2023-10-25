@@ -1,8 +1,5 @@
-﻿using System;
-using System.Data;
-using MySqlConnector;
+﻿using System.Data;
 using RepoDb;
-using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -24,7 +21,7 @@ public partial class Main : Form
     {
         var newLogin = new Login();
         newLogin.Show();
-        this.Close();
+        Close();
     }
 
     private void CreateApptBtn_Click(object sender, EventArgs e)
@@ -122,13 +119,11 @@ public partial class Main : Form
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
         var selected = (int) cxDataGridView["customer_id", row].Value;
         {
-            using (var connection = new Builder().Connect())
-            {
-                var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
-                if (customer == null) return;
-                var cxForm = new FormCustomer(customer);
-                cxForm.ShowDialog();
-            }
+            using var connection = new Builder().Connect();
+            var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
+            if (customer == null) return;
+            var cxForm = new FormCustomer(customer);
+            cxForm.ShowDialog();
         }
     }
 

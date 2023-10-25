@@ -27,59 +27,53 @@ public class Service
 
     #region SQL
 
-    public bool InsertService(Service service)
+    public static bool InsertService(Service service)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Insert("service", service);
-                MessageBox.Show("Service id: " + service.Service_Id + " created.", "Service Created");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var result = connection.Insert("service", service);
+            MessageBox.Show("Service id: " + service.Service_Id + " created.", "Service Created");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
-    public bool DeleteService(int serviceId)
+    public static bool DeleteService(int serviceId)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Delete("service", serviceId);
-                MessageBox.Show("Service id: " + serviceId + " removed.", "Service Removed");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Delete("service", serviceId);
+            MessageBox.Show("Service id: " + serviceId + " removed.", "Service Removed");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
-    public bool UpdateService(Service service)
+    public static bool UpdateService(Service service)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var updatedService = connection.Update("service", service);
-                    MessageBox.Show("Service id: " + service.Service_Id + " updated.", "Service Updated");
-                }
-                return true;
+                var updatedService = connection.Update("service", service);
+                MessageBox.Show("Service id: " + service.Service_Id + " updated.", "Service Updated");
             }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 

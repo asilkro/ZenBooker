@@ -1,5 +1,3 @@
-using Accessibility;
-using log4net;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms;

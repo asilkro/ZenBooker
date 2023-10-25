@@ -33,57 +33,51 @@ public class Office
 
     public bool InsertOffice(Office office)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Insert("office", office);
-                MessageBox.Show("Office id " + id + " created.", "Office Created");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Insert("office", office);
+            MessageBox.Show("Office id " + id + " created.", "Office Created");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public bool DeleteOffice(int officeId)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Delete("office", officeId);
-                MessageBox.Show("Office id " + id + " removed.", "Office Removed");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Delete("office", officeId);
+            MessageBox.Show("Office id " + id + " removed.", "Office Removed");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public bool UpdateOffice(Office office)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var updatedOffice = connection.Update("office", office);
-                    MessageBox.Show("Office id " + updatedOffice + " updated.", "Office Updated");
-                }
-                return true;
+                var updatedOffice = connection.Update("office", office);
+                MessageBox.Show("Office id " + updatedOffice + " updated.", "Office Updated");
             }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 

@@ -25,12 +25,10 @@ public partial class FormAppointment : Form
             ShowHomeStuff();
         }
 
-        if (appt.inhomeservice == 0 && appt.office_id != 0)
-        {
-            officeRadioBtn.Checked = true;
-            HideHomeStuff();
-            ShowOfficeStuff();
-        }
+        if (appt.inhomeservice != 0 || appt.office_id == 0) return;
+        officeRadioBtn.Checked = true;
+        HideHomeStuff();
+        ShowOfficeStuff();
     }
 
     public void UpdateTbs(UnifiedApptData appt)

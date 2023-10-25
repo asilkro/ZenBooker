@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Accessibility;
-using ZenoBook.Classes;
+﻿using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms;
@@ -71,8 +68,7 @@ public partial class FormCustomer : Form
 
         if (int.TryParse(tbPhone.Text, out _)) { problem = false; }
 
-        if (problem) return true;
-        return false;
+        return problem;
     }
 
     private void saveBtn_Click(object sender, EventArgs e)

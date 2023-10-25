@@ -27,8 +27,8 @@ public class OfficeAppointment : Appointment
         staff_id = staffId;
         office_id = officeId;
         service_id = serviceId;
-        base.start = start;
-        base.end = end;
+        this.start = start;
+        this.end = end;
         this.inhomeservice = inhomeservice;
     }
 
@@ -38,60 +38,54 @@ public class OfficeAppointment : Appointment
 
     public static bool InsertOfficeAppt(OfficeAppointment officeAppointment)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var id = connection.Insert("appointment", officeAppointment);
-                    MessageBox.Show("Appointment with Id: " + id + " created.", "Appointment Created");
-                }
+                var id = connection.Insert("appointment", officeAppointment);
+                MessageBox.Show("Appointment with Id: " + id + " created.", "Appointment Created");
+            }
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public static bool RemoveOfficeAppt(int officeApptId)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var removedAppt = connection.Delete("appointment", officeApptId);
-                MessageBox.Show(+removedAppt + " removed.", "Appointment Removed");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var removedAppt = connection.Delete("appointment", officeApptId);
+            MessageBox.Show(+removedAppt + " removed.", "Appointment Removed");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public static bool UpdateOfficeAppt(OfficeAppointment officeAppointment)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var updatedAppt = connection.Update("appointment", officeAppointment);
-                    MessageBox.Show(updatedAppt + " updated.", "Appointment Updated");
-                }
-                return true;
+                var updatedAppt = connection.Update("appointment", officeAppointment);
+                MessageBox.Show(updatedAppt + " updated.", "Appointment Updated");
             }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 

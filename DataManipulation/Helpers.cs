@@ -1,13 +1,9 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using log4net;
-using MySqlConnector;
 using RepoDb;
-using RepoDb.Extensions;
 using ZenoBook.Classes;
-using ZenoBook.Forms;
 
 namespace ZenoBook.DataManipulation;
 
@@ -17,21 +13,19 @@ public class Helpers
     {
         var result = false;
         using var connection = new Builder().Connect();
-        if (connection.State != ConnectionState.Open)
+        if (connection.State == ConnectionState.Open) return result;
+        connection.Open();
+        var fields = new[]
         {
-            connection.Open();
-            var fields = new[]
-            {
-                new QueryField("login", username),
-                new QueryField("password", HashedString(password))
-            };
-            var existing = connection.Exists("user", fields);
-            if (existing)
-            {
-                result = true;
-                connection.Close();
-                return result;
-            }
+            new QueryField("login", username),
+            new QueryField("password", HashedString(password))
+        };
+        var existing = connection.Exists("user", fields);
+        if (existing)
+        {
+            result = true;
+            connection.Close();
+            return result;
         }
 
         return result;
@@ -39,9 +33,9 @@ public class Helpers
 
     public static string WhatIsThisThing(string valueToCheck)
     {
-        var space = ' ';
-        var atSign = '@';
-        string result = "default";
+        const char space = ' ';
+        const char atSign = '@';
+        var result = "default";
 
         if (DateTime.TryParse(valueToCheck, out _))
         {
@@ -61,24 +55,21 @@ public class Helpers
             return result; // If it has an @ sign, treat as an email address
         }
 
-        if (valueToCheck.Contains(space))
-        {
-            result = "name";
-            return result; // If it has a whitespace, treat as a name
-        }
+        if (!valueToCheck.Contains(space)) return result;
+        result = "name";
+        return result; // If it has a whitespace, treat as a name
 
 
-        return result;
     }
 
     public static string HashedString(string input)
     {
-        using SHA256 sha256Hash = SHA256.Create();
-        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+        using var sha256Hash = SHA256.Create();
+        var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
 
 
         StringBuilder builder = new();
-        for (int i = 0; i < bytes.Length; i++)
+        for (var i = 0; i < bytes.Length; i++)
         {
             builder.Append(bytes[i].ToString("x2")); //format string to match format in DB; could be changed
             //if updated formatting of the hashes in the DB is desired
@@ -117,8 +108,8 @@ public class Helpers
     public static Customer? ReturnCustomer(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        var space = ' ';
-        var atSign = '@';
+        const char space = ' ';
+        const char atSign = '@';
 
         if (searchTerm.Contains(space))
         {
@@ -159,7 +150,7 @@ public class Helpers
     public static Staff? ReturnStaff(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        var atSign = '@';
+        const char atSign = '@';
         if (searchTerm.Contains(atSign))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.email == searchTerm).FirstOrDefault();
@@ -207,7 +198,7 @@ public class Helpers
     public static Office? ReturnOffice(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        if (int.TryParse(searchTerm, out var i))
+        if (int.TryParse(searchTerm, out _))
         {
             var iOffice = connection.Query<Office>("office", e => e.office_id == int.Parse(searchTerm))
                 .GetEnumerator().Current;
@@ -216,10 +207,6 @@ public class Helpers
 
         var nOffice = connection.Query<Office>("office", e => e.office_name.Contains(searchTerm))
             .GetEnumerator().Current;
-        if (nOffice == null)
-        {
-            return null;
-        }
 
         return nOffice;
     }
@@ -262,7 +249,7 @@ public class Helpers
             new QueryField("first",cx.first),
             new QueryField("last",cx.last),
             new QueryField("phone",cx.phone),
-            new QueryField("state",cx.email),
+            new QueryField("state",cx.email)
         };
 
         var result = connection.Exists("customer", fields);

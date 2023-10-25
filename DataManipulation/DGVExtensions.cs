@@ -1,39 +1,35 @@
 ﻿using MySqlConnector;
 using RepoDb;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using ZenoBook.Classes;
 
-namespace ZenoBook.DataManipulation
+namespace ZenoBook.DataManipulation;
+
+public static class DGVExtensions
 {
-    public static class DGVExtensions
+    public static List<T> dgvRowToList<T>(this DataGridViewSelectedRowCollection rows)
     {
-        public static List<T> dgvRowToList<T>(this DataGridViewSelectedRowCollection rows)
-        {
-            var list = new List<T>();
-            for (int i = 0; i < rows.Count; i++)
-                list.Add((T) rows[i].DataBoundItem);
-            return list;
-        }
+        var list = new List<T>();
+        for (var i = 0; i < rows.Count; i++)
+            list.Add((T) rows[i].DataBoundItem);
+        return list;
+    }
 
-        public static void searchDGV(DataGridView dgv, string tableName, string searchQuery)
+    public static void searchDGV(DataGridView dgv, string tableName, string searchQuery)
+    {
         {
+            using var connection = new Builder().Connect();
             {
-                using var connection = new Builder().Connect();
+                var searchType = Helpers.WhatIsThisThing(searchQuery);
+                if (searchType == "default")
                 {
-                    var searchType = Helpers.WhatIsThisThing(searchQuery);
-                    if (searchType == "default")
-                    {
-                        MessageBox.Show("Invalid search parameter.");
-                        tableName = "discard";
-                    }
+                    MessageBox.Show("Invalid search parameter.");
+                    tableName = "discard";
+                }
 
-                    if (tableName == "appointment")
+                switch (tableName)
+                {
+                    case "appointment":
                     {
                         if (searchType == "date")
                         {
@@ -54,9 +50,10 @@ namespace ZenoBook.DataManipulation
                             BindingSource bs = new(appointments, tableName);
                             dgv.DataSource = bs;
                         }
-                    }
 
-                    if (tableName == "customer")
+                        break;
+                    }
+                    case "customer":
                     {
                         if (searchType == "email")
                         {
@@ -88,9 +85,10 @@ namespace ZenoBook.DataManipulation
                             BindingSource bs = new(customers, tableName);
                             dgv.DataSource = bs;
                         }
-                    }
 
-                    if (tableName == "service")
+                        break;
+                    }
+                    case "service":
                     {
                         if (searchType == "name")
                         {
@@ -101,103 +99,108 @@ namespace ZenoBook.DataManipulation
                             BindingSource bs = new(services, tableName);
                             dgv.DataSource = bs;
                         }
+
+                        break;
                     }
                 }
             }
         }
+    }
 
 
-        public static void
-            populateDGV(DataGridView dgv, string tableName) //, string? where) //Maybe expand to include clauses?
+    public static void
+        populateDGV(DataGridView dgv, string tableName) //, string? where) //Maybe expand to include clauses?
+    {
         {
+            var selectQuery = "SELECT * FROM " + tableName + ";";
+            var connection = new Builder().Connect();
+            switch (connection.State)
             {
-                var selectQuery = "SELECT * FROM " + tableName + ";";
-                var connection = new Builder().Connect();
-                switch (connection.State)
-                {
-                    case ConnectionState.Open:
-                        break;
-                    case ConnectionState.Closed:
-                        connection.Open();
-                        break;
-                    case ConnectionState.Broken:
-                        connection.Dispose();
-                        break;
-                    default:
-                        connection.Open();
-                        break;
-                }
-
-                var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
-                using (dataAdapter)
-                {
-                    switch (tableName)
-                    {
-                        case "customer":
-                            var customers = new List<Customer>();
-                            DataTable customerDataTable = new DataTable();
-                            customerDataTable.Columns.Add("customer_id", typeof(int));
-                            customerDataTable.Columns.Add("First", typeof(string));
-                            customerDataTable.Columns.Add("Last", typeof(string));
-                            customerDataTable.Columns.Add("Phone", typeof(string));
-                            customerDataTable.Columns.Add("Email", typeof(string));
-                            customerDataTable.Columns.Add("Preferred_Office", typeof(int));
-                            dataAdapter.Fill(customerDataTable);
-
-                            foreach (DataRow row in customerDataTable.Rows)
-                            {
-                                Customer cx = new Customer();
-                                cx.customer_id = (int) row["customer_id"];
-                                cx.first = row["First"].ToString();
-                                cx.last = row["Last"].ToString();
-                                cx.phone = row["Phone"].ToString();
-                                cx.email = row["Email"].ToString();
-                                cx.preferred_office = Convert.IsDBNull(row["Preferred_Office"])
-                                    ? 0
-                                    : (int) row["Preferred_Office"];
-                                customers.Add(cx);
-                            }
-
-                            dgv.DataSource = customerDataTable;
-                            break;
-
-                        case "appointment":
-                            var appointments = new List<UnifiedApptData>();
-                            DataTable appointmentsDataTable = new DataTable();
-                            appointmentsDataTable.Columns.Add("appointment_id", typeof(int));
-                            appointmentsDataTable.Columns.Add("customer_id", typeof(int));
-                            appointmentsDataTable.Columns.Add("staff_id", typeof(int));
-                            appointmentsDataTable.Columns.Add("service_id", typeof(int));
-                            appointmentsDataTable.Columns.Add("start", typeof(DateTime));
-                            appointmentsDataTable.Columns.Add("end", typeof(DateTime));
-                            appointmentsDataTable.Columns.Add("office_id", typeof(int));
-                            appointmentsDataTable.Columns.Add("service_address_id", typeof(int));
-                            appointmentsDataTable.Columns.Add("inhomeservice", typeof(int));
-                            dataAdapter.Fill(appointmentsDataTable);
-
-                            foreach (DataRow row in appointmentsDataTable.Rows)
-                            {
-                                UnifiedApptData uApptData = new UnifiedApptData();
-                                uApptData.appointment_id =
-                                    (int) row["appointment_id"]; // Set the correct property names
-                                uApptData.customer_id = (int) row["customer_id"];
-                                uApptData.staff_id = (int) row["staff_id"];
-                                uApptData.service_id = (int) row["service_id"];
-                                uApptData.start = (DateTime) row["start"];
-                                uApptData.end = (DateTime) row["end"];
-                                uApptData.office_id = (int) row["office_id"];
-                                uApptData.service_address_id = (int) row["service_address_id"];
-                                uApptData.inhomeservice = (sbyte) (int) row["inhomeservice"];
-                                appointments.Add(uApptData);
-                            }
-
-                            dgv.DataSource = appointmentsDataTable;
-                            break;
-                    }
-                }
-
-                connection.Close();
+                case ConnectionState.Open:
+                    break;
+                case ConnectionState.Closed:
+                    connection.Open();
+                    break;
+                case ConnectionState.Broken:
+                    connection.Dispose();
+                    break;
+                default:
+                    connection.Open();
+                    break;
             }
+
+            var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
+            using (dataAdapter)
+            {
+                switch (tableName)
+                {
+                    case "customer":
+                        var customers = new List<Customer>();
+                        var customerDataTable = new DataTable();
+                        customerDataTable.Columns.Add("customer_id", typeof(int));
+                        customerDataTable.Columns.Add("First", typeof(string));
+                        customerDataTable.Columns.Add("Last", typeof(string));
+                        customerDataTable.Columns.Add("Phone", typeof(string));
+                        customerDataTable.Columns.Add("Email", typeof(string));
+                        customerDataTable.Columns.Add("Preferred_Office", typeof(int));
+                        dataAdapter.Fill(customerDataTable);
+
+                        foreach (DataRow row in customerDataTable.Rows)
+                        {
+                            var cx = new Customer
+                            {
+                                customer_id = (int) row["customer_id"],
+                                first = row["First"].ToString(),
+                                last = row["Last"].ToString(),
+                                phone = row["Phone"].ToString(),
+                                email = row["Email"].ToString(),
+                                preferred_office = Convert.IsDBNull(row["Preferred_Office"])
+                                    ? 0
+                                    : (int) row["Preferred_Office"]
+                            };
+                            customers.Add(cx);
+                        }
+
+                        dgv.DataSource = customerDataTable;
+                        break;
+
+                    case "appointment":
+                        var appointments = new List<UnifiedApptData>();
+                        var appointmentsDataTable = new DataTable();
+                        appointmentsDataTable.Columns.Add("appointment_id", typeof(int));
+                        appointmentsDataTable.Columns.Add("customer_id", typeof(int));
+                        appointmentsDataTable.Columns.Add("staff_id", typeof(int));
+                        appointmentsDataTable.Columns.Add("service_id", typeof(int));
+                        appointmentsDataTable.Columns.Add("start", typeof(DateTime));
+                        appointmentsDataTable.Columns.Add("end", typeof(DateTime));
+                        appointmentsDataTable.Columns.Add("office_id", typeof(int));
+                        appointmentsDataTable.Columns.Add("service_address_id", typeof(int));
+                        appointmentsDataTable.Columns.Add("inhomeservice", typeof(int));
+                        dataAdapter.Fill(appointmentsDataTable);
+
+                        foreach (DataRow row in appointmentsDataTable.Rows)
+                        {
+                            var uApptData = new UnifiedApptData
+                            {
+                                appointment_id = (int) row["appointment_id"], // Set the correct property names
+                                customer_id = (int) row["customer_id"],
+                                staff_id = (int) row["staff_id"],
+                                service_id = (int) row["service_id"],
+                                start = (DateTime) row["start"],
+                                end = (DateTime) row["end"],
+                                office_id = (int) row["office_id"],
+                                service_address_id = (int) row["service_address_id"],
+                                inhomeservice = (sbyte) (int) row["inhomeservice"]
+                            };
+                            appointments.Add(uApptData);
+                        }
+
+                        dgv.DataSource = appointmentsDataTable;
+                        break;
+                }
+            }
+
+            connection.Close();
         }
     }
 }

@@ -4,15 +4,15 @@ namespace ZenoBook.DataManipulation;
 
 public class Builder
 {
-    private readonly string _database = "zth";
-    private readonly string _password = "Zenobook4zenobia";
+    private const string _database = "zth";
+    private const string _password = "Zenobook4zenobia";
 
-    private readonly string _serveraddress = "localhost";
+    private const string _serveraddress = "localhost";
 
     // These values should not be altered.
-    private readonly string _username = "zthstaff";
+    private const string _username = "zthstaff";
 
-    public string ConnectionString()
+    public static string ConnectionString()
     {
         var csb = new MySqlConnectionStringBuilder
         {

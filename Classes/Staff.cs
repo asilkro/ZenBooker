@@ -35,57 +35,51 @@ public class Staff
 
     public bool InsertStaff(Staff staff)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Insert("staff", staff);
-                MessageBox.Show("Staff id " + id + " created.", "Staff Created");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Insert("staff", staff);
+            MessageBox.Show("Staff id " + id + " created.", "Staff Created");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public bool DeleteStaff(int staffId)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
-            {
-                var id = connection.Delete("staff", staffId);
-                MessageBox.Show("Staff id " + id + " removed.", "Staff Removed");
-                return true;
-            }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            var id = connection.Delete("staff", staffId);
+            MessageBox.Show("Staff id " + id + " removed.", "Staff Removed");
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
     public bool UpdateStaff(Staff staff)
     {
-        using (var connection = new Builder().Connect())
+        using var connection = new Builder().Connect();
+        try
         {
-            try
             {
-                {
-                    var updatedStaff = connection.Update("staff", staff);
-                    MessageBox.Show("Staff id " + updatedStaff + " updated.", "Staff Updated");
-                }
-                return true;
+                var updatedStaff = connection.Update("staff", staff);
+                MessageBox.Show("Staff id " + updatedStaff + " updated.", "Staff Updated");
             }
-            catch (Exception e)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, e);
-                return false;
-            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
