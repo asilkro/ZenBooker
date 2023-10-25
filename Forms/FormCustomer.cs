@@ -12,8 +12,6 @@ public partial class FormCustomer : Form
     {
         InitializeComponent();
         validToggle(false);
-        // cxIdTB.Visible = false; // Simpler user experience without this visible when a Cx hasn't been created yet,
-        // as it might not be known what the ID is.
         cxIdTB.Text = Helpers.AutoIncrementId("customer"); //TODO: RELIES ON AUTOINCREMENT WHICH MAY BE FLAKY
     }
 
@@ -26,9 +24,7 @@ public partial class FormCustomer : Form
         tbEmail.Text = customer.email;
         tbOffice.Text = customer.preferred_office.ToString();
         cxIdTB.Text = customer.customer_id.ToString();
-
-        saveBtn.Enabled = false;
-        saveBtn.Visible = false;
+        validToggle(false);
     }
     
     private void validToggle(bool valid)
@@ -91,12 +87,18 @@ public partial class FormCustomer : Form
         };
         if (!Helpers.DoesThisCxExist(cx))
         {
-            Customer.InsertCustomer(cx);
+            if (Customer.InsertCustomer(cx))
+            {
+                Close();
+            }
         }
         else
         {
             cx.customer_id = int.Parse(cxIdTB.Text);
-            Customer.UpdateCustomer(cx);
+            if (Customer.UpdateCustomer(cx))
+            {
+                Close();
+            }
         }
     }
 }
