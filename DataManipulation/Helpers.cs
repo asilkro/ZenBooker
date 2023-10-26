@@ -175,11 +175,11 @@ public class Helpers
                         var customers = new List<Customer>();
                         var customerDataTable = new DataTable();
                         customerDataTable.Columns.Add("customer_id", typeof(int));
-                        customerDataTable.Columns.Add("First", typeof(string));
-                        customerDataTable.Columns.Add("Last", typeof(string));
-                        customerDataTable.Columns.Add("Phone", typeof(string));
-                        customerDataTable.Columns.Add("Email", typeof(string));
-                        customerDataTable.Columns.Add("Preferred_Office", typeof(int));
+                        customerDataTable.Columns.Add("first", typeof(string));
+                        customerDataTable.Columns.Add("last", typeof(string));
+                        customerDataTable.Columns.Add("phone", typeof(string));
+                        customerDataTable.Columns.Add("email", typeof(string));
+                        customerDataTable.Columns.Add("preferred_office", typeof(int));
                         dataAdapter.Fill(customerDataTable);
 
                         foreach (DataRow row in customerDataTable.Rows)
@@ -187,13 +187,13 @@ public class Helpers
                             var cx = new Customer
                             {
                                 customer_id = (int) row["customer_id"],
-                                first = row["First"].ToString(),
-                                last = row["Last"].ToString(),
-                                phone = row["Phone"].ToString(),
-                                email = row["Email"].ToString(),
-                                preferred_office = Convert.IsDBNull(row["Preferred_Office"])
+                                first = row["first"].ToString(),
+                                last = row["last"].ToString(),
+                                phone = row["phone"].ToString(),
+                                email = row["email"].ToString(),
+                                preferred_office = Convert.IsDBNull(row["preferred_office"])
                                     ? 0
-                                    : (int) row["Preferred_Office"]
+                                    : (int) row["preferred_office"]
                             };
                             customers.Add(cx);
                         }
@@ -233,6 +233,54 @@ public class Helpers
                         }
 
                         dgv.DataSource = appointmentsDataTable;
+                        break;
+                    case "service":
+                        var services = new List<Service>();
+                        var serviceDataTable = new DataTable();
+                        serviceDataTable.Columns.Add("service_id", typeof(int));
+                        serviceDataTable.Columns.Add("service_name", typeof(string));
+                        serviceDataTable.Columns.Add("service_description", typeof(string));
+                        dataAdapter.Fill(serviceDataTable);
+
+                        foreach (DataRow row in serviceDataTable.Rows)
+                        {
+                            var svc = new Service
+                            {
+                                service_id = (int)row["service_id"],
+                                service_name = row["service_name"].ToString(),
+                                service_description = row["service_description"].ToString(),
+                            };
+                            services.Add(svc);
+                        }
+
+                        dgv.DataSource = serviceDataTable;
+                        break;
+                    case "staff":
+                        var staffList = new List<Staff>();
+                        var staffDataTable = new DataTable();
+                        staffDataTable.Columns.Add("staff_id", typeof(int));
+                        staffDataTable.Columns.Add("user_id", typeof(int));
+                        staffDataTable.Columns.Add("office_id", typeof(int));
+                        staffDataTable.Columns.Add("name", typeof(string));
+                        staffDataTable.Columns.Add("phone", typeof(string));
+                        staffDataTable.Columns.Add("email", typeof(string));
+                        dataAdapter.Fill(staffDataTable);
+
+                        foreach (DataRow row in staffDataTable.Rows)
+                        {
+                            var staff = new Staff
+                            {
+                                staff_id = (int)row["staff_id"],
+                                user_id = (int)row["user_id"],
+                                office_id = (int)row["office_id"],
+                                name = row["name"].ToString(),
+                                phone = row["phone"].ToString(),
+                                email = row["email"].ToString(),
+                            };
+                            staffList.Add(staff);
+                        }
+
+                        dgv.DataSource = staffDataTable;
                         break;
                 }
             }

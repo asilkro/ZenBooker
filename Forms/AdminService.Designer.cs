@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminService));
             backBtn = new Button();
             saveBtn = new Button();
             serviceNameTB = new TextBox();
@@ -94,6 +95,7 @@
             Controls.Add(serviceNameTB);
             Controls.Add(saveBtn);
             Controls.Add(backBtn);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AdminService";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ZTH - Admin - Service";

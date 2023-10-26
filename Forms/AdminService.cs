@@ -9,16 +9,50 @@ namespace ZenoBook.Forms
         public AdminService()
         {
             InitializeComponent();
+            serviceIdTB.Text = Helpers.AutoIncrementId("service");
         }
 
         public AdminService(Service svc)
         {
             InitializeComponent();
+            PopulateServiceFields(svc);
+        }
+
+        #region Methods
+        private void PopulateServiceFields(Service svc)
+        {
             serviceIdTB.Text = svc.service_id.ToString();
             serviceNameTB.Text = svc.service_name;
             serviceDescTB.Text = svc.service_description;
         }
 
+        private bool IsThereAProblem()
+        {
+            var problem = true;
+            for (var index = 0; index < Controls.Count; index++)
+            {
+                var c = Controls[index];
+                if (c is TextBox)
+                    if (!string.IsNullOrWhiteSpace(c.Text) &&
+                        !string.IsNullOrEmpty(c.Text))
+                    {
+                        problem = false;
+                        break;
+                    }
+            }
+
+            if (int.TryParse(serviceIdTB.Text, out _))
+            {
+                problem = false;
+            }
+
+            return problem;
+        }
+
+
+        #endregion
+
+        #region Event Handlers
         private void backBtn_Click(object sender, EventArgs e)
         {
             Close();
@@ -26,31 +60,38 @@ namespace ZenoBook.Forms
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            var svc = new Service
+            if (!IsThereAProblem())
             {
-                service_name = serviceNameTB.Text,
-                service_description = serviceDescTB.Text,
-            };
-            try
-            {
-                if (Helpers.DoesThisServiceExist(svc))
+                var svc = new Service
                 {
-                    svc.service_id = int.Parse(serviceIdTB.Text);
-                    Helpers.UpdateService(svc);
-                    Close();
+                    service_name = serviceNameTB.Text,
+                    service_description = serviceDescTB.Text,
+                };
+                try
+                {
+                    if (Helpers.DoesThisServiceExist(svc))
+                    {
+                        svc.service_id = int.Parse(serviceIdTB.Text);
+                        Helpers.UpdateService(svc);
+                        Close();
+                    }
+                    else
+                    {
+                        Helpers.InsertService(svc);
+                        Close();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Helpers.InsertService(svc);
-                    Close();
+
+                    LogManager.GetLogger("LoggingRepo").Warn(e, ex);
+
                 }
             }
-            catch (Exception ex)
-            {
 
-                LogManager.GetLogger("LoggingRepo").Warn(e, ex);
-
-            }
         }
+
+        #endregion
+
     }
 }

@@ -171,7 +171,7 @@
             apptsDataGridView.RowTemplate.Height = 29;
             apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             apptsDataGridView.ShowEditingIcon = false;
-            apptsDataGridView.Size = new Size(352, 141);
+            apptsDataGridView.Size = new Size(475, 141);
             apptsDataGridView.TabIndex = 11;
             // 
             // cxDataGridView
@@ -187,7 +187,7 @@
             cxDataGridView.RowTemplate.Height = 29;
             cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             cxDataGridView.ShowCellErrors = false;
-            cxDataGridView.Size = new Size(352, 141);
+            cxDataGridView.Size = new Size(475, 141);
             cxDataGridView.TabIndex = 12;
             // 
             // cxSearchTB

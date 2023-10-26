@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminStaff));
             staffIdTB = new TextBox();
             staffPhoneTB = new TextBox();
             staffNameTB = new TextBox();
@@ -124,6 +125,7 @@
             Controls.Add(staffNameTB);
             Controls.Add(saveBtn);
             Controls.Add(backBtn);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AdminStaff";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ZTH - Admin - Staff";

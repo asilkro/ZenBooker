@@ -49,7 +49,7 @@ public partial class FormCustomer : Form
         validToggle(valid);
     }
 
-    public bool isThereAProblem(out bool problem)
+    private bool isThereAProblem(out bool problem)
     {
         problem = true;
         for (var index = 0; index < Controls.Count; index++)
