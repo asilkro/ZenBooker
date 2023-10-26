@@ -142,12 +142,12 @@ public partial class Main : Form
 
     private void apptSearchBtn_Click(object sender, EventArgs e)
     {
-        Helpers.searchDGV(apptsDataGridView, "appointment", apptSearchTB.Text);
+        Helpers.SearchDgv(apptsDataGridView, "appointment", apptSearchTB.Text);
     }
 
     private void cxSearchBtn_Click(object sender, EventArgs e)
     {
-        Helpers.searchDGV(cxDataGridView, "customer", cxSearchTB.Text);
+        Helpers.SearchDgv(cxDataGridView, "customer", cxSearchTB.Text);
     }
 
     #endregion

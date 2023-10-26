@@ -72,7 +72,7 @@
             // 
             // CreateCxBtn
             // 
-            CreateCxBtn.Location = new Point(32, 440);
+            CreateCxBtn.Location = new Point(245, 438);
             CreateCxBtn.Margin = new Padding(3, 2, 3, 2);
             CreateCxBtn.Name = "CreateCxBtn";
             CreateCxBtn.Size = new Size(82, 22);
@@ -83,7 +83,7 @@
             // 
             // UpdateCxBtn
             // 
-            UpdateCxBtn.Location = new Point(124, 440);
+            UpdateCxBtn.Location = new Point(337, 438);
             UpdateCxBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateCxBtn.Name = "UpdateCxBtn";
             UpdateCxBtn.Size = new Size(82, 22);
@@ -94,7 +94,7 @@
             // 
             // RemoveCxBtn
             // 
-            RemoveCxBtn.Location = new Point(212, 440);
+            RemoveCxBtn.Location = new Point(425, 438);
             RemoveCxBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveCxBtn.Name = "RemoveCxBtn";
             RemoveCxBtn.Size = new Size(82, 22);
@@ -105,7 +105,7 @@
             // 
             // RemoveApptBtn
             // 
-            RemoveApptBtn.Location = new Point(212, 210);
+            RemoveApptBtn.Location = new Point(425, 210);
             RemoveApptBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveApptBtn.Name = "RemoveApptBtn";
             RemoveApptBtn.Size = new Size(82, 22);
@@ -116,7 +116,7 @@
             // 
             // UpdateApptBtn
             // 
-            UpdateApptBtn.Location = new Point(120, 210);
+            UpdateApptBtn.Location = new Point(333, 210);
             UpdateApptBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateApptBtn.Name = "UpdateApptBtn";
             UpdateApptBtn.Size = new Size(82, 22);
@@ -127,7 +127,7 @@
             // 
             // CreateApptBtn
             // 
-            CreateApptBtn.Location = new Point(32, 210);
+            CreateApptBtn.Location = new Point(245, 210);
             CreateApptBtn.Margin = new Padding(3, 2, 3, 2);
             CreateApptBtn.Name = "CreateApptBtn";
             CreateApptBtn.Size = new Size(82, 22);
@@ -167,6 +167,7 @@
             apptsDataGridView.Margin = new Padding(3, 2, 3, 2);
             apptsDataGridView.Name = "apptsDataGridView";
             apptsDataGridView.ReadOnly = true;
+            apptsDataGridView.RowHeadersVisible = false;
             apptsDataGridView.RowHeadersWidth = 51;
             apptsDataGridView.RowTemplate.Height = 29;
             apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -183,6 +184,7 @@
             cxDataGridView.Margin = new Padding(3, 2, 3, 2);
             cxDataGridView.Name = "cxDataGridView";
             cxDataGridView.ReadOnly = true;
+            cxDataGridView.RowHeadersVisible = false;
             cxDataGridView.RowHeadersWidth = 51;
             cxDataGridView.RowTemplate.Height = 29;
             cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

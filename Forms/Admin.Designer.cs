@@ -43,6 +43,7 @@
             CreateServiceBtn = new Button();
             ServicesLabel = new Label();
             backBtn = new Button();
+            changePWbtn = new Button();
             ((System.ComponentModel.ISupportInitialize)serviceDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)staffDataGridView).BeginInit();
             SuspendLayout();
@@ -56,6 +57,7 @@
             servicesSearchBtn.TabIndex = 30;
             servicesSearchBtn.Text = "Search";
             servicesSearchBtn.UseVisualStyleBackColor = true;
+            servicesSearchBtn.Click += servicesSearchBtn_Click;
             // 
             // staffSearchBtn
             // 
@@ -66,6 +68,7 @@
             staffSearchBtn.TabIndex = 29;
             staffSearchBtn.Text = "Search";
             staffSearchBtn.UseVisualStyleBackColor = true;
+            staffSearchBtn.Click += staffSearchBtn_Click;
             // 
             // staffSearchTB
             // 
@@ -94,11 +97,12 @@
             serviceDataGridView.Margin = new Padding(3, 2, 3, 2);
             serviceDataGridView.Name = "serviceDataGridView";
             serviceDataGridView.ReadOnly = true;
+            serviceDataGridView.RowHeadersVisible = false;
             serviceDataGridView.RowHeadersWidth = 51;
             serviceDataGridView.RowTemplate.Height = 29;
             serviceDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             serviceDataGridView.ShowEditingIcon = false;
-            serviceDataGridView.Size = new Size(352, 141);
+            serviceDataGridView.Size = new Size(475, 141);
             serviceDataGridView.TabIndex = 26;
             // 
             // staffDataGridView
@@ -110,16 +114,17 @@
             staffDataGridView.Margin = new Padding(3, 2, 3, 2);
             staffDataGridView.Name = "staffDataGridView";
             staffDataGridView.ReadOnly = true;
+            staffDataGridView.RowHeadersVisible = false;
             staffDataGridView.RowHeadersWidth = 51;
             staffDataGridView.RowTemplate.Height = 29;
             staffDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             staffDataGridView.ShowEditingIcon = false;
-            staffDataGridView.Size = new Size(352, 141);
+            staffDataGridView.Size = new Size(475, 141);
             staffDataGridView.TabIndex = 25;
             // 
             // RemoveStaffBtn
             // 
-            RemoveStaffBtn.Location = new Point(302, 208);
+            RemoveStaffBtn.Location = new Point(425, 210);
             RemoveStaffBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveStaffBtn.Name = "RemoveStaffBtn";
             RemoveStaffBtn.Size = new Size(82, 22);
@@ -130,7 +135,7 @@
             // 
             // UpdateStaffBtn
             // 
-            UpdateStaffBtn.Location = new Point(214, 210);
+            UpdateStaffBtn.Location = new Point(337, 212);
             UpdateStaffBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateStaffBtn.Name = "UpdateStaffBtn";
             UpdateStaffBtn.Size = new Size(82, 22);
@@ -141,7 +146,7 @@
             // 
             // CreateStaffBtn
             // 
-            CreateStaffBtn.Location = new Point(126, 210);
+            CreateStaffBtn.Location = new Point(249, 212);
             CreateStaffBtn.Margin = new Padding(3, 2, 3, 2);
             CreateStaffBtn.Name = "CreateStaffBtn";
             CreateStaffBtn.Size = new Size(82, 22);
@@ -162,7 +167,7 @@
             // 
             // RemoveServiceBtn
             // 
-            RemoveServiceBtn.Location = new Point(303, 438);
+            RemoveServiceBtn.Location = new Point(425, 439);
             RemoveServiceBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveServiceBtn.Name = "RemoveServiceBtn";
             RemoveServiceBtn.Size = new Size(82, 22);
@@ -173,7 +178,7 @@
             // 
             // UpdateServiceBtn
             // 
-            UpdateServiceBtn.Location = new Point(214, 439);
+            UpdateServiceBtn.Location = new Point(336, 440);
             UpdateServiceBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateServiceBtn.Name = "UpdateServiceBtn";
             UpdateServiceBtn.Size = new Size(82, 22);
@@ -184,7 +189,7 @@
             // 
             // CreateServiceBtn
             // 
-            CreateServiceBtn.Location = new Point(126, 439);
+            CreateServiceBtn.Location = new Point(248, 440);
             CreateServiceBtn.Margin = new Padding(3, 2, 3, 2);
             CreateServiceBtn.Name = "CreateServiceBtn";
             CreateServiceBtn.Size = new Size(82, 22);
@@ -213,12 +218,22 @@
             backBtn.UseVisualStyleBackColor = true;
             backBtn.Click += backBtn_Click;
             // 
+            // changePWbtn
+            // 
+            changePWbtn.Location = new Point(672, 65);
+            changePWbtn.Name = "changePWbtn";
+            changePWbtn.Size = new Size(100, 44);
+            changePWbtn.TabIndex = 32;
+            changePWbtn.Text = "Change Password";
+            changePWbtn.UseVisualStyleBackColor = true;
+            // 
             // Admin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = backBtn;
             ClientSize = new Size(784, 495);
+            Controls.Add(changePWbtn);
             Controls.Add(backBtn);
             Controls.Add(servicesSearchBtn);
             Controls.Add(staffSearchBtn);
@@ -260,5 +275,6 @@
         private Button CreateServiceBtn;
         private Label ServicesLabel;
         private Button backBtn;
+        private Button changePWbtn;
     }
 }

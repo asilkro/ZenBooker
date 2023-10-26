@@ -50,16 +50,21 @@ public class Helpers
         return builder.ToString();
     }
 
+    public static bool DoTheyMatch(string one, string two)
+    {
+        var result = HashedString(one) == HashedString(two);
+        return result;
+    }
     #endregion
 
     #region Misc
 
-    public static void searchDGV(DataGridView dgv, string tableName, string searchQuery)
+    public static void SearchDgv(DataGridView dgv, string tableName, string searchQuery)
     {
         {
             using var connection = new Builder().Connect();
             {
-                var searchType = Helpers.WhatIsThisThing(searchQuery);
+                var searchType = WhatIsThisThing(searchQuery);
                 if (searchType == "default")
                 {
                     MessageBox.Show("Invalid search parameter.");
@@ -139,8 +144,39 @@ public class Helpers
                             dgv.DataSource = bs;
                         }
 
+                        if (searchType == "integer")
+                        {
+                            var sql = "SELECT * FROM 'service' WHERE CONTAINS(service_id,'@VALUE');";
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            var results = connection.ExecuteQuery<Service>(sql);
+                            var services = results.ToList();
+                            BindingSource bs = new(services, tableName);
+                            dgv.DataSource = bs;
+                        }
+
                         break;
                     }
+                    case "staff":
+                        if (searchType == "email")
+                        {
+                            var sql = "SELECT * FROM 'staff' WHERE CONTAINS(email,'@VALUE');";
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            var results = connection.ExecuteQuery<Staff>(sql);
+                            var staff = results.ToList();
+                            BindingSource bs = new(staff, tableName);
+                            dgv.DataSource = bs;
+                        }
+                        if (searchType == "name")
+                        {
+                            var sql = "SELECT * FROM 'staff' WHERE CONTAINS(name,'@VALUE');";
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            var results = connection.ExecuteQuery<Staff>(sql);
+                            var staff = results.ToList();
+                            BindingSource bs = new(staff, tableName);
+                            dgv.DataSource = bs;
+                        }
+
+                        break;
                 }
             }
         }
@@ -345,6 +381,31 @@ public class Helpers
         {
             LogManager.GetLogger("LoggingRepo").Warn(e, e);
             return null;
+        }
+    }
+
+    public static bool PasswordUpdated(string userName, string maskedPassword)
+    {
+        using var connection = new Builder().Connect();
+        var param = new
+        {
+            login = userName,
+            password = maskedPassword
+        };
+        try
+        {
+            var commandText = "UPDATE password = @password FROM user WHERE ([login] = @login);";
+            var affectedRows = connection.ExecuteNonQuery(commandText, param);
+            if (affectedRows > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
         }
     }
 
@@ -633,7 +694,7 @@ public class Helpers
         try
         {
             var id = connection.Insert("office", office);
-            MessageBox.Show("Office id " + id + " created.", "Office Created");
+            MessageBox.Show("Office" + " created.", "Office Created");
             return true;
         }
         catch (Exception e)
@@ -649,7 +710,7 @@ public class Helpers
         try
         {
             var id = connection.Delete("office", officeId);
-            MessageBox.Show("Office id " + id + " removed.", "Office Removed");
+            MessageBox.Show("Office id " + officeId + " removed.", "Office Removed");
             return true;
         }
         catch (Exception e)
@@ -666,7 +727,7 @@ public class Helpers
         {
             {
                 var updatedOffice = connection.Update("office", office);
-                MessageBox.Show("Office id " + updatedOffice + " updated.", "Office Updated");
+                MessageBox.Show("Office id " + office.office_id + " updated.", "Office Updated");
             }
             return true;
         }
@@ -731,7 +792,7 @@ public class Helpers
         try
         {
             var id = connection.Delete("address", addressId);
-            MessageBox.Show("Address id " + id + " removed.", "Address Removed");
+            MessageBox.Show("Address id " + addressId + " removed.", "Address Removed");
             return true;
         }
         catch (Exception e)
@@ -748,7 +809,7 @@ public class Helpers
         {
             {
                 var updatedCx = connection.Update("address", address);
-                MessageBox.Show("Address id " + updatedCx + " updated.", "Address Updated");
+                MessageBox.Show("Address id " + address.address_id + " updated.", "Address Updated");
             }
             return true;
         }

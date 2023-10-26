@@ -88,5 +88,15 @@ namespace ZenoBook.Forms
                 serviceForm.ShowDialog();
             }
         }
+
+        private void staffSearchBtn_Click(object sender, EventArgs e)
+        {
+            Helpers.SearchDgv(staffDataGridView, "staff", staffSearchTB.Text);
+        }
+
+        private void servicesSearchBtn_Click(object sender, EventArgs e)
+        {
+            Helpers.SearchDgv(serviceDataGridView, "services", servicesSearchTB.Text);
+        }
     }
 }
