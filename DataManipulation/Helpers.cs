@@ -284,7 +284,7 @@ public class Helpers
                             {
                                 service_id = (int)row["service_id"],
                                 service_name = row["service_name"].ToString(),
-                                service_description = row["service_description"].ToString(),
+                                service_description = row["service_description"].ToString()
                             };
                             services.Add(svc);
                         }
@@ -311,7 +311,7 @@ public class Helpers
                                 office_id = (int)row["office_id"],
                                 name = row["name"].ToString(),
                                 phone = row["phone"].ToString(),
-                                email = row["email"].ToString(),
+                                email = row["email"].ToString()
                             };
                             staffList.Add(staff);
                         }
@@ -355,7 +355,6 @@ public class Helpers
         result = "name";
         return result; // If it has a whitespace, treat as a name
     }
-
 
     #region SQL
 
@@ -416,7 +415,7 @@ public class Helpers
         var fields = new[]
         {
             new QueryField("service_name", svc.service_name),
-            new QueryField("service_description",svc.service_description)
+            new QueryField("service_description", svc.service_description)
         };
 
         var result = connection.Exists("service", fields);
@@ -791,7 +790,7 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("address", addressId);
+            var deletedCount = connection.Delete("address", addressId);
             MessageBox.Show("Address id " + addressId + " removed.", "Address Removed");
             return true;
         }
@@ -808,7 +807,7 @@ public class Helpers
         try
         {
             {
-                var updatedCx = connection.Update("address", address);
+                var result = connection.Update("address", address);
                 MessageBox.Show("Address id " + address.address_id + " updated.", "Address Updated");
             }
             return true;
@@ -820,5 +819,81 @@ public class Helpers
         }
     }
 
+    //Appointment
+
+    public static UnifiedApptData? GetAppointment(int apptId)
+    {
+        using var connection = new Builder().Connect();
+        try
+        {
+            {
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+
+                Field.Parse<UnifiedApptData>(e => new
+                {
+                    e.appointment_id,
+                    e.customer_id,
+                    e.staff_id,
+                    e.office_id,
+                    e.service_id,
+                    e.start,
+                    e.end,
+                    e.inhomeservice,
+                    e.service_address_id
+                });
+                var appt = connection
+                    .ExecuteQuery<UnifiedApptData>(
+                        "SELECT * FROM appointment WHERE (appointment_id = @appointment_id);",
+                        new { appointment_id = apptId }).FirstOrDefault();
+                connection.Close();
+                return appt;
+            }
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return null;
+        }
+    }
+    public static bool HomeApptExists(HomeAppointment appt)
+    {
+        using var connection = new Builder().Connect();
+        var fields = new[]
+        {
+            new QueryField("appointment_id", appt.appointment_id),
+        };
+        var result = connection.Exists("appointment", fields);
+        return result;
+    }
+    public static bool OfficeApptExists(OfficeAppointment appt)
+    {
+        using var connection = new Builder().Connect();
+        var fields = new[]
+        {
+            new QueryField("appointment_id", appt.appointment_id),
+        };
+        var result = connection.Exists("appointment", fields);
+        return result;
+    }
+    public static bool RemoveAppointment(int apptId)
+    {
+        using var connection = new Builder().Connect();
+        try
+        {
+            {
+                connection.Delete("appointment", apptId);
+                MessageBox.Show("Appt id " + apptId + " removed.", "Appointment Removed");
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
+        }
+    }
     #endregion
 }

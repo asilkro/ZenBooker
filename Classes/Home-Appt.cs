@@ -54,23 +54,6 @@ public class HomeAppointment : Appointment
             return false;
         }
     }
-
-    public static bool RemoveHomeAppt(int homeApptId)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            var removedAppt = connection.Delete("appointment", homeApptId);
-            MessageBox.Show(+removedAppt + " removed.", "Appointment Removed");
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
     public static bool UpdateHomeAppt(HomeAppointment homeAppointment)
     {
         using var connection = new Builder().Connect();
@@ -88,6 +71,5 @@ public class HomeAppointment : Appointment
             return false;
         }
     }
-
     #endregion
 }

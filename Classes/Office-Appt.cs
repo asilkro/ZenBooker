@@ -55,22 +55,6 @@ public class OfficeAppointment : Appointment
         }
     }
 
-    public static bool RemoveOfficeAppt(int officeApptId)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            var removedAppt = connection.Delete("appointment", officeApptId);
-            MessageBox.Show(+removedAppt + " removed.", "Appointment Removed");
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
     public static bool UpdateOfficeAppt(OfficeAppointment officeAppointment)
     {
         using var connection = new Builder().Connect();

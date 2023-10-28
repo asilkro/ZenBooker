@@ -1,4 +1,5 @@
-﻿using ZenoBook.Classes;
+﻿using log4net;
+using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms;
@@ -244,41 +245,62 @@ public partial class FormAppointment : Form
             MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
         }
 
-        if (homeRadioBtn.Checked)
+        try
         {
-            var homeAppt = new HomeAppointment
+            if (homeRadioBtn.Checked)
             {
+                var homeAppt = new HomeAppointment
+                {
+                    appointment_id = int.Parse(apptIdTB.Text),
+                    customer_id = int.Parse(cxIdTB.Text),
+                    staff_id = int.Parse(staffIdTB.Text),
+                    service_id = int.Parse(serviceIdTB.Text),
+                    start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+                    end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+                    inhomeservice = 1
+                };
+                
+                var tempAddy = makeAddressFromTbs();
+
+                if (!Helpers.DoesThisAddressExist(tempAddy))
+                {
+                    Helpers.InsertAddress(tempAddy, out var tempSid);
+                    addressIdTB.Text = tempSid.ToString();
+                }
+
+                homeAppt.service_address_id = int.Parse(addressIdTB.Text);
+                if (Helpers.HomeApptExists(homeAppt))
+                {
+                    HomeAppointment.UpdateHomeAppt(homeAppt);
+                }
+                HomeAppointment.InsertHomeAppt(homeAppt);
+            }
+
+            if (!officeRadioBtn.Checked) return;
+            var officeAppt = new OfficeAppointment
+            {
+                appointment_id = int.Parse(apptIdTB.Text),
                 customer_id = int.Parse(cxIdTB.Text),
                 staff_id = int.Parse(staffIdTB.Text),
+                office_id = int.Parse(officeIdTB.Text),
                 service_id = int.Parse(serviceIdTB.Text),
                 start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
                 end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
-                inhomeservice = 1
+                inhomeservice = 0
             };
-            var tempAddy = makeAddressFromTbs();
-
-            if (!Helpers.DoesThisAddressExist(tempAddy))
+            
+            if (Helpers.OfficeApptExists(officeAppt))
             {
-                Helpers.InsertAddress(tempAddy, out var tempSid);
-                addressIdTB.Text = tempSid.ToString();
+                OfficeAppointment.UpdateOfficeAppt(officeAppt);
+                return;
             }
-
-            homeAppt.service_address_id = int.Parse(addressIdTB.Text);
-            HomeAppointment.InsertHomeAppt(homeAppt);
+            OfficeAppointment.InsertOfficeAppt(officeAppt);
         }
-
-        if (!officeRadioBtn.Checked) return;
-        var officeAppt = new OfficeAppointment
+        catch (Exception exception)
         {
-            customer_id = int.Parse(cxIdTB.Text),
-            staff_id = int.Parse(staffIdTB.Text),
-            office_id = int.Parse(officeIdTB.Text),
-            service_id = int.Parse(serviceIdTB.Text),
-            start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
-            end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
-            inhomeservice = 0
-        };
-        OfficeAppointment.InsertOfficeAppt(officeAppt);
+            LogManager.GetLogger("LoggingRepo").Warn(e, exception);
+        }
+        
     }
 
     internal virtual Address makeAddressFromTbs()

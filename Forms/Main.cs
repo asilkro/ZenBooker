@@ -43,7 +43,7 @@ public partial class Main : Form
                 connection.Open();
             }
 
-            var uAppt = UnifiedApptData.GetAppointment(selected);
+            var uAppt = Helpers.GetAppointment(selected);
 
             var apptFill = new UnifiedApptData();
             if (uAppt == null) return;
@@ -99,7 +99,7 @@ public partial class Main : Form
         if (selectedRow == null) return;
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
         var selected = (int)apptsDataGridView["appointment_id", row].Value;
-        var result = UnifiedApptData.RemoveAppointment(selected);
+        var result = Helpers.RemoveAppointment(selected);
         if (result)
         {
             Helpers.populateDGV(apptsDataGridView, "appointment");

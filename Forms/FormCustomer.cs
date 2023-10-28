@@ -45,13 +45,20 @@ public partial class FormCustomer : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        isThereAProblem(out var valid);
-        validToggle(valid);
+        if(!IsThereAProblem())
+        {
+            validToggle(true);
+            return;
+        }
+        if (IsThereAProblem())
+        {
+            validToggle(false);
+        }
     }
 
-    private bool isThereAProblem(out bool problem)
+    private bool IsThereAProblem()
     {
-        problem = true;
+        var result = true;
         for (var index = 0; index < Controls.Count; index++)
         {
             var c = Controls[index];
@@ -59,22 +66,22 @@ public partial class FormCustomer : Form
                 if (!string.IsNullOrWhiteSpace(c.Text) &&
                     !string.IsNullOrEmpty(c.Text))
                 {
-                    problem = false;
+                    result = false;
                     break;
                 }
         }
 
         if (int.TryParse(cxIdTB.Text, out _))
         {
-            problem = false;
+            result = false;
         }
 
         if (int.TryParse(tbPhone.Text, out _))
         {
-            problem = false;
+            result = false;
         }
 
-        return problem;
+        return result;
     }
 
     private void saveBtn_Click(object sender, EventArgs e)
