@@ -5,7 +5,7 @@ public class Staff
     #region Properties / Fields
 
     public int staff_id { get; set; } // PK, auto_increment, not_null
-    public int user_id { get; set; } // FK, Users.UserId
+    public int user_id { get; set; } // FK, User.user_id
     public int office_id { get; set; } // FK, Office.office_id
     public string name { get; set; } // VARCHAR(45), not_null
     public string phone { get; set; } // VARCHAR(12)

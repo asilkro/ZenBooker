@@ -63,29 +63,9 @@ namespace ZenoBook.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Zenobia_Black {
-            get {
-                object obj = ResourceManager.GetObject("Zenobia-Black", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Zenobia_Transparent {
             get {
                 object obj = ResourceManager.GetObject("Zenobia-Transparent", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Zenobia_White {
-            get {
-                object obj = ResourceManager.GetObject("Zenobia-White", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

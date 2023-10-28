@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ZenoBook.Properties.Resources">
+    <Position X="25.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAgAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.Address">
+    <Position X="19.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAACAAABAAAAAAGAAAAAQAAAAA=</HashCode>
+      <FileName>Classes\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.Appointment">
+    <Position X="8.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAACAAAACAAgAAAAAAAAAgAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Classes\Appointment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.Customer">
+    <Position X="18" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAgAAEAAAAAAAAAAAAgAEAAAAAAAgA=</HashCode>
+      <FileName>Classes\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.HomeAppointment">
+    <Position X="10.75" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAgAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Classes\Home-Appt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.Office">
+    <Position X="18" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Classes\Office.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.OfficeAppointment">
+    <Position X="5" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAgAQAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Classes\Office-Appt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.Service">
+    <Position X="18" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Service.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.Staff">
+    <Position X="20" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAggAAAAAAgAAAAAAAAAAAEAAAgAAAAAAABAAA=</HashCode>
+      <FileName>Classes\Staff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.UnifiedApptData">
+    <Position X="8" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Classes\UnifiedApptData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Classes.User">
+    <Position X="20" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAEAA=</HashCode>
+      <FileName>Classes\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.DataManipulation.Builder">
+    <Position X="15.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAAAAAAAAAAIAAAAAAAAQAACIAAAAAAAA=</HashCode>
+      <FileName>DataManipulation\Builder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.DataManipulation.Helpers">
+    <Position X="13.75" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gARKAGBAAQAAACRABgQQAAACAAAQAgkhQIAAFACCDIg=</HashCode>
+      <FileName>DataManipulation\Helpers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.Admin">
+    <Position X="23.75" Y="5.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAAAAQAIACABSACAAgjAAAFCAAKABEACAAAgAEQCIAA=</HashCode>
+      <FileName>Forms\Admin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.AdminPW" Collapsed="true">
+    <Position X="23.75" Y="7" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQAAAABAQCAASAEAIACAAAECAgAAAAAAAAQQAAACAAA=</HashCode>
+      <FileName>Forms\AdminPW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.AdminService" Collapsed="true">
+    <Position X="25.5" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAwQCAACAAAIACAAAECAAAAAgAAAAAAAEAAAAA=</HashCode>
+      <FileName>Forms\AdminService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.AdminStaff">
+    <Position X="26" Y="5.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAQCAACAAAIACAAgECACgIAgAQAAAAQAAEAAA=</HashCode>
+      <FileName>Forms\AdminStaff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.FormAppointment" Collapsed="true">
+    <Position X="26" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>KdAAAIEgYDKAIlECeICAAjAiAiBgAnAwQACRCgEFAAE=</HashCode>
+      <FileName>Forms\FormAppointment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.FormCustomer" Collapsed="true">
+    <Position X="26" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CIAAEAABQCAAgAEAIACEAAACAAAAAgAAEAJAAAAAAAA=</HashCode>
+      <FileName>Forms\FormCustomer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.Login" Collapsed="true">
+    <Position X="23.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAwCAAAAQCEAAAAAAACAAAACIAQAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Forms\Login.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Forms.Main">
+    <Position X="23.75" Y="3.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAEAQAAASAEgEAiACSAFAACAkBIAAAIAAIAAIAAAAw=</HashCode>
+      <FileName>Forms\Main.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZenoBook.Program">
+    <Position X="23.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
