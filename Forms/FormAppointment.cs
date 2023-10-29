@@ -6,6 +6,8 @@ namespace ZenoBook.Forms;
 
 public partial class FormAppointment : Form
 {
+    private DateTime _current = DateTime.Now;
+
     public FormAppointment()
     {
         InitializeComponent();
@@ -13,13 +15,15 @@ public partial class FormAppointment : Form
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
         startDtPicker.Format = DateTimePickerFormat.Time;
         endDtPicker.Format = DateTimePickerFormat.Time;
+        startDtPicker.Value = _current + TimeSpan.FromMinutes(00);
+        endDtPicker.Value = startDtPicker.Value.AddHours(1);
     }
 
     public FormAppointment(UnifiedApptData appt)
     {
         InitializeComponent();
         UpdateTbs(appt);
-        if (appt is { inhomeservice: 1, office_id: 0 })
+        if (appt is {inhomeservice: 1, office_id: 0})
         {
             homeRadioBtn.Checked = true;
             HideOfficeStuff();
@@ -45,8 +49,8 @@ public partial class FormAppointment : Form
     {
         apptIdTB.Text = appt.appointment_id.ToString();
         dateCalendar.SetDate(appt.start.Date);
-        startDtPicker.Value = appt.start;
-        endDtPicker.Value = appt.end;
+        startDtPicker.Value = appt.start.ToLocalTime();
+        endDtPicker.Value = appt.end.ToLocalTime();
     }
 
     private void FillServiceFields(UnifiedApptData appt)
@@ -259,8 +263,10 @@ public partial class FormAppointment : Form
                     end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
                     inhomeservice = 1
                 };
-                
-                var tempAddy = makeAddressFromTbs();
+
+                var tempAddy = Helpers.MakeAddress
+                (address1TB.Text, address2TB.Text,
+                    cityTB.Text, stateTB.Text, countryTB.Text);
 
                 if (!Helpers.DoesThisAddressExist(tempAddy))
                 {
@@ -273,6 +279,7 @@ public partial class FormAppointment : Form
                 {
                     HomeAppointment.UpdateHomeAppt(homeAppt);
                 }
+
                 HomeAppointment.InsertHomeAppt(homeAppt);
             }
 
@@ -288,33 +295,21 @@ public partial class FormAppointment : Form
                 end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
                 inhomeservice = 0
             };
-            
+
             if (Helpers.OfficeApptExists(officeAppt))
             {
                 OfficeAppointment.UpdateOfficeAppt(officeAppt);
                 return;
             }
+
             OfficeAppointment.InsertOfficeAppt(officeAppt);
         }
         catch (Exception exception)
         {
             LogManager.GetLogger("LoggingRepo").Warn(e, exception);
         }
-        
+
     }
 
-    internal virtual Address makeAddressFromTbs()
-    {
-        var tempAddy = new Address
-        {
-            address1 = address1TB.Text,
-            address2 = address2TB.Text,
-            city = cityTB.Text,
-            state = stateTB.Text,
-            country = countryTB.Text
-        };
-        return tempAddy;
-    }
-
-    #endregion
+#endregion
 }

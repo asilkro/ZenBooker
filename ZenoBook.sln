@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZenoBook", "ZenoBook.csproj", "{0EE2200A-F0BE-4BEA-AACB-720CCF7C91A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenoBookTests", "..\ZenoBookTests\ZenoBookTests.csproj", "{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{0EE2200A-F0BE-4BEA-AACB-720CCF7C91A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EE2200A-F0BE-4BEA-AACB-720CCF7C91A6}.Release|x64.ActiveCfg = Release|x64
 		{0EE2200A-F0BE-4BEA-AACB-720CCF7C91A6}.Release|x64.Build.0 = Release|x64
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE6829C5-7F8F-446E-BAE8-B72A88B2EB15}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

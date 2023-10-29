@@ -58,7 +58,6 @@
             apptIdTB = new TextBox();
             officeRadioBtn = new RadioButton();
             homeRadioBtn = new RadioButton();
-            mySqlCommandBuilder1 = new MySqlConnector.MySqlCommandBuilder();
             cityTB = new TextBox();
             address2TB = new TextBox();
             countryTB = new TextBox();
@@ -354,12 +353,6 @@
             homeRadioBtn.UseVisualStyleBackColor = true;
             homeRadioBtn.CheckedChanged += CheckedChanged;
             // 
-            // mySqlCommandBuilder1
-            // 
-            mySqlCommandBuilder1.DataAdapter = null;
-            mySqlCommandBuilder1.QuotePrefix = "`";
-            mySqlCommandBuilder1.QuoteSuffix = "`";
-            // 
             // cityTB
             // 
             cityTB.Location = new Point(23, 403);
@@ -510,7 +503,6 @@
         private TextBox apptIdTB;
         private RadioButton officeRadioBtn;
         private RadioButton homeRadioBtn;
-        private MySqlConnector.MySqlCommandBuilder mySqlCommandBuilder1;
         private TextBox cityTB;
         private TextBox address2TB;
         private TextBox countryTB;

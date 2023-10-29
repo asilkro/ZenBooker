@@ -5,6 +5,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using ZenoBook.Classes;
+using static System.Windows.Forms.AxHost;
 
 namespace ZenoBook.DataManipulation;
 
@@ -356,6 +357,18 @@ public class Helpers
         return result; // If it has a whitespace, treat as a name
     }
 
+    public static Address MakeAddress(string address1, string address2, string city, string state, string country)
+    {
+        var tempAddy = new Address
+        {
+            address1 = address1,
+            address2 = address2,
+            city = city,
+            state = state,
+            country = country
+        };
+        return tempAddy;
+    }
     #region SQL
 
     public static string? AutoIncrementId(string tableName)

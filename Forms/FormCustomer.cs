@@ -9,7 +9,7 @@ public partial class FormCustomer : Form
     {
         InitializeComponent();
         validToggle(false);
-        cxIdTB.Text = Helpers.AutoIncrementId("customer"); //TODO: RELIES ON AUTOINCREMENT WHICH MAY BE FLAKY
+        cxIdTB.Text = Helpers.AutoIncrementId("customer");
     }
 
     public FormCustomer(Customer customer)
