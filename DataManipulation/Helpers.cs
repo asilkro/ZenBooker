@@ -59,8 +59,68 @@ public class Helpers
 
     #endregion
 
-    #region Misc
+    #region DataGridView
 
+    public static void populateDGV(DataGridView dgv, string tableName)
+    {
+        {
+            var selectQuery = "SELECT * FROM " + tableName + ";";
+            var connection = new Builder().Connect();
+            switch (connection.State)
+            {
+                case ConnectionState.Open:
+                    break;
+                case ConnectionState.Closed:
+                    connection.Open();
+                    break;
+                case ConnectionState.Broken:
+                    connection.Dispose();
+                    break;
+                default:
+                    connection.Open();
+                    break;
+            }
+
+            var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
+            using (dataAdapter)
+            {
+                switch (tableName)
+                {
+                    case "customer":
+                        {
+                            var customers = cxToDataTable(dataAdapter, out var customerDataTable);
+                            addCxToRows(customerDataTable, customers);
+                            dgv.DataSource = customerDataTable;
+                        }
+                        break;
+
+                    case "appointment":
+                        {
+                            var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
+                            addApptToRows(appointmentsDataTable, appointments);
+                            dgv.DataSource = appointmentsDataTable;
+                        }
+                        break;
+                    case "service":
+                        {
+                            var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
+                            addServiceToRows(serviceDataTable, services);
+                            dgv.DataSource = serviceDataTable;
+                        }
+                        break;
+                    case "staff":
+                        {
+                            var staff = staffToDataTable(dataAdapter, out var staffDataTable);
+                            addStaffToRows(staffDataTable, staff);
+                            dgv.DataSource = staffDataTable;
+                        }
+                        break;
+                }
+            }
+
+            connection.Close();
+        }
+    }
     public static void SearchDgv(DataGridView dgv, string tableName, string searchQuery)
     {
         {
@@ -214,10 +274,9 @@ public class Helpers
             }
         }
     }
-
     private static List<UnifiedApptData> apptToDataTable(MySqlDataAdapter mySqlDataAdapter,
-    out DataTable appointmentsDataTable1)
-{
+    out DataTable appointmentsDataTable1) 
+    {
     var list = new List<UnifiedApptData>();
     appointmentsDataTable1 = new DataTable();
     appointmentsDataTable1.Columns.Add("appointment_id", typeof(int));
@@ -231,8 +290,8 @@ public class Helpers
     appointmentsDataTable1.Columns.Add("inhomeservice", typeof(int));
     mySqlDataAdapter.Fill(appointmentsDataTable1);
     return list;
-}
-private static void addCxToRows(DataTable customerDataTable, List<Customer> customers)
+} 
+    private static void addCxToRows(DataTable customerDataTable, List<Customer> customers)
 {
     foreach (DataRow row in customerDataTable.Rows)
     {
@@ -249,8 +308,8 @@ private static void addCxToRows(DataTable customerDataTable, List<Customer> cust
         };
         customers.Add(cx);
     }
-}
-private static List<Customer> cxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
+} 
+    private static List<Customer> cxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
 {
     List<Customer> customers;
     customers = new List<Customer>();
@@ -263,8 +322,8 @@ private static List<Customer> cxToDataTable(MySqlDataAdapter dataAdapter, out Da
     customerDataTable.Columns.Add("preferred_office", typeof(int));
     dataAdapter.Fill(customerDataTable);
     return customers;
-}
-private static void addApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
+} 
+    private static void addApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
 {
     foreach (DataRow row in dataTable.Rows)
     {
@@ -283,69 +342,7 @@ private static void addApptToRows(DataTable dataTable, List<UnifiedApptData> uni
         unifiedApptDatas.Add(uApptData);
     }
 }
-
-public static void populateDGV(DataGridView dgv, string tableName)
-    {
-        {
-            var selectQuery = "SELECT * FROM " + tableName + ";";
-            var connection = new Builder().Connect();
-            switch (connection.State)
-            {
-                case ConnectionState.Open:
-                    break;
-                case ConnectionState.Closed:
-                    connection.Open();
-                    break;
-                case ConnectionState.Broken:
-                    connection.Dispose();
-                    break;
-                default:
-                    connection.Open();
-                    break;
-            }
-
-            var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
-            using (dataAdapter)
-            {
-                switch (tableName)
-                {
-                    case "customer":
-                    {
-                        var customers = cxToDataTable(dataAdapter, out var customerDataTable);
-                        addCxToRows(customerDataTable, customers);
-                        dgv.DataSource = customerDataTable;
-                    }
-                        break;
-
-                    case "appointment":
-                    {
-                        var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
-                        addApptToRows(appointmentsDataTable, appointments);
-                        dgv.DataSource = appointmentsDataTable;
-                    }
-                        break;
-                    case "service":
-                    {
-                        var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
-                        addServiceToRows(serviceDataTable, services);
-                        dgv.DataSource = serviceDataTable;
-                    }
-                        break;
-                    case "staff":
-                    {
-                        var staff = staffToDataTable(dataAdapter, out var staffDataTable);
-                        addStaffToRows(staffDataTable, staff);
-                        dgv.DataSource = staffDataTable;
-                    }
-                        break;
-                }
-            }
-
-            connection.Close();
-        }
-    }
-
-private static List<Staff> staffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
+    private static List<Staff> staffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
 {
     var staffList = new List<Staff>();
     staffDataTable = new DataTable();
@@ -360,8 +357,7 @@ private static List<Staff> staffToDataTable(MySqlDataAdapter dataAdapter, out Da
     addStaffToRows(staffDataTable, staffList);
     return staffList;
 }
-
-private static void addStaffToRows(DataTable staffDataTable, List<Staff> staffList)
+    private static void addStaffToRows(DataTable staffDataTable, List<Staff> staffList)
 {
     foreach (DataRow row in staffDataTable.Rows)
     {
@@ -377,8 +373,7 @@ private static void addStaffToRows(DataTable staffDataTable, List<Staff> staffLi
         staffList.Add(staff);
     }
 }
-
-private static List<Service> serviceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
+    private static List<Service> serviceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
 {
     var services = new List<Service>();
     serviceDataTable = new DataTable();
@@ -388,8 +383,7 @@ private static List<Service> serviceToDataTable(MySqlDataAdapter dataAdapter, ou
     dataAdapter.Fill(serviceDataTable);
     return services;
 }
-
-private static void addServiceToRows(DataTable serviceDataTable, List<Service> services)
+    private static void addServiceToRows(DataTable serviceDataTable, List<Service> services)
 {
     foreach (DataRow row in serviceDataTable.Rows)
     {
@@ -402,8 +396,7 @@ private static void addServiceToRows(DataTable serviceDataTable, List<Service> s
         services.Add(svc);
     }
 }
-
-#endregion
+    #endregion
 
     public static string WhatIsThisThing(string valueToCheck)
     {
