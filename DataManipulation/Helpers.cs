@@ -2,10 +2,10 @@
 using MySqlConnector;
 using RepoDb;
 using System.Data;
+using System.Data.Common;
 using System.Security.Cryptography;
 using System.Text;
 using ZenoBook.Classes;
-using static System.Windows.Forms.AxHost;
 
 namespace ZenoBook.DataManipulation;
 
@@ -56,14 +56,15 @@ public class Helpers
         var result = HashedString(one) == HashedString(two);
         return result;
     }
+
     #endregion
 
     #region Misc
-
     public static void SearchDgv(DataGridView dgv, string tableName, string searchQuery)
     {
         {
             using var connection = new Builder().Connect();
+
             {
                 var searchType = WhatIsThisThing(searchQuery);
                 if (searchType == "default")
@@ -80,57 +81,74 @@ public class Helpers
                         {
                             var sql = "SELECT * FROM 'appointment' WHERE CONTAINS(start,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Appointment>(sql);
-                            var appointments = results.ToList();
-                            BindingSource bs = new(appointments, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
+                                addApptToRows(appointmentsDataTable, appointments);
+                                dgv.DataSource = appointmentsDataTable;
+                            }
+
+                            break;
                         }
 
                         if (searchType == "integer")
                         {
                             var sql = "SELECT * FROM 'appointment' WHERE CONTAINS(customer_id,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Appointment>(sql);
-                            var appointments = results.ToList();
-                            BindingSource bs = new(appointments, tableName);
-                            dgv.DataSource = bs;
-                        }
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
+                                addApptToRows(appointmentsDataTable, appointments);
+                                dgv.DataSource = appointmentsDataTable;
+                            }
 
-                        break;
+                            break;
+                        }
                     }
+                        break;
                     case "customer":
                     {
                         if (searchType == "email")
                         {
-                            var sql = "SELECT * FROM 'customer' WHERE CONTAINS(email,'@VALUE');";
+                            var sql = "SELECT * FROM customer WHERE email like '@VALUE';";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Customer>(sql);
-                            var customers = results.ToList();
-                            BindingSource bs = new(customers, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var customers = cxToDataTable(dataAdapter, out var customerDataTable);
+                                addCxToRows(customerDataTable, customers);
+                                dgv.DataSource = customerDataTable;
+                            }
                         }
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM 'customer' WHERE CONTAINS(phone,'@VALUE');";
+                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE';";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Customer>(sql);
-                            var customers = results.ToList();
-                            BindingSource bs = new(customers, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var customers = cxToDataTable(dataAdapter, out var customerDataTable);
+                                addCxToRows(customerDataTable, customers);
+                                dgv.DataSource = customerDataTable;
+                            }
                         }
 
                         if (searchType == "name")
                         {
                             var sql =
-                                "SELECT *, concat_ws(' ', 'first', 'last') AS Name FROM 'customer' HAVING Name LIKE '@VALUE'";
+                                "SELECT *, concat_ws(' ', 'first', 'last') AS Name FROM customer HAVING Name LIKE '@VALUE'";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Customer>(sql);
-                            var customers = results.ToList();
-                            BindingSource bs = new(customers, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var customers = cxToDataTable(dataAdapter, out var customerDataTable);
+                                addCxToRows(customerDataTable, customers);
+                                dgv.DataSource = customerDataTable;
+                            }
                         }
-
                         break;
                     }
                     case "service":
@@ -139,24 +157,30 @@ public class Helpers
                         {
                             var sql = "SELECT * FROM 'service' WHERE CONTAINS(service_name,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Service>(sql);
-                            var services = results.ToList();
-                            BindingSource bs = new(services, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
+                                addServiceToRows(serviceDataTable,services);
+                                dgv.DataSource = serviceDataTable;
+                            }
                         }
 
                         if (searchType == "integer")
                         {
                             var sql = "SELECT * FROM 'service' WHERE CONTAINS(service_id,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Service>(sql);
-                            var services = results.ToList();
-                            BindingSource bs = new(services, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
+                                addServiceToRows(serviceDataTable, services);
+                                dgv.DataSource = serviceDataTable;
+                            }
                         }
-
                         break;
                     }
+
                     case "staff":
                         if (searchType == "email")
                         {
@@ -167,6 +191,7 @@ public class Helpers
                             BindingSource bs = new(staff, tableName);
                             dgv.DataSource = bs;
                         }
+
                         if (searchType == "name")
                         {
                             var sql = "SELECT * FROM 'staff' WHERE CONTAINS(name,'@VALUE');";
@@ -178,12 +203,84 @@ public class Helpers
                         }
 
                         break;
+
                 }
+
             }
+            
         }
     }
 
-    public static void populateDGV(DataGridView dgv, string tableName)
+private static List<UnifiedApptData> apptToDataTable(MySqlDataAdapter mySqlDataAdapter,
+    out DataTable appointmentsDataTable1)
+{
+    var list = new List<UnifiedApptData>();
+    appointmentsDataTable1 = new DataTable();
+    appointmentsDataTable1.Columns.Add("appointment_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("customer_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("staff_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("service_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("start", typeof(DateTime));
+    appointmentsDataTable1.Columns.Add("end", typeof(DateTime));
+    appointmentsDataTable1.Columns.Add("office_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("service_address_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("inhomeservice", typeof(int));
+    mySqlDataAdapter.Fill(appointmentsDataTable1);
+    return list;
+}
+private static void addCxToRows(DataTable customerDataTable, List<Customer> customers)
+{
+    foreach (DataRow row in customerDataTable.Rows)
+    {
+        var cx = new Customer
+        {
+            customer_id = (int)row["customer_id"],
+            first = row["first"].ToString(),
+            last = row["last"].ToString(),
+            phone = row["phone"].ToString(),
+            email = row["email"].ToString(),
+            preferred_office = Convert.IsDBNull(row["preferred_office"])
+                ? 0
+                : (int)row["preferred_office"]
+        };
+        customers.Add(cx);
+    }
+}
+private static List<Customer> cxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
+{
+    List<Customer> customers;
+    customers = new List<Customer>();
+    customerDataTable = new DataTable();
+    customerDataTable.Columns.Add("customer_id", typeof(int));
+    customerDataTable.Columns.Add("first", typeof(string));
+    customerDataTable.Columns.Add("last", typeof(string));
+    customerDataTable.Columns.Add("phone", typeof(string));
+    customerDataTable.Columns.Add("email", typeof(string));
+    customerDataTable.Columns.Add("preferred_office", typeof(int));
+    dataAdapter.Fill(customerDataTable);
+    return customers;
+}
+private static void addApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
+{
+    foreach (DataRow row in dataTable.Rows)
+    {
+        var uApptData = new UnifiedApptData
+        {
+            appointment_id = (int)row["appointment_id"], // Set the correct property names
+            customer_id = (int)row["customer_id"],
+            staff_id = (int)row["staff_id"],
+            service_id = (int)row["service_id"],
+            start = (DateTime)row["start"],
+            end = (DateTime)row["end"],
+            office_id = (int)row["office_id"],
+            service_address_id = (int)row["service_address_id"],
+            inhomeservice = (sbyte)(int)row["inhomeservice"]
+        };
+        unifiedApptDatas.Add(uApptData);
+    }
+}
+
+public static void populateDGV(DataGridView dgv, string tableName)
     {
         {
             var selectQuery = "SELECT * FROM " + tableName + ";";
@@ -209,88 +306,26 @@ public class Helpers
                 switch (tableName)
                 {
                     case "customer":
-                        var customers = new List<Customer>();
-                        var customerDataTable = new DataTable();
-                        customerDataTable.Columns.Add("customer_id", typeof(int));
-                        customerDataTable.Columns.Add("first", typeof(string));
-                        customerDataTable.Columns.Add("last", typeof(string));
-                        customerDataTable.Columns.Add("phone", typeof(string));
-                        customerDataTable.Columns.Add("email", typeof(string));
-                        customerDataTable.Columns.Add("preferred_office", typeof(int));
-                        dataAdapter.Fill(customerDataTable);
-
-                        foreach (DataRow row in customerDataTable.Rows)
-                        {
-                            var cx = new Customer
-                            {
-                                customer_id = (int) row["customer_id"],
-                                first = row["first"].ToString(),
-                                last = row["last"].ToString(),
-                                phone = row["phone"].ToString(),
-                                email = row["email"].ToString(),
-                                preferred_office = Convert.IsDBNull(row["preferred_office"])
-                                    ? 0
-                                    : (int) row["preferred_office"]
-                            };
-                            customers.Add(cx);
-                        }
-
+                    {
+                        var customers = cxToDataTable(dataAdapter, out var customerDataTable);
+                        addCxToRows(customerDataTable, customers);
                         dgv.DataSource = customerDataTable;
+                    }
                         break;
 
                     case "appointment":
-                        var appointments = new List<UnifiedApptData>();
-                        var appointmentsDataTable = new DataTable();
-                        appointmentsDataTable.Columns.Add("appointment_id", typeof(int));
-                        appointmentsDataTable.Columns.Add("customer_id", typeof(int));
-                        appointmentsDataTable.Columns.Add("staff_id", typeof(int));
-                        appointmentsDataTable.Columns.Add("service_id", typeof(int));
-                        appointmentsDataTable.Columns.Add("start", typeof(DateTime));
-                        appointmentsDataTable.Columns.Add("end", typeof(DateTime));
-                        appointmentsDataTable.Columns.Add("office_id", typeof(int));
-                        appointmentsDataTable.Columns.Add("service_address_id", typeof(int));
-                        appointmentsDataTable.Columns.Add("inhomeservice", typeof(int));
-                        dataAdapter.Fill(appointmentsDataTable);
-
-                        foreach (DataRow row in appointmentsDataTable.Rows)
-                        {
-                            var uApptData = new UnifiedApptData
-                            {
-                                appointment_id = (int) row["appointment_id"], // Set the correct property names
-                                customer_id = (int) row["customer_id"],
-                                staff_id = (int) row["staff_id"],
-                                service_id = (int) row["service_id"],
-                                start = (DateTime) row["start"],
-                                end = (DateTime) row["end"],
-                                office_id = (int) row["office_id"],
-                                service_address_id = (int) row["service_address_id"],
-                                inhomeservice = (sbyte) (int) row["inhomeservice"]
-                            };
-                            appointments.Add(uApptData);
-                        }
-
+                    {
+                        var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
+                        addApptToRows(appointmentsDataTable, appointments);
                         dgv.DataSource = appointmentsDataTable;
+                    }
                         break;
                     case "service":
-                        var services = new List<Service>();
-                        var serviceDataTable = new DataTable();
-                        serviceDataTable.Columns.Add("service_id", typeof(int));
-                        serviceDataTable.Columns.Add("service_name", typeof(string));
-                        serviceDataTable.Columns.Add("service_description", typeof(string));
-                        dataAdapter.Fill(serviceDataTable);
-
-                        foreach (DataRow row in serviceDataTable.Rows)
-                        {
-                            var svc = new Service
-                            {
-                                service_id = (int)row["service_id"],
-                                service_name = row["service_name"].ToString(),
-                                service_description = row["service_description"].ToString()
-                            };
-                            services.Add(svc);
-                        }
-
+                    {
+                        var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
+                        addServiceToRows(serviceDataTable, services);
                         dgv.DataSource = serviceDataTable;
+                    }
                         break;
                     case "staff":
                         var staffList = new List<Staff>();
@@ -326,7 +361,32 @@ public class Helpers
         }
     }
 
-    #endregion
+private static List<Service> serviceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
+{
+    var services = new List<Service>();
+    serviceDataTable = new DataTable();
+    serviceDataTable.Columns.Add("service_id", typeof(int));
+    serviceDataTable.Columns.Add("service_name", typeof(string));
+    serviceDataTable.Columns.Add("service_description", typeof(string));
+    dataAdapter.Fill(serviceDataTable);
+    return services;
+}
+
+private static void addServiceToRows(DataTable serviceDataTable, List<Service> services)
+{
+    foreach (DataRow row in serviceDataTable.Rows)
+    {
+        var svc = new Service
+        {
+            service_id = (int) row["service_id"],
+            service_name = row["service_name"].ToString(),
+            service_description = row["service_description"].ToString()
+        };
+        services.Add(svc);
+    }
+}
+
+#endregion
 
     public static string WhatIsThisThing(string valueToCheck)
     {
@@ -584,7 +644,7 @@ public class Helpers
             new QueryField("first", cx.first),
             new QueryField("last", cx.last),
             new QueryField("phone", cx.phone),
-            new QueryField("state", cx.email)
+            new QueryField("email", cx.email)
         };
 
         var result = connection.Exists("customer", fields);
