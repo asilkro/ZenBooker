@@ -165,9 +165,9 @@ public class Helpers
                     {
                         if (searchType == "email")
                         {
-                            var sql = "SELECT * FROM customer WHERE email like '@VALUE';";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var sql = new MySqlCommand("SELECT * FROM customer WHERE email like '@VALUE';",connection);
+                            sql.Parameters.AddWithValue("@VALUE", searchQuery);
+                            var dataAdapter = new MySqlDataAdapter(sql);
                             using (dataAdapter)
                             {
                                 var customers = cxToDataTable(dataAdapter, out var customerDataTable);
@@ -178,9 +178,9 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE';";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var sql = new MySqlCommand("SELECT * FROM customer WHERE phone like '@VALUE';",connection);
+                            sql.Parameters.AddWithValue("@VALUE", searchQuery);
+                            var dataAdapter = new MySqlDataAdapter(sql);
                             using (dataAdapter)
                             {
                                 var customers = cxToDataTable(dataAdapter, out var customerDataTable);
@@ -191,10 +191,9 @@ public class Helpers
 
                         if (searchType == "name")
                         {
-                            var sql =
-                                "SELECT *, concat_ws(' ', 'first', 'last') AS Name FROM customer HAVING Name LIKE '@VALUE'";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var sql = new MySqlCommand("SELECT *, concat_ws(' ', 'first', 'last') AS Name FROM customer HAVING Name LIKE '@VALUE'",connection);
+                            sql.Parameters.AddWithValue("@VALUE", searchQuery);
+                            var dataAdapter = new MySqlDataAdapter(sql);
                             using (dataAdapter)
                             {
                                 var customers = cxToDataTable(dataAdapter, out var customerDataTable);
