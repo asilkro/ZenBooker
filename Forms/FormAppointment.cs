@@ -231,9 +231,9 @@ public partial class FormAppointment : Form
         {
             MessageBox.Show("Not found, try the address ID or the first line of the address again.",
                 "Address not found");
+            return;
         }
 
-        if (result == null) return;
         addressIdTB.Text = result.address_id.ToString();
         address1TB.Text = result.address1;
         address2TB.Text = result.address2;
@@ -277,32 +277,46 @@ public partial class FormAppointment : Form
                 homeAppt.service_address_id = int.Parse(addressIdTB.Text);
                 if (Helpers.HomeApptExists(homeAppt))
                 {
-                    HomeAppointment.UpdateHomeAppt(homeAppt);
+                    if (HomeAppointment.UpdateHomeAppt(homeAppt))
+                    {
+                        Close();
+                    }
                 }
 
-                HomeAppointment.InsertHomeAppt(homeAppt);
+                if (HomeAppointment.InsertHomeAppt(homeAppt))
+                {
+                    Close();
+                }
+
             }
 
-            if (!officeRadioBtn.Checked) return;
-            var officeAppt = new OfficeAppointment
+            if (officeRadioBtn.Checked)
             {
-                appointment_id = int.Parse(apptIdTB.Text),
-                customer_id = int.Parse(cxIdTB.Text),
-                staff_id = int.Parse(staffIdTB.Text),
-                office_id = int.Parse(officeIdTB.Text),
-                service_id = int.Parse(serviceIdTB.Text),
-                start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
-                end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
-                inhomeservice = 0
-            };
+                var officeAppt = new OfficeAppointment
+                {
+                    appointment_id = int.Parse(apptIdTB.Text),
+                    customer_id = int.Parse(cxIdTB.Text),
+                    staff_id = int.Parse(staffIdTB.Text),
+                    office_id = int.Parse(officeIdTB.Text),
+                    service_id = int.Parse(serviceIdTB.Text),
+                    start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+                    end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+                    inhomeservice = 0
+                };
 
-            if (Helpers.OfficeApptExists(officeAppt))
-            {
-                OfficeAppointment.UpdateOfficeAppt(officeAppt);
-                return;
+                if (Helpers.OfficeApptExists(officeAppt))
+                {
+                    if (OfficeAppointment.UpdateOfficeAppt(officeAppt))
+                    {
+                        Close();
+                    }
+                }
+
+                if (OfficeAppointment.InsertOfficeAppt(officeAppt))
+                {
+                    Close();
+                }
             }
-
-            OfficeAppointment.InsertOfficeAppt(officeAppt);
         }
         catch (Exception exception)
         {

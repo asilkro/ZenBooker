@@ -72,7 +72,7 @@
             // 
             // CreateCxBtn
             // 
-            CreateCxBtn.Location = new Point(245, 438);
+            CreateCxBtn.Location = new Point(351, 437);
             CreateCxBtn.Margin = new Padding(3, 2, 3, 2);
             CreateCxBtn.Name = "CreateCxBtn";
             CreateCxBtn.Size = new Size(82, 22);
@@ -83,7 +83,7 @@
             // 
             // UpdateCxBtn
             // 
-            UpdateCxBtn.Location = new Point(337, 438);
+            UpdateCxBtn.Location = new Point(435, 437);
             UpdateCxBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateCxBtn.Name = "UpdateCxBtn";
             UpdateCxBtn.Size = new Size(82, 22);
@@ -94,7 +94,7 @@
             // 
             // RemoveCxBtn
             // 
-            RemoveCxBtn.Location = new Point(425, 438);
+            RemoveCxBtn.Location = new Point(520, 437);
             RemoveCxBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveCxBtn.Name = "RemoveCxBtn";
             RemoveCxBtn.Size = new Size(82, 22);
@@ -105,7 +105,7 @@
             // 
             // RemoveApptBtn
             // 
-            RemoveApptBtn.Location = new Point(425, 210);
+            RemoveApptBtn.Location = new Point(520, 209);
             RemoveApptBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveApptBtn.Name = "RemoveApptBtn";
             RemoveApptBtn.Size = new Size(82, 22);
@@ -116,7 +116,7 @@
             // 
             // UpdateApptBtn
             // 
-            UpdateApptBtn.Location = new Point(333, 210);
+            UpdateApptBtn.Location = new Point(435, 209);
             UpdateApptBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateApptBtn.Name = "UpdateApptBtn";
             UpdateApptBtn.Size = new Size(82, 22);
@@ -127,7 +127,7 @@
             // 
             // CreateApptBtn
             // 
-            CreateApptBtn.Location = new Point(245, 210);
+            CreateApptBtn.Location = new Point(351, 209);
             CreateApptBtn.Margin = new Padding(3, 2, 3, 2);
             CreateApptBtn.Name = "CreateApptBtn";
             CreateApptBtn.Size = new Size(82, 22);
@@ -172,7 +172,7 @@
             apptsDataGridView.RowTemplate.Height = 29;
             apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             apptsDataGridView.ShowEditingIcon = false;
-            apptsDataGridView.Size = new Size(475, 141);
+            apptsDataGridView.Size = new Size(570, 141);
             apptsDataGridView.TabIndex = 11;
             // 
             // cxDataGridView
@@ -189,15 +189,16 @@
             cxDataGridView.RowTemplate.Height = 29;
             cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             cxDataGridView.ShowCellErrors = false;
-            cxDataGridView.Size = new Size(475, 141);
+            cxDataGridView.Size = new Size(570, 141);
             cxDataGridView.TabIndex = 12;
             // 
             // cxSearchTB
             // 
             cxSearchTB.Location = new Point(32, 267);
             cxSearchTB.Margin = new Padding(2, 1, 2, 1);
+            cxSearchTB.MaxLength = 64;
             cxSearchTB.Name = "cxSearchTB";
-            cxSearchTB.PlaceholderText = "Search for customer (email, phone, or name)";
+            cxSearchTB.PlaceholderText = "Search by Name, Email or Phone #";
             cxSearchTB.Size = new Size(264, 23);
             cxSearchTB.TabIndex = 13;
             // 
@@ -205,8 +206,9 @@
             // 
             apptSearchTB.Location = new Point(32, 39);
             apptSearchTB.Margin = new Padding(2, 1, 2, 1);
+            apptSearchTB.MaxLength = 64;
             apptSearchTB.Name = "apptSearchTB";
-            apptSearchTB.PlaceholderText = "Search for Appointment (date or cxId)";
+            apptSearchTB.PlaceholderText = "Search by Date (MM-DD) or Customer_Id";
             apptSearchTB.Size = new Size(264, 23);
             apptSearchTB.TabIndex = 14;
             // 

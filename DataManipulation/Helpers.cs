@@ -2,7 +2,7 @@
 using MySqlConnector;
 using RepoDb;
 using System.Data;
-using System.Data.Common;
+using System.Windows;
 using System.Security.Cryptography;
 using System.Text;
 using ZenoBook.Classes;
@@ -133,11 +133,11 @@ public class Helpers
                 {
                     case "appointment":
                     {
-                        if (searchType == "date")
+                        if (searchType == "datetime")
                         {
-                            var sql = "SELECT * FROM 'appointment' WHERE CONTAINS(start,'@VALUE');";
+                            var sql = "SELECT * FROM appointment WHERE start like '%@VALUE%';";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
@@ -148,9 +148,9 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM 'appointment' WHERE CONTAINS(customer_id,'@VALUE');";
+                            var sql = "SELECT * FROM appointment WHERE customer_id like '@VALUE' order by start;";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
@@ -165,9 +165,9 @@ public class Helpers
                     {
                         if (searchType == "email")
                         {
-                            var sql = new MySqlCommand("SELECT * FROM customer WHERE email like '@VALUE';",connection);
-                            sql.Parameters.AddWithValue("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql);
+                            var sql = "SELECT * FROM customer WHERE email like '@VALUE%';";
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var customers = cxToDataTable(dataAdapter, out var customerDataTable);
@@ -178,9 +178,9 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = new MySqlCommand("SELECT * FROM customer WHERE phone like '@VALUE';",connection);
-                            sql.Parameters.AddWithValue("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql);
+                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE%';";
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var customers = cxToDataTable(dataAdapter, out var customerDataTable);
@@ -191,10 +191,11 @@ public class Helpers
 
                         if (searchType == "name")
                         {
-                            var sql = new MySqlCommand("SELECT *, concat_ws(' ', 'first', 'last') AS Name FROM customer HAVING Name LIKE '@VALUE'",connection);
-                            sql.Parameters.AddWithValue("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql);
-                            using (dataAdapter)
+                            var sql =
+                                "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE%';";
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
+                                using (dataAdapter)
                             {
                                 var customers = cxToDataTable(dataAdapter, out var customerDataTable);
                                 addCxToRows(customerDataTable, customers);
@@ -204,14 +205,13 @@ public class Helpers
 
                         break;
                     }
-
                     case "service":
                     {
                         if (searchType == "name")
                         {
-                            var sql = "SELECT * FROM 'service' WHERE CONTAINS(service_name,'@VALUE');";
+                            var sql = "SELECT * FROM service WHERE service_name LIKE '@VALUE%';";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
@@ -222,9 +222,9 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM 'service' WHERE CONTAINS(service_id,'@VALUE');";
+                            var sql = "SELECT * FROM service WHERE service_id LIKE '@VALUE%';";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
@@ -235,13 +235,12 @@ public class Helpers
 
                         break;
                     }
-
                     case "staff":
                         if (searchType == "email")
                         {
                             var sql = "SELECT * FROM 'staff' WHERE CONTAINS(email,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var staff = staffToDataTable(dataAdapter, out var staffDataTable);
@@ -254,7 +253,7 @@ public class Helpers
                         {
                             var sql = "SELECT * FROM 'staff' WHERE CONTAINS(name,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
                             {
                                 var staff = staffToDataTable(dataAdapter, out var staffDataTable);
@@ -400,7 +399,7 @@ public class Helpers
 
         if (DateTime.TryParse(valueToCheck, out _))
         {
-            result = "date";
+            result = "datetime";
             return result; // If it parses as a date, treat as date
         }
 
@@ -432,7 +431,29 @@ public class Helpers
         };
         return tempAddy;
     }
-    
+
+    public static bool ConfirmedAction()
+    {
+        var buttonPressed = "No";
+        DialogResult confirmResult = MessageBox.Show("Click yes to confirm your action.", "Confirmation Required", MessageBoxButtons.YesNo,MessageBoxIcon.None,MessageBoxDefaultButton.Button2);
+        switch (confirmResult)
+        {
+            case DialogResult.Yes:
+                buttonPressed = "Yes";
+                break;
+            case DialogResult.No:
+                buttonPressed = "No";
+                MessageBox.Show("Aborting action.");
+                break;
+        }
+
+        if (buttonPressed == "Yes")
+        {
+            return true;
+        }
+        return false;
+    }
+
     #region SQL - Misc
     public static string? AutoIncrementId(string tableName)
     {
@@ -640,10 +661,7 @@ public class Helpers
         using var connection = new Builder().Connect();
         var fields = new[]
         {
-            new QueryField("first", cx.first),
-            new QueryField("last", cx.last),
-            new QueryField("phone", cx.phone),
-            new QueryField("email", cx.email)
+            new QueryField("customer_id", cx.customer_id)
         };
 
         var result = connection.Exists("customer", fields);
@@ -710,8 +728,8 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("customer", customerId);
-            MessageBox.Show("Customer id " + id + " removed.", "Customer Removed");
+            connection.Delete("customer", customerId);
+            MessageBox.Show("Customer id " + customerId + " removed.", "Customer Removed");
             return true;
         }
         catch (Exception e)
@@ -726,8 +744,8 @@ public class Helpers
         try
         {
             {
-                var updatedCx = connection.Update("customer", customer);
-                MessageBox.Show("Customer id " + updatedCx + " updated.", "Customer Updated");
+                connection.Update("customer", customer);
+                MessageBox.Show("Customer id " + customer.customer_id + " updated.", "Customer Updated");
             }
             return true;
         }
@@ -743,16 +761,15 @@ public class Helpers
     public static Office? ReturnOffice(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        if (int.TryParse(searchTerm, out _))
+        if (int.TryParse(searchTerm, out int i))
         {
-            var iOffice = connection.Query<Office>("office", e => e.office_id == int.Parse(searchTerm))
-                .GetEnumerator().Current;
+            var iOffice = connection.Query<Office>("office", e => e.office_id == i)
+                .FirstOrDefault();
             return iOffice;
         }
 
         var nOffice = connection.Query<Office>("office", e => e.office_name.Contains(searchTerm))
-            .GetEnumerator().Current;
-
+            .FirstOrDefault();
         return nOffice;
     }
     public static bool InsertOffice(Office office)
@@ -824,12 +841,12 @@ public class Helpers
         using var connection = new Builder().Connect();
         if (int.TryParse(searchTerm, out var i))
         {
-            var officeById = connection.Query<Address>("address", e => e.address_id == i).GetEnumerator().Current;
+            var officeById = connection.Query<Address>("address", e => e.address_id == i).FirstOrDefault();
             return officeById;
         }
 
         var officeByAddress1 = connection.Query<Address>("address", e => e.address1.Contains(searchTerm))
-            .GetEnumerator().Current;
+            .FirstOrDefault();
         return officeByAddress1 ?? null;
     }
     public static bool InsertAddress(Address address, out int addressId)

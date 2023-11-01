@@ -88,23 +88,24 @@ public partial class FormCustomer : Form
     {
         var cx = new Customer
         {
+            customer_id = int.Parse(cxIdTB.Text),
             first = tbFirstName.Text,
             last = tbLastName.Text,
             phone = tbPhone.Text,
             email = tbEmail.Text,
             preferred_office = int.Parse(tbOffice.Text)
         };
-        if (!Helpers.DoesThisCxExist(cx))
+
+        if (Helpers.DoesThisCxExist(cx))
         {
-            if (Helpers.InsertCustomer(cx))
+            if (Helpers.UpdateCustomer(cx))
             {
                 Close();
             }
         }
         else
         {
-            cx.customer_id = int.Parse(cxIdTB.Text);
-            if (Helpers.UpdateCustomer(cx))
+            if (Helpers.InsertCustomer(cx))
             {
                 Close();
             }

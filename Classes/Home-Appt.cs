@@ -61,7 +61,7 @@ public class HomeAppointment : Appointment
         {
             {
                 var updatedAppt = connection.Update("appointment", homeAppointment);
-                MessageBox.Show(+updatedAppt + " updated.", "Appointment Update");
+                MessageBox.Show("Appt "+ homeAppointment.appointment_id + " updated.", "Appointment Update");
             }
             return true;
         }

@@ -1,5 +1,6 @@
 ﻿using RepoDb;
 using System.Data;
+using System.Windows;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -133,10 +134,13 @@ public partial class Main : Form
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
         var selected = (int)cxDataGridView["customer_id", row].Value;
         if (selectedRow == null) return;
-        var result = Helpers.DeleteCustomer(selected);
-        if (result)
+        if (Helpers.ConfirmedAction())
         {
-            Helpers.populateDGV(cxDataGridView, "customer");
+            var result = Helpers.DeleteCustomer(selected);
+            if (result)
+            {
+                Helpers.populateDGV(cxDataGridView, "customer");
+            }
         }
     }
 
