@@ -12,7 +12,6 @@ namespace ZenoBook.DataManipulation;
 public class Helpers
 {
     #region Login Related
-
     public static bool ValidateLogin(string username, string password)
     {
         var result = false;
@@ -34,7 +33,6 @@ public class Helpers
 
         return result;
     }
-
     public static string HashedString(string input)
     {
         using var sha256Hash = SHA256.Create();
@@ -50,17 +48,14 @@ public class Helpers
 
         return builder.ToString();
     }
-
     public static bool DoTheyMatch(string one, string two)
     {
         var result = HashedString(one) == HashedString(two);
         return result;
     }
-
     #endregion
 
     #region DataGridView
-
     public static void populateDGV(DataGridView dgv, string tableName)
     {
         {
@@ -426,7 +421,6 @@ public class Helpers
         result = "name";
         return result; // If it has a whitespace, treat as a name
     }
-
     public static Address MakeAddress(string address1, string address2, string city, string state, string country)
     {
         var tempAddy = new Address
@@ -439,8 +433,8 @@ public class Helpers
         };
         return tempAddy;
     }
-    #region SQL
-
+    
+    #region SQL - Misc
     public static string? AutoIncrementId(string tableName)
     {
         using var connection = new Builder().Connect();
@@ -465,7 +459,6 @@ public class Helpers
             return null;
         }
     }
-
     public static bool PasswordUpdated(string userName, string maskedPassword)
     {
         using var connection = new Builder().Connect();
@@ -490,8 +483,9 @@ public class Helpers
             return false;
         }
     }
+    #endregion
 
-    //Service
+    #region SQL - Service
     public static bool DoesThisServiceExist(Service svc)
     {
         using var connection = new Builder().Connect();
@@ -519,7 +513,6 @@ public class Helpers
 
         return service;
     }
-
     public static bool InsertService(Service service)
     {
         using var connection = new Builder().Connect();
@@ -535,7 +528,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool DeleteService(int serviceId)
     {
         using var connection = new Builder().Connect();
@@ -551,7 +543,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool UpdateService(Service service)
     {
         using var connection = new Builder().Connect();
@@ -569,8 +560,9 @@ public class Helpers
             return false;
         }
     }
+    #endregion
 
-    //Staff
+    #region SQL - Staff
     public static Staff? ReturnStaff(string searchTerm)
     {
         using var connection = new Builder().Connect();
@@ -594,7 +586,6 @@ public class Helpers
 
         return staff;
     }
-
     public static bool InsertStaff(Staff staff)
     {
         using var connection = new Builder().Connect();
@@ -610,7 +601,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool DeleteStaff(int staffId)
     {
         using var connection = new Builder().Connect();
@@ -626,7 +616,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool UpdateStaff(Staff staff)
     {
         using var connection = new Builder().Connect();
@@ -644,8 +633,9 @@ public class Helpers
             return false;
         }
     }
+    #endregion
 
-    //Customer
+    #region SQL - Customer
     public static bool DoesThisCxExist(Customer cx)
     {
         using var connection = new Builder().Connect();
@@ -660,7 +650,6 @@ public class Helpers
         var result = connection.Exists("customer", fields);
         return result;
     }
-
     public static Customer? ReturnCustomer(string searchTerm)
     {
         using var connection = new Builder().Connect();
@@ -702,7 +691,6 @@ public class Helpers
 
         return null;
     }
-
     public static bool InsertCustomer(Customer customer)
     {
         using var connection = new Builder().Connect();
@@ -718,7 +706,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool DeleteCustomer(int customerId)
     {
         using var connection = new Builder().Connect();
@@ -734,7 +721,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool UpdateCustomer(Customer customer)
     {
         using var connection = new Builder().Connect();
@@ -752,8 +738,9 @@ public class Helpers
             return false;
         }
     }
+    #endregion
 
-    //Office
+    #region SQL - Office
     public static Office? ReturnOffice(string searchTerm)
     {
         using var connection = new Builder().Connect();
@@ -769,7 +756,6 @@ public class Helpers
 
         return nOffice;
     }
-
     public static bool InsertOffice(Office office)
     {
         using var connection = new Builder().Connect();
@@ -785,7 +771,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool DeleteOffice(int officeId)
     {
         using var connection = new Builder().Connect();
@@ -801,7 +786,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool UpdateOffice(Office office)
     {
         using var connection = new Builder().Connect();
@@ -819,8 +803,9 @@ public class Helpers
             return false;
         }
     }
+    #endregion
 
-    //Address
+    #region SQL - Address
     public static bool DoesThisAddressExist(Address addy)
     {
         using var connection = new Builder().Connect();
@@ -835,7 +820,6 @@ public class Helpers
         var result = connection.Exists("address", fields);
         return result;
     }
-
     public static Address? ReturnAddress(string searchTerm)
     {
         using var connection = new Builder().Connect();
@@ -849,7 +833,6 @@ public class Helpers
             .GetEnumerator().Current;
         return officeByAddress1 ?? null;
     }
-
     public static bool InsertAddress(Address address, out int addressId)
     {
         using var connection = new Builder().Connect();
@@ -857,7 +840,7 @@ public class Helpers
         {
             var id = connection.Insert("address", address);
             MessageBox.Show("Address id " + id + " created.", "Address Created");
-            addressId = (int) id;
+            addressId = (int)id;
             return true;
         }
         catch (Exception e)
@@ -867,7 +850,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool DeleteAddress(int addressId)
     {
         using var connection = new Builder().Connect();
@@ -883,7 +865,6 @@ public class Helpers
             return false;
         }
     }
-
     public static bool UpdateAddress(Address address)
     {
         using var connection = new Builder().Connect();
@@ -901,9 +882,9 @@ public class Helpers
             return false;
         }
     }
+    #endregion
 
-    //Appointment
-
+    #region SQL - Appt
     public static UnifiedApptData? GetAppointment(int apptId)
     {
         using var connection = new Builder().Connect();
@@ -979,4 +960,5 @@ public class Helpers
         }
     }
     #endregion
+
 }
