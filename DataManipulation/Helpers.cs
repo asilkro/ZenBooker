@@ -60,6 +60,7 @@ public class Helpers
     #endregion
 
     #region Misc
+
     public static void SearchDgv(DataGridView dgv, string tableName, string searchQuery)
     {
         {
@@ -88,8 +89,6 @@ public class Helpers
                                 addApptToRows(appointmentsDataTable, appointments);
                                 dgv.DataSource = appointmentsDataTable;
                             }
-
-                            break;
                         }
 
                         if (searchType == "integer")
@@ -103,11 +102,10 @@ public class Helpers
                                 addApptToRows(appointmentsDataTable, appointments);
                                 dgv.DataSource = appointmentsDataTable;
                             }
-
-                            break;
                         }
-                    }
+
                         break;
+                    }
                     case "customer":
                     {
                         if (searchType == "email")
@@ -149,8 +147,10 @@ public class Helpers
                                 dgv.DataSource = customerDataTable;
                             }
                         }
+
                         break;
                     }
+
                     case "service":
                     {
                         if (searchType == "name")
@@ -161,7 +161,7 @@ public class Helpers
                             using (dataAdapter)
                             {
                                 var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
-                                addServiceToRows(serviceDataTable,services);
+                                addServiceToRows(serviceDataTable, services);
                                 dgv.DataSource = serviceDataTable;
                             }
                         }
@@ -178,6 +178,7 @@ public class Helpers
                                 dgv.DataSource = serviceDataTable;
                             }
                         }
+
                         break;
                     }
 
@@ -186,32 +187,35 @@ public class Helpers
                         {
                             var sql = "SELECT * FROM 'staff' WHERE CONTAINS(email,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Staff>(sql);
-                            var staff = results.ToList();
-                            BindingSource bs = new(staff, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var staff = staffToDataTable(dataAdapter, out var staffDataTable);
+                                addStaffToRows(staffDataTable, staff);
+                                dgv.DataSource = staffDataTable;
+                            }
                         }
 
                         if (searchType == "name")
                         {
                             var sql = "SELECT * FROM 'staff' WHERE CONTAINS(name,'@VALUE');";
                             sql = sql.Replace("@VALUE", searchQuery);
-                            var results = connection.ExecuteQuery<Staff>(sql);
-                            var staff = results.ToList();
-                            BindingSource bs = new(staff, tableName);
-                            dgv.DataSource = bs;
+                            var dataAdapter = new MySqlDataAdapter(searchQuery, connection);
+                            using (dataAdapter)
+                            {
+                                var staff = staffToDataTable(dataAdapter, out var staffDataTable);
+                                addStaffToRows(staffDataTable, staff);
+                                dgv.DataSource = staffDataTable;
+                            }
                         }
 
                         break;
-
                 }
-
             }
-            
         }
     }
 
-private static List<UnifiedApptData> apptToDataTable(MySqlDataAdapter mySqlDataAdapter,
+    private static List<UnifiedApptData> apptToDataTable(MySqlDataAdapter mySqlDataAdapter,
     out DataTable appointmentsDataTable1)
 {
     var list = new List<UnifiedApptData>();
@@ -328,31 +332,11 @@ public static void populateDGV(DataGridView dgv, string tableName)
                     }
                         break;
                     case "staff":
-                        var staffList = new List<Staff>();
-                        var staffDataTable = new DataTable();
-                        staffDataTable.Columns.Add("staff_id", typeof(int));
-                        staffDataTable.Columns.Add("user_id", typeof(int));
-                        staffDataTable.Columns.Add("office_id", typeof(int));
-                        staffDataTable.Columns.Add("name", typeof(string));
-                        staffDataTable.Columns.Add("phone", typeof(string));
-                        staffDataTable.Columns.Add("email", typeof(string));
-                        dataAdapter.Fill(staffDataTable);
-
-                        foreach (DataRow row in staffDataTable.Rows)
-                        {
-                            var staff = new Staff
-                            {
-                                staff_id = (int)row["staff_id"],
-                                user_id = (int)row["user_id"],
-                                office_id = (int)row["office_id"],
-                                name = row["name"].ToString(),
-                                phone = row["phone"].ToString(),
-                                email = row["email"].ToString()
-                            };
-                            staffList.Add(staff);
-                        }
-
+                    {
+                        var staff = staffToDataTable(dataAdapter, out var staffDataTable);
+                        addStaffToRows(staffDataTable, staff);
                         dgv.DataSource = staffDataTable;
+                    }
                         break;
                 }
             }
@@ -360,6 +344,39 @@ public static void populateDGV(DataGridView dgv, string tableName)
             connection.Close();
         }
     }
+
+private static List<Staff> staffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
+{
+    var staffList = new List<Staff>();
+    staffDataTable = new DataTable();
+    staffDataTable.Columns.Add("staff_id", typeof(int));
+    staffDataTable.Columns.Add("user_id", typeof(int));
+    staffDataTable.Columns.Add("office_id", typeof(int));
+    staffDataTable.Columns.Add("name", typeof(string));
+    staffDataTable.Columns.Add("phone", typeof(string));
+    staffDataTable.Columns.Add("email", typeof(string));
+    dataAdapter.Fill(staffDataTable);
+
+    addStaffToRows(staffDataTable, staffList);
+    return staffList;
+}
+
+private static void addStaffToRows(DataTable staffDataTable, List<Staff> staffList)
+{
+    foreach (DataRow row in staffDataTable.Rows)
+    {
+        var staff = new Staff
+        {
+            staff_id = (int) row["staff_id"],
+            user_id = (int) row["user_id"],
+            office_id = (int) row["office_id"],
+            name = row["name"].ToString(),
+            phone = row["phone"].ToString(),
+            email = row["email"].ToString()
+        };
+        staffList.Add(staff);
+    }
+}
 
 private static List<Service> serviceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
 {
