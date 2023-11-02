@@ -976,10 +976,23 @@ public class Helpers
     public static bool InsertAppt(UnifiedApptData appt)
     {
         using var connection = new Builder().Connect();
+        var fields = Field.Parse<UnifiedApptData>(e => new
+        {
+            appt.appointment_id,
+            appt.customer_id,
+            appt.staff_id,
+            appt.office_id,
+            appt.service_id,
+            appt.start,
+            appt.end,
+            appt.inhomeservice,
+            appt.service_address_id
+        });
         try
         {
             {
-                var id = connection.Insert<UnifiedApptData>(appt);
+                var id = connection.Insert<UnifiedApptData>(entity: appt,
+                    fields: fields,tableName:"appointment");
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " created.", "Appointment Created");
             }
             return true;
@@ -1009,7 +1022,7 @@ public class Helpers
         try
         {
             {
-                var apptId = connection.Update<UnifiedApptData>(entity:appt, fields: fields);
+                var apptId = connection.Update<UnifiedApptData>(entity:appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " updated.", "Appointment Updated");
             }
             return true;
