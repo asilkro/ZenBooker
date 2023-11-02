@@ -6,7 +6,7 @@ namespace ZenoBook.Forms;
 
 public partial class FormAppointment : Form
 {
-    private DateTime _current = DateTime.Now;
+    private DateTime _tomorrow = DateTime.Now.Date.AddDays(1);
 
     public FormAppointment()
     {
@@ -15,25 +15,32 @@ public partial class FormAppointment : Form
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
         startDtPicker.Format = DateTimePickerFormat.Time;
         endDtPicker.Format = DateTimePickerFormat.Time;
-        startDtPicker.Value = _current + TimeSpan.FromMinutes(00);
-        endDtPicker.Value = startDtPicker.Value.AddHours(1);
+        startDtPicker.Value = _tomorrow;
+        endDtPicker.Value = _tomorrow.AddHours(1);
     }
 
     public FormAppointment(UnifiedApptData appt)
     {
         InitializeComponent();
-        UpdateTbs(appt);
-        if (appt is {inhomeservice: 1, office_id: 0})
+        switch (appt.inhomeservice)
         {
-            homeRadioBtn.Checked = true;
-            HideOfficeStuff();
-            ShowHomeStuff();
+            case 1:
+                homeRadioBtn.Checked = true;
+                HideOfficeStuff();
+                ShowHomeStuff();
+                Helpers.ReturnAddress(appt.service_address_id.ToString());
+                break;
+            case 0:
+                officeRadioBtn.Checked = true;
+                HideHomeStuff();
+                ShowOfficeStuff();
+                Helpers.ReturnOffice(appt.office_id.ToString());
+                break;
+            default:
+                MessageBox.Show("There was an issue loading appointment data.", "Error.");
+                    break;
         }
-
-        if (appt.inhomeservice != 0 || appt.office_id == 0) return;
-        officeRadioBtn.Checked = true;
-        HideHomeStuff();
-        ShowOfficeStuff();
+        UpdateTbs(appt);
     }
 
     public void UpdateTbs(UnifiedApptData appt)
@@ -42,7 +49,8 @@ public partial class FormAppointment : Form
         FillCxFields(appt);
         FillStaffFields(appt);
         FillServiceFields(appt);
-        Helpers.ReturnOffice(officeSearchTB.Text);
+        Helpers.ReturnOffice(appt.office_id.ToString());
+        Helpers.ReturnAddress(appt.service_address_id.ToString());
     }
 
     private void FillDt(UnifiedApptData appt)
@@ -68,7 +76,7 @@ public partial class FormAppointment : Form
         staffNameTb.Text = staff?.name;
     }
 
-    private void FillCxFields(Appointment appt)
+    private void FillCxFields(UnifiedApptData appt)
     {
         var cx = Helpers.ReturnCustomer(appt.customer_id.ToString());
         cxIdTB.Text = appt.customer_id.ToString();
@@ -77,6 +85,83 @@ public partial class FormAppointment : Form
         cxEmailTB.Text = cx?.email;
         cxPhoneTB.Text = cx?.phone;
         officeSearchTB.Text = cx?.preferred_office.ToString();
+    }
+    private void populateCxTb()
+    {
+        var cx = Helpers.ReturnCustomer(cxSearchTB.Text);
+        switch (cx == null)
+        {
+            case true:
+                MessageBox.Show("No matching customer found. Check your entry and try again.", "No Customer Found");
+                break;
+            case false:
+                cxIdTB.Text = cx.customer_id.ToString();
+                cxNameTb.Text = cx.first + " " + cx.last;
+                cxEmailTB.Text = cx.email;
+                cxPhoneTB.Text = cx.phone;
+                break;
+        }
+    }
+    private void populateOfficeTb()
+    {
+        var office = Helpers.ReturnOffice(officeSearchTB.Text);
+        switch (office == null)
+        {
+            case true:
+                MessageBox.Show("Unable to match to office. Check your entry and try again.", "Unable to match office");
+                break;
+            case false:
+                officeIdTB.Text = office.office_id.ToString();
+                officeNameTB.Text = office.office_name;
+                break;
+        }
+    }
+    private void populateAddressTb()
+    {
+        var result = Helpers.ReturnAddress(saSearchTB.Text);
+        if (result == null)
+        {
+            MessageBox.Show("Not found, try the address ID or the first line of the address again.",
+                "Address not found");
+            return;
+        }
+
+        addressIdTB.Text = result.address_id.ToString();
+        address1TB.Text = result.address1;
+        address2TB.Text = result.address2;
+        cityTB.Text = result.city;
+        stateTB.Text = result.state;
+        countryTB.Text = result.country;
+    }
+    private void populateServiceTb()
+    {
+        var service = Helpers.ReturnService(serviceSearchTB.Text);
+        switch (service == null)
+        {
+            case true:
+                MessageBox.Show("Unable to match to service. Check your entry and try again.",
+                    "Unable to match service");
+                break;
+            case false:
+                serviceIdTB.Text = service.service_id.ToString();
+                serviceNameTb.Text = service.service_name;
+                serviceDescTb.Text = service.service_description;
+                break;
+        }
+    }
+    private void populateStaffTb()
+    {
+        var staff = Helpers.ReturnStaff(staffSearchTB.Text);
+        switch (staff == null)
+        {
+            case true:
+                MessageBox.Show("No matching staff found. Check your entry and try again.", "No Staff Found");
+                break;
+            case false:
+                staffIdTB.Text = staff.staff_id.ToString();
+                staffNameTb.Text = staff.name;
+                break;
+        }
     }
 
     #region Logic for Radio Buttons / Visibility of Relevant Options
@@ -162,84 +247,27 @@ public partial class FormAppointment : Form
 
     private void cxSearchButton_Click(object sender, EventArgs e)
     {
-        var cx = Helpers.ReturnCustomer(cxSearchTB.Text);
-        switch (cx == null)
-        {
-            case true:
-                MessageBox.Show("No matching customer found. Check your entry and try again.", "No Customer Found");
-                break;
-            case false:
-                cxIdTB.Text = cx.customer_id.ToString();
-                cxNameTb.Text = cx.first + " " + cx.last;
-                cxEmailTB.Text = cx.email;
-                cxPhoneTB.Text = cx.phone;
-                break;
-        }
+        populateCxTb();
     }
 
     private void staffSearchButton_Click(object sender, EventArgs e)
     {
-        var staff = Helpers.ReturnStaff(staffSearchTB.Text);
-        switch (staff == null)
-        {
-            case true:
-                MessageBox.Show("No matching staff found. Check your entry and try again.", "No Staff Found");
-                break;
-            case false:
-                staffIdTB.Text = staff.staff_id.ToString();
-                staffNameTb.Text = staff.name;
-                break;
-        }
+        populateStaffTb();
     }
 
     private void serviceSearchButton_Click(object sender, EventArgs e)
     {
-        var service = Helpers.ReturnService(serviceSearchTB.Text);
-        switch (service == null)
-        {
-            case true:
-                MessageBox.Show("Unable to match to service. Check your entry and try again.",
-                    "Unable to match service");
-                break;
-            case false:
-                serviceIdTB.Text = service.service_id.ToString();
-                serviceNameTb.Text = service.service_name;
-                serviceDescTb.Text = service.service_description;
-                break;
-        }
+        populateServiceTb();
     }
 
     private void officeSearchButton_Click(object sender, EventArgs e)
     {
-        var office = Helpers.ReturnOffice(officeSearchTB.Text);
-        switch (office == null)
-        {
-            case true:
-                MessageBox.Show("Unable to match to office. Check your entry and try again.", "Unable to match office");
-                break;
-            case false:
-                officeIdTB.Text = office.office_id.ToString();
-                officeNameTB.Text = office.office_name;
-                break;
-        }
+        populateOfficeTb();
     }
 
     private void homeSearchBtn_Click(object sender, EventArgs e)
     {
-        var result = Helpers.ReturnAddress(saSearchTB.Text);
-        if (result == null)
-        {
-            MessageBox.Show("Not found, try the address ID or the first line of the address again.",
-                "Address not found");
-            return;
-        }
-
-        addressIdTB.Text = result.address_id.ToString();
-        address1TB.Text = result.address1;
-        address2TB.Text = result.address2;
-        cityTB.Text = result.city;
-        stateTB.Text = result.state;
-        countryTB.Text = result.country;
+        populateAddressTb();
     }
 
     private void saveBtn_Click(object sender, EventArgs e)
@@ -287,7 +315,7 @@ public partial class FormAppointment : Form
                 {
                     Close();
                 }
-
+                MessageBox.Show("There was a problem adding this appointment.", "Appointment not saved");
             }
 
             if (officeRadioBtn.Checked)
@@ -316,6 +344,7 @@ public partial class FormAppointment : Form
                 {
                     Close();
                 }
+                MessageBox.Show("There was a problem adding this appointment.", "Appointment not saved");
             }
         }
         catch (Exception exception)

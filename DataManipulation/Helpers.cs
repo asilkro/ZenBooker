@@ -598,6 +598,17 @@ public class Helpers
             return eStaff;
         }
 
+        if (int.TryParse(searchTerm, out int i))
+        {
+            var eStaff = connection.Query<Staff>("staff", e => e.staff_id == i).FirstOrDefault();
+            if (eStaff == null)
+            {
+                return null;
+            }
+
+            return eStaff;
+        }
+
         var staff = connection.Query<Staff>("staff", e => e.name == searchTerm).FirstOrDefault();
         if (staff == null)
         {
