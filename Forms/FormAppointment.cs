@@ -272,80 +272,93 @@ public partial class FormAppointment : Form
 
     private void saveBtn_Click(object sender, EventArgs e)
     {
-        if (homeRadioBtn.Checked == officeRadioBtn.Checked)
+        if (!(homeRadioBtn.Checked) && !(officeRadioBtn.Checked))
         {
             MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
         }
 
         try
         {
-            if (homeRadioBtn.Checked)
+            switch (homeRadioBtn.Checked)
             {
-                var homeAppt = new HomeAppointment
-                {
-                    appointment_id = int.Parse(apptIdTB.Text),
-                    customer_id = int.Parse(cxIdTB.Text),
-                    staff_id = int.Parse(staffIdTB.Text),
-                    service_id = int.Parse(serviceIdTB.Text),
-                    start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
-                    end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
-                    inhomeservice = 1
-                };
-                var cHomeAppt = Helpers.HomeToUnified(homeAppt);
+                case true:
+                    var homeAppt = makeHomeAppt();
 
-                var tempAddy = Helpers.MakeAddress
-                (address1TB.Text, address2TB.Text,
-                    cityTB.Text, stateTB.Text, countryTB.Text);
-
-                if (!Helpers.DoesThisAddressExist(tempAddy))
-                {
-                    Helpers.InsertAddress(tempAddy, out var tempSid);
-                    addressIdTB.Text = tempSid.ToString();
-                }
-
-                cHomeAppt.service_address_id = int.Parse(addressIdTB.Text);
-                if (Helpers.ApptExists(cHomeAppt))
-                {
-                    if (Helpers.UpdateAppt(cHomeAppt))
+                    var tempAddy = Helpers.MakeAddress
+                    (address1TB.Text, address2TB.Text,
+                        cityTB.Text, stateTB.Text, countryTB.Text);
+                    switch (Helpers.DoesThisAddressExist(tempAddy))
                     {
-                        Close();
+                        case false:
+                            Helpers.InsertAddress(tempAddy, out var tempSid);
+                            addressIdTB.Text = tempSid.ToString();
+                            break;
+                        case true:
+                            break;
                     }
-                }
 
-                if (Helpers.InsertAppt(cHomeAppt))
-                {
-                    Close();
-                }
-                MessageBox.Show("There was a problem adding this appointment.", "Appointment not saved");
-            }
-
-            if (officeRadioBtn.Checked)
-            {
-                var officeAppt = new OfficeAppointment
-                {
-                    appointment_id = int.Parse(apptIdTB.Text),
-                    customer_id = int.Parse(cxIdTB.Text),
-                    staff_id = int.Parse(staffIdTB.Text),
-                    office_id = int.Parse(officeIdTB.Text),
-                    service_id = int.Parse(serviceIdTB.Text),
-                    start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
-                    end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
-                    inhomeservice = 0
-                };
-                var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
-                if (Helpers.ApptExists(cOfficeAppt))
-                {
-                    if (Helpers.UpdateAppt(cOfficeAppt))
+                    var cHomeAppt = Helpers.HomeToUnified(homeAppt);
+                    cHomeAppt.service_address_id = int.Parse(addressIdTB.Text);
+                    switch (Helpers.ApptExists(cHomeAppt))
                     {
-                        Close();
-                    }
-                }
+                        case true:
+                            switch (Helpers.UpdateAppt(cHomeAppt))
+                            {
+                                case false:
+                                    MessageBox.Show("There was a problem updating this appointment.",
+                                        "Appointment not saved");
+                                    break;
+                                case true:
+                                    Close();
+                                    break;
+                            }
+                            break;
 
-                if (Helpers.InsertAppt(cOfficeAppt))
-                {
-                    Close();
-                }
-                MessageBox.Show("There was a problem adding this appointment.", "Appointment not saved");
+                        case false:
+                            switch (Helpers.InsertAppt(cHomeAppt))
+                            {
+                                case false:
+                                    MessageBox.Show("There was a problem adding this appointment.",
+                                        "Appointment not saved");
+                                    break;
+                                case true:
+                                    Close();
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+                case false: 
+                    var officeAppt = MakeOfficeAppt(); 
+                    var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
+                    switch (Helpers.ApptExists(cOfficeAppt))
+                    {
+                        case true:
+                            switch (Helpers.UpdateAppt(cOfficeAppt))
+                            {
+                                case false:
+                                    MessageBox.Show("There was a problem updating this appointment.",
+                                        "Appointment not saved");
+                                    break;
+                                case true:
+                                    Close();
+                                    break;
+                            }
+                            break;
+                        case false:
+                            switch (Helpers.InsertAppt(cOfficeAppt))
+                            {
+                                case false:
+                                    MessageBox.Show("There was a problem adding this appointment.",
+                                        "Appointment not saved");
+                                    break;
+                                case true:
+                                    Close();
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
             }
         }
         catch (Exception exception)
@@ -355,5 +368,36 @@ public partial class FormAppointment : Form
 
     }
 
-#endregion
+    private OfficeAppointment MakeOfficeAppt()
+    {
+        var officeAppt = new OfficeAppointment
+        {
+            appointment_id = int.Parse(apptIdTB.Text),
+            customer_id = int.Parse(cxIdTB.Text),
+            staff_id = int.Parse(staffIdTB.Text),
+            office_id = int.Parse(officeIdTB.Text),
+            service_id = int.Parse(serviceIdTB.Text),
+            start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+            end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+            inhomeservice = 0
+        };
+        return officeAppt;
+    }
+
+    private HomeAppointment makeHomeAppt()
+    {
+        var homeAppt = new HomeAppointment
+        {
+            appointment_id = int.Parse(apptIdTB.Text),
+            customer_id = int.Parse(cxIdTB.Text),
+            staff_id = int.Parse(staffIdTB.Text),
+            service_id = int.Parse(serviceIdTB.Text),
+            start = dateCalendar.SelectionStart.Date + startDtPicker.Value.TimeOfDay,
+            end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
+            inhomeservice = 1
+        };
+        return homeAppt;
+    }
+
+    #endregion
 }

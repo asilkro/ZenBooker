@@ -6,6 +6,7 @@ using System.Windows;
 using System.Security.Cryptography;
 using System.Text;
 using ZenoBook.Classes;
+using System;
 
 namespace ZenoBook.DataManipulation;
 
@@ -952,11 +953,7 @@ public class Helpers
     public static bool ApptExists(UnifiedApptData appt)
     {
         using var connection = new Builder().Connect();
-        var fields = new[]
-        {
-            new QueryField("appointment_id", appt.appointment_id),
-        };
-        var result = connection.Exists("appointment", fields);
+        var result = connection.Exists("appointment", appt.appointment_id);
         return result;
     }
     public static bool RemoveAppointment(int apptId)
@@ -982,10 +979,9 @@ public class Helpers
         try
         {
             {
-                var id = connection.Insert("appointment", appt);
+                var id = connection.Insert<UnifiedApptData>(appt);
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " created.", "Appointment Created");
             }
-
             return true;
         }
         catch (Exception e)
@@ -997,11 +993,24 @@ public class Helpers
     public static bool UpdateAppt(UnifiedApptData appt)
     {
         using var connection = new Builder().Connect();
+        
+        var fields = Field.Parse<UnifiedApptData>(e => new
+        {
+            appt.appointment_id,
+            appt.customer_id,
+            appt.staff_id,
+            appt.office_id,
+            appt.service_id,
+            appt.start,
+            appt.end,
+            appt.inhomeservice,
+            appt.service_address_id
+        });
         try
         {
             {
-                var updatedAppt = connection.Update("appointment", appt);
-                MessageBox.Show("Appt id " + appt.appointment_id + " updated.", "Appointment Update");
+                var apptId = connection.Update<UnifiedApptData>(entity:appt, fields: fields);
+                MessageBox.Show("Appointment with Id: " + appt.appointment_id + " updated.", "Appointment Updated");
             }
             return true;
         }
