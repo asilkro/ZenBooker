@@ -43,7 +43,7 @@ public class OfficeAppointment : Appointment
         {
             {
                 var id = connection.Insert("appointment", officeAppointment);
-                MessageBox.Show("Appointment with Id: " + id + " created.", "Appointment Created");
+                MessageBox.Show("Appointment with Id: " + officeAppointment.appointment_id + " created.", "Appointment Created");
             }
 
             return true;
@@ -62,7 +62,7 @@ public class OfficeAppointment : Appointment
         {
             {
                 var updatedAppt = connection.Update("appointment", officeAppointment);
-                MessageBox.Show(updatedAppt + " updated.", "Appointment Updated");
+                MessageBox.Show("Appointment id: "+ officeAppointment.office_id + " updated.", "Appointment Updated");
             }
             return true;
         }
