@@ -291,6 +291,7 @@ public partial class FormAppointment : Form
                     end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
                     inhomeservice = 1
                 };
+                var cHomeAppt = Helpers.HomeToUnified(homeAppt);
 
                 var tempAddy = Helpers.MakeAddress
                 (address1TB.Text, address2TB.Text,
@@ -302,16 +303,16 @@ public partial class FormAppointment : Form
                     addressIdTB.Text = tempSid.ToString();
                 }
 
-                homeAppt.service_address_id = int.Parse(addressIdTB.Text);
-                if (Helpers.HomeApptExists(homeAppt))
+                cHomeAppt.service_address_id = int.Parse(addressIdTB.Text);
+                if (Helpers.ApptExists(cHomeAppt))
                 {
-                    if (HomeAppointment.UpdateHomeAppt(homeAppt))
+                    if (Helpers.UpdateAppt(cHomeAppt))
                     {
                         Close();
                     }
                 }
 
-                if (HomeAppointment.InsertHomeAppt(homeAppt))
+                if (Helpers.InsertAppt(cHomeAppt))
                 {
                     Close();
                 }
@@ -331,16 +332,16 @@ public partial class FormAppointment : Form
                     end = dateCalendar.SelectionStart.Date + endDtPicker.Value.TimeOfDay,
                     inhomeservice = 0
                 };
-
-                if (Helpers.OfficeApptExists(officeAppt))
+                var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
+                if (Helpers.ApptExists(cOfficeAppt))
                 {
-                    if (OfficeAppointment.UpdateOfficeAppt(officeAppt))
+                    if (Helpers.UpdateAppt(cOfficeAppt))
                     {
                         Close();
                     }
                 }
 
-                if (OfficeAppointment.InsertOfficeAppt(officeAppt))
+                if (Helpers.InsertAppt(cOfficeAppt))
                 {
                     Close();
                 }

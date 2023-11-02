@@ -33,43 +33,4 @@ public class HomeAppointment : Appointment
     }
 
     #endregion
-
-    #region SQL
-
-    public static bool InsertHomeAppt(HomeAppointment homeAppointment)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            {
-                var id = connection.Insert("appointment", homeAppointment);
-                MessageBox.Show("Appointment with Id: " + homeAppointment.appointment_id + " created.", "Appointment Created");
-            }
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-    public static bool UpdateHomeAppt(HomeAppointment homeAppointment)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            {
-                var updatedAppt = connection.Update("appointment", homeAppointment);
-                MessageBox.Show("Appt id "+ homeAppointment.appointment_id + " updated.", "Appointment Update");
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-    #endregion
 }

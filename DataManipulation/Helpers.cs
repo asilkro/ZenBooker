@@ -949,17 +949,7 @@ public class Helpers
             return null;
         }
     }
-    public static bool HomeApptExists(HomeAppointment appt)
-    {
-        using var connection = new Builder().Connect();
-        var fields = new[]
-        {
-            new QueryField("appointment_id", appt.appointment_id),
-        };
-        var result = connection.Exists("appointment", fields);
-        return result;
-    }
-    public static bool OfficeApptExists(OfficeAppointment appt)
+    public static bool ApptExists(UnifiedApptData appt)
     {
         using var connection = new Builder().Connect();
         var fields = new[]
@@ -985,6 +975,80 @@ public class Helpers
             LogManager.GetLogger("LoggingRepo").Warn(e, e);
             return false;
         }
+    }
+    public static bool InsertAppt(UnifiedApptData appt)
+    {
+        using var connection = new Builder().Connect();
+        try
+        {
+            {
+                var id = connection.Insert("appointment", appt);
+                MessageBox.Show("Appointment with Id: " + appt.appointment_id + " created.", "Appointment Created");
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
+        }
+    }
+    public static bool UpdateAppt(UnifiedApptData appt)
+    {
+        using var connection = new Builder().Connect();
+        try
+        {
+            {
+                var updatedAppt = connection.Update("appointment", appt);
+                MessageBox.Show("Appt id " + appt.appointment_id + " updated.", "Appointment Update");
+            }
+            return true;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            return false;
+        }
+    }
+    #endregion
+
+    #region Appointment Conversion
+
+    public static UnifiedApptData HomeToUnified(HomeAppointment appt)
+    {
+        var convertedAppt = new UnifiedApptData
+        {
+            appointment_id = appt.appointment_id,
+            customer_id = appt.customer_id,
+            staff_id = appt.staff_id,
+            office_id = 0, // Home appt has no office ID
+            service_id = appt.service_id,
+            start = appt.start,
+            end = appt.end,
+            inhomeservice = 1,
+            service_address_id = appt.service_address_id
+        };
+
+        return convertedAppt;
+    }
+
+    public static UnifiedApptData OfficeToUnified(OfficeAppointment appt)
+    {
+        var convertedAppt = new UnifiedApptData
+        {
+            appointment_id = appt.appointment_id,
+            customer_id = appt.customer_id,
+            staff_id = appt.staff_id,
+            office_id = appt.office_id,
+            service_id = appt.service_id,
+            start = appt.start,
+            end = appt.end,
+            inhomeservice = 0, // Corresponds to binary
+            service_address_id = 0 // Service address is only used for HomeAppt
+        };
+
+        return convertedAppt;
     }
     #endregion
 

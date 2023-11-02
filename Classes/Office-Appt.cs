@@ -33,45 +33,4 @@ public class OfficeAppointment : Appointment
     }
 
     #endregion
-
-    #region SQL
-
-    public static bool InsertOfficeAppt(OfficeAppointment officeAppointment)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            {
-                var id = connection.Insert("appointment", officeAppointment);
-                MessageBox.Show("Appointment with Id: " + officeAppointment.appointment_id + " created.", "Appointment Created");
-            }
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
-    public static bool UpdateOfficeAppt(OfficeAppointment officeAppointment)
-    {
-        using var connection = new Builder().Connect();
-        try
-        {
-            {
-                var updatedAppt = connection.Update("appointment", officeAppointment);
-                MessageBox.Show("Appointment id: "+ officeAppointment.office_id + " updated.", "Appointment Updated");
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            return false;
-        }
-    }
-
-    #endregion
 }
