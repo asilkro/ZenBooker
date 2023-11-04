@@ -435,7 +435,7 @@ public class Helpers
         return tempAddy;
     }
 
-    public static bool RawAddressInsert(UnifiedApptData appt)
+    public static bool RawAppointmentInsert(UnifiedApptData appt)
     {
         
         var connection = Builder.SmartConnect(new Builder().Connect());
@@ -459,6 +459,41 @@ public class Helpers
             {
                 success = true;
                 MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
+                
+            }
+            else
+            {
+                success = false;
+                MessageBox.Show("Did not work", "DEBUG: FAILURE");
+            }
+            return success;
+        }
+    }
+
+    public static bool RawAppointmentUpdate(UnifiedApptData appt)
+    {
+
+        var connection = Builder.SmartConnect(new Builder().Connect());
+        using (connection)
+        {
+            var success = false;
+            var cmd = new MySqlCommand("", connection);
+            cmd.CommandText = "UPDATE appointment SET customer_id=@cxId, staff_id=@staffId, office_id=@officeId, service_id=@svcId, start=@start, end=@end, inhomeservice=@inhomesvc, service_address_id=@svcAddressId WHERE appointment_id=@apptId";
+            cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
+            cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
+            cmd.Parameters.AddWithValue("@officeId", appt.office_id);
+            cmd.Parameters.AddWithValue("@svcId", appt.service_id);
+            cmd.Parameters.AddWithValue("@start", appt.start.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", appt.end.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
+            cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
+            cmd.Parameters.AddWithValue("@apptId", appt.appointment_id);
+
+            if (cmd.ExecuteNonQuery() == 1)
+            {
+                success = true;
+                MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
+
             }
             else
             {

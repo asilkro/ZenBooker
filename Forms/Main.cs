@@ -99,12 +99,17 @@ public partial class Main : Form
         var selectedRow = apptsDataGridView.CurrentRow;
         if (selectedRow == null) return;
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
+
         var selected = (int)apptsDataGridView["appointment_id", row].Value;
-        var result = Helpers.RemoveAppointment(selected);
-        if (result)
+        if (Helpers.ConfirmedAction())
         {
-            Helpers.PopulateDgv(apptsDataGridView, "appointment");
+            var result = Helpers.RemoveAppointment(selected);
+            if (result)
+            {
+                Helpers.PopulateDgv(apptsDataGridView, "appointment");
+            }
         }
+
     }
 
     private void CreateCxBtnClick(object sender, EventArgs e)

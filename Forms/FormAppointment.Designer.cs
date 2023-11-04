@@ -66,7 +66,6 @@
             addressIdTB = new TextBox();
             homeSearchBtn = new Button();
             saSearchTB = new TextBox();
-            debugBtn = new Button();
             SuspendLayout();
             // 
             // saveBtn
@@ -422,17 +421,6 @@
             saSearchTB.Size = new Size(408, 23);
             saSearchTB.TabIndex = 53;
             // 
-            // debugBtn
-            // 
-            debugBtn.BackColor = Color.LightSteelBlue;
-            debugBtn.Location = new Point(601, 364);
-            debugBtn.Name = "debugBtn";
-            debugBtn.Size = new Size(100, 44);
-            debugBtn.TabIndex = 55;
-            debugBtn.Text = "Debug";
-            debugBtn.UseVisualStyleBackColor = false;
-            debugBtn.Click += debugBtn_Click;
-            // 
             // FormAppointment
             // 
             AcceptButton = saveBtn;
@@ -440,7 +428,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = cancelBtn;
             ClientSize = new Size(784, 495);
-            Controls.Add(debugBtn);
             Controls.Add(homeSearchBtn);
             Controls.Add(saSearchTB);
             Controls.Add(cityTB);
@@ -524,6 +511,5 @@
         private TextBox addressIdTB;
         private Button homeSearchBtn;
         private TextBox saSearchTB;
-        private Button debugBtn;
     }
 }

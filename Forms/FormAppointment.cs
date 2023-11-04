@@ -8,7 +8,7 @@ public partial class FormAppointment : Form
 {
     private static DateTime _tomorrowDate = DateTime.Now.Date.AddDays(1);
     private static int _nowHours = DateTime.Now.TimeOfDay.Hours;
-    private static DateTime _defaultStart = new DateTime(_tomorrowDate.Year, _tomorrowDate.Month,_tomorrowDate.Day, _nowHours,00, 0);
+    private static DateTime _defaultStart = new DateTime(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, 00, 0);
     private static DateTime _defaultEnd = _defaultStart.AddHours(1);
 
     public FormAppointment()
@@ -316,7 +316,7 @@ public partial class FormAppointment : Form
                 switch (Helpers.ApptExists(cHomeAppt))
                 {
                     case true:
-                        switch (Helpers.UpdateAppt(cHomeAppt))
+                        switch (Helpers.RawAppointmentUpdate(cHomeAppt))
                         {
                             case false:
                                 MessageBox.Show("There was a problem updating this appointment.",
@@ -330,7 +330,7 @@ public partial class FormAppointment : Form
                         break;
 
                     case false:
-                        switch (Helpers.InsertAppt(cHomeAppt))
+                        switch (Helpers.RawAppointmentInsert(cHomeAppt))
                         {
                             case false:
                                 MessageBox.Show("There was a problem adding this appointment.",
@@ -351,7 +351,7 @@ public partial class FormAppointment : Form
                 switch (Helpers.ApptExists(cOfficeAppt))
                 {
                     case true:
-                        switch (Helpers.UpdateAppt(cOfficeAppt))
+                        switch (Helpers.RawAppointmentUpdate(cOfficeAppt))
                         {
                             case false:
                                 MessageBox.Show("There was a problem updating this appointment.",
@@ -364,7 +364,7 @@ public partial class FormAppointment : Form
 
                         break;
                     case false:
-                        switch (Helpers.InsertAppt(cOfficeAppt))
+                        switch (Helpers.RawAppointmentInsert(cOfficeAppt))
                         {
                             case false:
                                 MessageBox.Show("There was a problem adding this appointment.",
@@ -415,20 +415,4 @@ public partial class FormAppointment : Form
 
     #endregion
 
-    private void debugBtn_Click(object sender, EventArgs e)
-    {
-        if (officeRadioBtn.Checked)
-        {
-            var officeAppt = MakeOfficeAppt();
-            var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
-            Helpers.RawAddressInsert(cOfficeAppt);
-        }
-
-        if (homeRadioBtn.Checked)
-        {
-            var homeAppt = MakeHomeAppt();
-            var cHomeAppt = Helpers.HomeToUnified(homeAppt);
-            Helpers.RawAddressInsert(cHomeAppt);
-        }
-    }
 }
