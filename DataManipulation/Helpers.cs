@@ -2,13 +2,10 @@
 using MySqlConnector;
 using RepoDb;
 using System.Data;
-using System.Windows;
 using System.Security.Cryptography;
 using System.Text;
+using RepoDb.Extensions;
 using ZenoBook.Classes;
-using System;
-using System.Data.Common;
-
 namespace ZenoBook.DataManipulation;
 
 public class Helpers
@@ -78,7 +75,7 @@ public class Helpers
                     break;
 
                 case "customer":
-                    var cxSelectQuery = "SELECT * FROM " + tableName + " ORDER BY last, first, customer_id LIMIT 200;";
+                    var cxSelectQuery = "SELECT * FROM " + tableName + " ORDER BY customer_id, last, first LIMIT 200;";
                     var cxDataAdapter = new MySqlDataAdapter(cxSelectQuery, connection);
                     using (cxDataAdapter)
                     {
@@ -100,7 +97,7 @@ public class Helpers
                     break;
 
                 case "service":
-                    var serviceSelectQuery = "SELECT * FROM " + tableName + " ORDER BY name, service_id LIMIT 200;";
+                    var serviceSelectQuery = "SELECT * FROM " + tableName + " ORDER BY service_name, service_id LIMIT 200;";
                     var serviceDataAdapter = new MySqlDataAdapter(serviceSelectQuery, connection);
                     using (serviceDataAdapter)
                     {
@@ -132,7 +129,7 @@ public class Helpers
                     {
                         if (searchType == "datetime")
                         {
-                            var sql = "SELECT * FROM appointment WHERE start like '%@VALUE%';";
+                            var sql = "SELECT * FROM appointment WHERE start like '@VALUE%' order by start;";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -145,7 +142,7 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM appointment WHERE customer_id like '@VALUE' order by start;";
+                            var sql = "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -162,7 +159,7 @@ public class Helpers
                     {
                         if (searchType == "email")
                         {
-                            var sql = "SELECT * FROM customer WHERE email like '@VALUE%';";
+                            var sql = "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -175,7 +172,7 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE%';";
+                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE%', order by customer_id;";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -189,7 +186,7 @@ public class Helpers
                         if (searchType == "name")
                         {
                             var sql =
-                                "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE%';";
+                                "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                                 using (dataAdapter)
@@ -206,7 +203,7 @@ public class Helpers
                     {
                         if (searchType == "name")
                         {
-                            var sql = "SELECT * FROM service WHERE service_name LIKE '@VALUE%';";
+                            var sql = "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -219,7 +216,7 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM service WHERE service_id LIKE '@VALUE%';";
+                            var sql = "SELECT * FROM service WHERE service_id LIKE '@VALUE';";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -235,7 +232,7 @@ public class Helpers
                     case "staff":
                         if (searchType == "email")
                         {
-                            var sql = "SELECT * FROM 'staff' WHERE CONTAINS(email,'@VALUE');";
+                            var sql = "SELECT * FROM staff WHERE email like '@VALUE%';";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -248,7 +245,7 @@ public class Helpers
 
                         if (searchType == "name")
                         {
-                            var sql = "SELECT * FROM 'staff' WHERE CONTAINS(name,'@VALUE');";
+                            var sql = "SELECT * FROM 'staff' WHERE name like '@VALUE%';";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -1120,7 +1117,8 @@ public class Helpers
             appointment_id = appt.appointment_id,
             customer_id = appt.customer_id,
             staff_id = appt.staff_id,
-            office_id = 0, // Home appt has no office ID
+            office_id = 1, // Home appt has no office ID but
+                           // needs a value due to constraints
             service_id = appt.service_id,
             start = appt.start,
             end = appt.end,
@@ -1133,6 +1131,9 @@ public class Helpers
 
     public static UnifiedApptData OfficeToUnified(OfficeAppointment appt)
     {
+        var serviceAddressId = ReturnAddress(appt.office_id.ToString()) != null ? appt.office_id : 1;
+        // Use HQ as the service address to catch error
+
         var convertedAppt = new UnifiedApptData
         {
             appointment_id = appt.appointment_id,
@@ -1143,11 +1144,10 @@ public class Helpers
             start = appt.start,
             end = appt.end,
             inhomeservice = 0, // Corresponds to binary
-            service_address_id = ReturnAddress(appt.office_id.ToString())?.address_id
+            service_address_id = serviceAddressId,
         };
 
         return convertedAppt;
     }
     #endregion
-
 }

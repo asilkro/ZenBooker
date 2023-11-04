@@ -291,6 +291,13 @@ public partial class FormAppointment : Form
 
     }
 
+    private Address addressFromTBs()
+    {
+       return Helpers.MakeAddress
+        (address1TB.Text, address2TB.Text,
+            cityTB.Text, stateTB.Text, countryTB.Text);
+    }
+
     private void makeItHappen()
     {
         switch (homeRadioBtn.Checked)
@@ -298,16 +305,17 @@ public partial class FormAppointment : Form
             case true:
                 var homeAppt = MakeHomeAppt();
 
-                var tempAddy = Helpers.MakeAddress
-                (address1TB.Text, address2TB.Text,
-                    cityTB.Text, stateTB.Text, countryTB.Text);
+                var tempAddy = addressFromTBs();
                 switch (Helpers.DoesThisAddressExist(tempAddy))
                 {
                     case false:
                         Helpers.InsertAddress(tempAddy, out var tempSid);
                         addressIdTB.Text = tempSid.ToString();
+                        populateAddressTb();
+                        MessageBox.Show("DBG: Inserting New Address- ID# " + tempSid);
                         break;
                     case true:
+                        populateAddressTb();
                         break;
                 }
 
@@ -343,8 +351,8 @@ public partial class FormAppointment : Form
 
                         break;
                 }
-
                 break;
+
             case false:
                 var officeAppt = MakeOfficeAppt();
                 var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
