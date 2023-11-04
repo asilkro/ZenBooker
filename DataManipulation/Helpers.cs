@@ -172,7 +172,7 @@ public class Helpers
 
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE%', order by customer_id;";
+                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;";
                             sql = sql.Replace("@VALUE", searchQuery);
                             var dataAdapter = new MySqlDataAdapter(sql, connection);
                             using (dataAdapter)
@@ -1131,7 +1131,8 @@ public class Helpers
 
     public static UnifiedApptData OfficeToUnified(OfficeAppointment appt)
     {
-        var serviceAddressId = ReturnAddress(appt.office_id.ToString()) != null ? appt.office_id : 1;
+        var serviceAddressId = ReturnAddress(appt.office_id.ToString())
+                               != null ? appt.office_id : 1;
         // Use HQ as the service address to catch error
 
         var convertedAppt = new UnifiedApptData

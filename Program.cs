@@ -7,10 +7,13 @@ namespace ZenoBook;
 
 internal static class Program
 {
+    private static readonly ILog log = log4net.LogManager.GetLogger
+        (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
     /// <summary>
     ///     The main entry point for the application.
     /// </summary>
     [STAThread]
+
     private static void Main()
     {
         // To customize application configuration such as set high DPI settings or default font,
@@ -23,7 +26,6 @@ internal static class Program
         {
             LogManager.CreateRepository("LoggingRepo");
         }
-
         Application.Run(new Login());
     }
 }

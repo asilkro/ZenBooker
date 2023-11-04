@@ -8,7 +8,7 @@ public partial class FormAppointment : Form
 {
     private static DateTime _tomorrowDate = DateTime.Now.Date.AddDays(1);
     private static int _nowHours = DateTime.Now.TimeOfDay.Hours;
-    private static DateTime _defaultStart = new DateTime(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, 00, 0);
+    private static DateTime _defaultStart = new(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, 00, 0);
     private static DateTime _defaultEnd = _defaultStart.AddHours(1);
 
     public FormAppointment()
@@ -16,15 +16,14 @@ public partial class FormAppointment : Form
         InitializeComponent();
         apptIdTB.Text = Helpers.AutoIncrementId("appointment");
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
-        startDtPicker.Format = DateTimePickerFormat.Time;
-        endDtPicker.Format = DateTimePickerFormat.Time;
-        startDtPicker.Value = _defaultStart;
-        endDtPicker.Value = _defaultEnd;
+
     }
 
     public FormAppointment(UnifiedApptData appt)
     {
         InitializeComponent();
+        dateTimeSetup(appt);
+
         switch (appt.inhomeservice)
         {
             case 1:
@@ -44,6 +43,24 @@ public partial class FormAppointment : Form
                 break;
         }
         UpdateTbs(appt);
+    }
+
+    private void dateTimeSetup(UnifiedApptData? appt)
+    {
+        if (appt == null)
+        {
+            startDtPicker.Format = DateTimePickerFormat.Time;
+            endDtPicker.Format = DateTimePickerFormat.Time;
+            startDtPicker.Value = _defaultStart.ToLocalTime();
+            endDtPicker.Value = _defaultEnd.ToLocalTime();
+        }
+        else
+        {
+            startDtPicker.Format = DateTimePickerFormat.Time;
+            endDtPicker.Format = DateTimePickerFormat.Time;
+            startDtPicker.Value = appt.start.ToLocalTime();
+            endDtPicker.Value = appt.end.ToLocalTime();
+        }
     }
 
     public void UpdateTbs(UnifiedApptData appt)
@@ -282,7 +299,7 @@ public partial class FormAppointment : Form
 
         try
         {
-            makeItHappen();
+            saveAppointmentData();
         }
         catch (Exception exception)
         {
@@ -298,7 +315,7 @@ public partial class FormAppointment : Form
             cityTB.Text, stateTB.Text, countryTB.Text);
     }
 
-    private void makeItHappen()
+    private void saveAppointmentData()
     {
         switch (homeRadioBtn.Checked)
         {
@@ -312,7 +329,6 @@ public partial class FormAppointment : Form
                         Helpers.InsertAddress(tempAddy, out var tempSid);
                         addressIdTB.Text = tempSid.ToString();
                         populateAddressTb();
-                        MessageBox.Show("DBG: Inserting New Address- ID# " + tempSid);
                         break;
                     case true:
                         populateAddressTb();
