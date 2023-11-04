@@ -1,4 +1,6 @@
 ﻿using MySqlConnector;
+using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace ZenoBook.DataManipulation;
 
@@ -22,5 +24,25 @@ internal partial class Builder
     public MySqlConnection Connect()
     {
         return new MySqlConnection(ConnectionString());
+    }
+
+    public static MySqlConnection SmartConnect(MySqlConnection connection)
+    {
+        switch (connection.State)
+        {
+            case ConnectionState.Open:
+                break;
+            case ConnectionState.Closed:
+                connection.Open();
+                break;
+            case ConnectionState.Broken:
+                connection.Dispose();
+                break;
+            default:
+                connection.Open();
+                break;
+        }
+
+        return connection;
     }
 }

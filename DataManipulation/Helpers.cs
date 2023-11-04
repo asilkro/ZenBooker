@@ -7,13 +7,14 @@ using System.Security.Cryptography;
 using System.Text;
 using ZenoBook.Classes;
 using System;
+using System.Data.Common;
 
 namespace ZenoBook.DataManipulation;
 
 public class Helpers
 {
     #region Login Related
-    public static bool ValidateLogin(string username, string password)
+    public static bool ValidateLogin(string login, string password)
     {
         var result = false;
         using var connection = new Builder().Connect();
@@ -21,7 +22,7 @@ public class Helpers
         connection.Open();
         var fields = new[]
         {
-            new QueryField("login", username),
+            new QueryField("login", login),
             new QueryField("password", HashedString(password))
         };
         var existing = connection.Exists("user", fields);
@@ -57,66 +58,61 @@ public class Helpers
     #endregion
 
     #region DataGridView
-    public static void populateDGV(DataGridView dgv, string tableName)
+
+    public static void PopulateDgv(DataGridView dgv, string tableName)
     {
         {
-            var selectQuery = "SELECT * FROM " + tableName + ";";
-            var connection = new Builder().Connect();
-            switch (connection.State)
+            var connection = Builder.SmartConnect(connection: new Builder().Connect());
+            switch (tableName)
             {
-                case ConnectionState.Open:
+                case "appointment":
+                    var apptSelectQuery = "SELECT * FROM " + tableName +
+                                          " WHERE start >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 DAY) ORDER BY start LIMIT 200;";
+                    var apptDataAdapter = new MySqlDataAdapter(apptSelectQuery, connection);
+                    using (apptDataAdapter)
+                    {
+                        var appointments = apptToDataTable(apptDataAdapter, out var appointmentsDataTable);
+                        addApptToRows(appointmentsDataTable, appointments);
+                        dgv.DataSource = appointmentsDataTable;
+                    }
                     break;
-                case ConnectionState.Closed:
-                    connection.Open();
+
+                case "customer":
+                    var cxSelectQuery = "SELECT * FROM " + tableName + " ORDER BY last, first, customer_id LIMIT 200;";
+                    var cxDataAdapter = new MySqlDataAdapter(cxSelectQuery, connection);
+                    using (cxDataAdapter)
+                    {
+                        var customers = cxToDataTable(cxDataAdapter, out var customerDataTable);
+                        addCxToRows(customerDataTable, customers);
+                        dgv.DataSource = customerDataTable;
+                    }
                     break;
-                case ConnectionState.Broken:
-                    connection.Dispose();
+
+                case "staff":
+                    var staffSelectQuery = "SELECT * FROM " + tableName + " ORDER BY name, staff_id LIMIT 200;";
+                    var staffDataAdapter = new MySqlDataAdapter(staffSelectQuery, connection);
+                    using (staffDataAdapter)
+                    {
+                        var staff = staffToDataTable(staffDataAdapter, out var staffDataTable);
+                        addStaffToRows(staffDataTable, staff);
+                        dgv.DataSource = staffDataTable;
+                    }
                     break;
-                default:
-                    connection.Open();
+
+                case "service":
+                    var serviceSelectQuery = "SELECT * FROM " + tableName + " ORDER BY name, service_id LIMIT 200;";
+                    var serviceDataAdapter = new MySqlDataAdapter(serviceSelectQuery, connection);
+                    using (serviceDataAdapter)
+                    {
+                        var services = serviceToDataTable(serviceDataAdapter, out var serviceDataTable);
+                        addServiceToRows(serviceDataTable, services);
+                        dgv.DataSource = serviceDataTable;
+                    }
                     break;
             }
-
-            var dataAdapter = new MySqlDataAdapter(selectQuery, connection);
-            using (dataAdapter)
-            {
-                switch (tableName)
-                {
-                    case "customer":
-                        {
-                            var customers = cxToDataTable(dataAdapter, out var customerDataTable);
-                            addCxToRows(customerDataTable, customers);
-                            dgv.DataSource = customerDataTable;
-                        }
-                        break;
-
-                    case "appointment":
-                        {
-                            var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
-                            addApptToRows(appointmentsDataTable, appointments);
-                            dgv.DataSource = appointmentsDataTable;
-                        }
-                        break;
-                    case "service":
-                        {
-                            var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
-                            addServiceToRows(serviceDataTable, services);
-                            dgv.DataSource = serviceDataTable;
-                        }
-                        break;
-                    case "staff":
-                        {
-                            var staff = staffToDataTable(dataAdapter, out var staffDataTable);
-                            addStaffToRows(staffDataTable, staff);
-                            dgv.DataSource = staffDataTable;
-                        }
-                        break;
-                }
-            }
-
-            connection.Close();
         }
     }
+
     public static void SearchDgv(DataGridView dgv, string tableName, string searchQuery)
     {
         {
@@ -321,6 +317,7 @@ public class Helpers
 {
     foreach (DataRow row in dataTable.Rows)
     {
+        
         var uApptData = new UnifiedApptData
         {
             appointment_id = (int)row["appointment_id"], // Set the correct property names
@@ -398,16 +395,17 @@ public class Helpers
         const char atSign = '@';
         var result = "default";
 
+
         if (DateTime.TryParse(valueToCheck, out _))
         {
             result = "datetime";
             return result; // If it parses as a date, treat as date
         }
 
-        if (long.TryParse(valueToCheck, out _))
+        if (int.TryParse(valueToCheck, out _))
         {
             result = "integer";
-            return result; // If it parses as a number, treat as ID or a phone number
+            return result; // If it parses as a number, treat as an ID
         }
 
         if (valueToCheck.Contains(atSign))
@@ -416,9 +414,13 @@ public class Helpers
             return result; // If it has an @ sign, treat as an email address
         }
 
-        if (!valueToCheck.Contains(space)) return result;
-        result = "name";
-        return result; // If it has a whitespace, treat as a name
+        if (valueToCheck.Contains(space))
+        {
+            result = "name";
+            return result; // If it has a whitespace, treat as a name
+        }
+
+        return result;
     }
     public static Address MakeAddress(string address1, string address2, string city, string state, string country)
     {
@@ -431,6 +433,40 @@ public class Helpers
             country = country
         };
         return tempAddy;
+    }
+
+    public static bool RawAddressInsert(UnifiedApptData appt)
+    {
+        
+        var connection = Builder.SmartConnect(new Builder().Connect());
+        using(connection)
+        {
+            var success = false;
+            var cmd = new MySqlCommand("",connection);
+            //cmd.CommandText = cmd.CommandText = "INSERT INTO appointment (`appointment_id`,`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " + "VALUES (<{ appointment_id: }>, @cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
+            cmd.CommandText = "INSERT INTO appointment (`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " +
+                              "VALUES (@cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
+            cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
+            cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
+            cmd.Parameters.AddWithValue("@officeId", appt.office_id);
+            cmd.Parameters.AddWithValue("@svcId", appt.service_id);
+            cmd.Parameters.AddWithValue("@start", appt.start.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", appt.end.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
+            cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
+
+            if (cmd.ExecuteNonQuery() == 1)
+            {
+                success = true;
+                MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
+            }
+            else
+            {
+                success = false;
+                MessageBox.Show("Did not work", "DEBUG: FAILURE");
+            }
+            return success;
+        }
     }
 
     public static bool ConfirmedAction()
@@ -1035,7 +1071,12 @@ public class Helpers
     }
     #endregion
 
-    #region Appointment Conversion
+    #region Conversions
+    public static string DateTimeAsString(DateTime value)
+    {
+        return value.ToString("yyyy/MM/dd HH:mm:ss:ffff");
+    }
+
 
     public static UnifiedApptData HomeToUnified(HomeAppointment appt)
     {
@@ -1067,7 +1108,7 @@ public class Helpers
             start = appt.start,
             end = appt.end,
             inhomeservice = 0, // Corresponds to binary
-            service_address_id = 0 // Service address is only used for HomeAppt
+            service_address_id = ReturnAddress(appt.office_id.ToString())?.address_id
         };
 
         return convertedAppt;

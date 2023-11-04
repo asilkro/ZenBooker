@@ -9,7 +9,7 @@ public class HomeAppointment : Appointment
     #region Properties / Fields
 
     public sbyte inhomeservice { get; set; }
-    public int service_address_id { get; set; }
+    public int? service_address_id { get; set; }
 
     #endregion
 

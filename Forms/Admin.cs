@@ -9,8 +9,8 @@ public partial class Admin : Form
     public Admin()
     {
         InitializeComponent();
-        Helpers.populateDGV(staffDataGridView, "staff");
-        Helpers.populateDGV(serviceDataGridView, "service");
+        Helpers.PopulateDgv(staffDataGridView, "staff");
+        Helpers.PopulateDgv(serviceDataGridView, "service");
     }
 
     private void backBtn_Click(object sender, EventArgs e)
@@ -28,7 +28,7 @@ public partial class Admin : Form
             var result = Helpers.DeleteStaff(selected);
             if (result)
             {
-                Helpers.populateDGV(staffDataGridView, "staff");
+                Helpers.PopulateDgv(staffDataGridView, "staff");
             }
         }
     }
@@ -42,7 +42,7 @@ public partial class Admin : Form
         var result = Helpers.DeleteService(selected);
         if (result)
         {
-            Helpers.populateDGV(serviceDataGridView, "service");
+            Helpers.PopulateDgv(serviceDataGridView, "service");
         }
     }
 

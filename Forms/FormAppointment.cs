@@ -6,7 +6,10 @@ namespace ZenoBook.Forms;
 
 public partial class FormAppointment : Form
 {
-    private DateTime _tomorrow = DateTime.Now.Date.AddDays(1);
+    private static DateTime _tomorrowDate = DateTime.Now.Date.AddDays(1);
+    private static int _nowHours = DateTime.Now.TimeOfDay.Hours;
+    private static DateTime _defaultStart = new DateTime(_tomorrowDate.Year, _tomorrowDate.Month,_tomorrowDate.Day, _nowHours,00, 0);
+    private static DateTime _defaultEnd = _defaultStart.AddHours(1);
 
     public FormAppointment()
     {
@@ -15,8 +18,8 @@ public partial class FormAppointment : Form
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
         startDtPicker.Format = DateTimePickerFormat.Time;
         endDtPicker.Format = DateTimePickerFormat.Time;
-        startDtPicker.Value = _tomorrow;
-        endDtPicker.Value = _tomorrow.AddHours(1);
+        startDtPicker.Value = _defaultStart;
+        endDtPicker.Value = _defaultEnd;
     }
 
     public FormAppointment(UnifiedApptData appt)
@@ -38,7 +41,7 @@ public partial class FormAppointment : Form
                 break;
             default:
                 MessageBox.Show("There was an issue loading appointment data.", "Error.");
-                    break;
+                break;
         }
         UpdateTbs(appt);
     }
@@ -279,93 +282,104 @@ public partial class FormAppointment : Form
 
         try
         {
-            switch (homeRadioBtn.Checked)
-            {
-                case true:
-                    var homeAppt = makeHomeAppt();
-
-                    var tempAddy = Helpers.MakeAddress
-                    (address1TB.Text, address2TB.Text,
-                        cityTB.Text, stateTB.Text, countryTB.Text);
-                    switch (Helpers.DoesThisAddressExist(tempAddy))
-                    {
-                        case false:
-                            Helpers.InsertAddress(tempAddy, out var tempSid);
-                            addressIdTB.Text = tempSid.ToString();
-                            break;
-                        case true:
-                            break;
-                    }
-
-                    var cHomeAppt = Helpers.HomeToUnified(homeAppt);
-                    cHomeAppt.service_address_id = int.Parse(addressIdTB.Text);
-                    switch (Helpers.ApptExists(cHomeAppt))
-                    {
-                        case true:
-                            switch (Helpers.UpdateAppt(cHomeAppt))
-                            {
-                                case false:
-                                    MessageBox.Show("There was a problem updating this appointment.",
-                                        "Appointment not saved");
-                                    break;
-                                case true:
-                                    Close();
-                                    break;
-                            }
-                            break;
-
-                        case false:
-                            switch (Helpers.InsertAppt(cHomeAppt))
-                            {
-                                case false:
-                                    MessageBox.Show("There was a problem adding this appointment.",
-                                        "Appointment not saved");
-                                    break;
-                                case true:
-                                    Close();
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
-                case false: 
-                    var officeAppt = MakeOfficeAppt(); 
-                    var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
-                    switch (Helpers.ApptExists(cOfficeAppt))
-                    {
-                        case true:
-                            switch (Helpers.UpdateAppt(cOfficeAppt))
-                            {
-                                case false:
-                                    MessageBox.Show("There was a problem updating this appointment.",
-                                        "Appointment not saved");
-                                    break;
-                                case true:
-                                    Close();
-                                    break;
-                            }
-                            break;
-                        case false:
-                            switch (Helpers.InsertAppt(cOfficeAppt))
-                            {
-                                case false:
-                                    MessageBox.Show("There was a problem adding this appointment.",
-                                        "Appointment not saved");
-                                    break;
-                                case true:
-                                    Close();
-                                    break;
-                            }
-                            break;
-                    }
-                    break;
-            }
+            makeItHappen();
         }
         catch (Exception exception)
         {
             LogManager.GetLogger("LoggingRepo").Warn(e, exception);
         }
 
+    }
+
+    private void makeItHappen()
+    {
+        switch (homeRadioBtn.Checked)
+        {
+            case true:
+                var homeAppt = MakeHomeAppt();
+
+                var tempAddy = Helpers.MakeAddress
+                (address1TB.Text, address2TB.Text,
+                    cityTB.Text, stateTB.Text, countryTB.Text);
+                switch (Helpers.DoesThisAddressExist(tempAddy))
+                {
+                    case false:
+                        Helpers.InsertAddress(tempAddy, out var tempSid);
+                        addressIdTB.Text = tempSid.ToString();
+                        break;
+                    case true:
+                        break;
+                }
+
+                var cHomeAppt = Helpers.HomeToUnified(homeAppt);
+                cHomeAppt.service_address_id = int.Parse(addressIdTB.Text);
+                switch (Helpers.ApptExists(cHomeAppt))
+                {
+                    case true:
+                        switch (Helpers.UpdateAppt(cHomeAppt))
+                        {
+                            case false:
+                                MessageBox.Show("There was a problem updating this appointment.",
+                                    "Appointment not saved");
+                                break;
+                            case true:
+                                Close();
+                                break;
+                        }
+
+                        break;
+
+                    case false:
+                        switch (Helpers.InsertAppt(cHomeAppt))
+                        {
+                            case false:
+                                MessageBox.Show("There was a problem adding this appointment.",
+                                    "Appointment not saved");
+                                break;
+                            case true:
+                                Close();
+                                break;
+                        }
+
+                        break;
+                }
+
+                break;
+            case false:
+                var officeAppt = MakeOfficeAppt();
+                var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
+                switch (Helpers.ApptExists(cOfficeAppt))
+                {
+                    case true:
+                        switch (Helpers.UpdateAppt(cOfficeAppt))
+                        {
+                            case false:
+                                MessageBox.Show("There was a problem updating this appointment.",
+                                    "Appointment not saved");
+                                break;
+                            case true:
+                                Close();
+                                break;
+                        }
+
+                        break;
+                    case false:
+                        switch (Helpers.InsertAppt(cOfficeAppt))
+                        {
+                            case false:
+                                MessageBox.Show("There was a problem adding this appointment.",
+                                    "Appointment not saved");
+                                break;
+                            case true:
+                                Close();
+                                break;
+                        }
+
+                        break;
+                }
+
+                break;
+        }
     }
 
     private OfficeAppointment MakeOfficeAppt()
@@ -384,7 +398,7 @@ public partial class FormAppointment : Form
         return officeAppt;
     }
 
-    private HomeAppointment makeHomeAppt()
+    private HomeAppointment MakeHomeAppt()
     {
         var homeAppt = new HomeAppointment
         {
@@ -400,4 +414,21 @@ public partial class FormAppointment : Form
     }
 
     #endregion
+
+    private void debugBtn_Click(object sender, EventArgs e)
+    {
+        if (officeRadioBtn.Checked)
+        {
+            var officeAppt = MakeOfficeAppt();
+            var cOfficeAppt = Helpers.OfficeToUnified(officeAppt);
+            Helpers.RawAddressInsert(cOfficeAppt);
+        }
+
+        if (homeRadioBtn.Checked)
+        {
+            var homeAppt = MakeHomeAppt();
+            var cHomeAppt = Helpers.HomeToUnified(homeAppt);
+            Helpers.RawAddressInsert(cHomeAppt);
+        }
+    }
 }

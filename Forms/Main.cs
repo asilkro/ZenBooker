@@ -11,8 +11,8 @@ public partial class Main : Form
     public Main()
     {
         InitializeComponent();
-        Helpers.populateDGV(apptsDataGridView, "appointment");
-        Helpers.populateDGV(cxDataGridView, "customer");
+        Helpers.PopulateDgv(apptsDataGridView, "appointment");
+        Helpers.PopulateDgv(cxDataGridView, "customer");
     }
 
 
@@ -103,7 +103,7 @@ public partial class Main : Form
         var result = Helpers.RemoveAppointment(selected);
         if (result)
         {
-            Helpers.populateDGV(apptsDataGridView, "appointment");
+            Helpers.PopulateDgv(apptsDataGridView, "appointment");
         }
     }
 
@@ -139,7 +139,7 @@ public partial class Main : Form
             var result = Helpers.DeleteCustomer(selected);
             if (result)
             {
-                Helpers.populateDGV(cxDataGridView, "customer");
+                Helpers.PopulateDgv(cxDataGridView, "customer");
             }
         }
     }
