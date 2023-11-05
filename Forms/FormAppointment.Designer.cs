@@ -90,7 +90,7 @@
             // 
             // dateCalendar
             // 
-            dateCalendar.FirstDayOfWeek = Day.Saturday;
+            dateCalendar.FirstDayOfWeek = Day.Sunday;
             dateCalendar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             dateCalendar.Location = new Point(539, 34);
             dateCalendar.Margin = new Padding(9, 8, 9, 8);
@@ -102,7 +102,7 @@
             // startDtPicker
             // 
             startDtPicker.Checked = false;
-            startDtPicker.CustomFormat = "HH:mm tt";
+            startDtPicker.CustomFormat = "H:mm tt";
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             startDtPicker.Format = DateTimePickerFormat.Custom;
             startDtPicker.Location = new Point(601, 203);
@@ -115,7 +115,7 @@
             // endDtPicker
             // 
             endDtPicker.Checked = false;
-            endDtPicker.CustomFormat = "HH:mm tt";
+            endDtPicker.CustomFormat = "H:mm tt";
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             endDtPicker.Format = DateTimePickerFormat.Custom;
             endDtPicker.Location = new Point(601, 233);

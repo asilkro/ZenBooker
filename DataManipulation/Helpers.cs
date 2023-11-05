@@ -75,7 +75,7 @@ public class Helpers
                     break;
 
                 case "customer":
-                    var cxSelectQuery = "SELECT * FROM " + tableName + " ORDER BY customer_id, last, first LIMIT 200;";
+                    var cxSelectQuery = "SELECT *, concat_ws(' ', first, last) AS Name FROM " + tableName + " ORDER BY customer_id, Name LIMIT 200;";
                     var cxDataAdapter = new MySqlDataAdapter(cxSelectQuery, connection);
                     using (cxDataAdapter)
                     {
@@ -266,15 +266,15 @@ public class Helpers
     {
     var list = new List<UnifiedApptData>();
     appointmentsDataTable1 = new DataTable();
-    appointmentsDataTable1.Columns.Add("appointment_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("customer_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("staff_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("service_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("start", typeof(DateTime));
-    appointmentsDataTable1.Columns.Add("end", typeof(DateTime));
-    appointmentsDataTable1.Columns.Add("office_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("service_address_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("inhomeservice", typeof(int));
+    appointmentsDataTable1.Columns.Add("Appointment_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("Customer_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("Start", typeof(DateTime));
+    appointmentsDataTable1.Columns.Add("End", typeof(DateTime));
+    appointmentsDataTable1.Columns.Add("Service_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("Staff_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("Office_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("Service_address_id", typeof(int));
+    appointmentsDataTable1.Columns.Add("Inhomeservice", typeof(int));
     mySqlDataAdapter.Fill(appointmentsDataTable1);
     return list;
 } 
@@ -284,29 +284,29 @@ public class Helpers
     {
         var cx = new Customer
         {
-            customer_id = (int)row["customer_id"],
-            first = row["first"].ToString(),
-            last = row["last"].ToString(),
-            phone = row["phone"].ToString(),
-            email = row["email"].ToString(),
-            preferred_office = Convert.IsDBNull(row["preferred_office"])
-                ? 0
-                : (int)row["preferred_office"]
+            customer_id = (int)row["Customer_Id"],
+            first = row["First"].ToString(),
+            last = row["Last"].ToString(),
+            phone = row["Phone"].ToString(),
+            email = row["Email"].ToString(),
+            preferred_office = Convert.IsDBNull(row["Preferred_Office"])
+                ? 1
+                : (int)row["Preferred_Office"]
         };
         customers.Add(cx);
     }
 } 
     private static List<Customer> cxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
 {
-    List<Customer> customers;
-    customers = new List<Customer>();
+    List<Customer> customers = new();
     customerDataTable = new DataTable();
-    customerDataTable.Columns.Add("customer_id", typeof(int));
-    customerDataTable.Columns.Add("first", typeof(string));
-    customerDataTable.Columns.Add("last", typeof(string));
-    customerDataTable.Columns.Add("phone", typeof(string));
-    customerDataTable.Columns.Add("email", typeof(string));
-    customerDataTable.Columns.Add("preferred_office", typeof(int));
+    customerDataTable.Columns.Add("Name", typeof(string));
+    customerDataTable.Columns.Add("Customer_id", typeof(int));
+    customerDataTable.Columns.Add("Phone", typeof(string));
+    customerDataTable.Columns.Add("Email", typeof(string));
+    customerDataTable.Columns.Add("First", typeof(string));
+    customerDataTable.Columns.Add("Last", typeof(string));
+    customerDataTable.Columns.Add("Preferred_Office", typeof(int));
     dataAdapter.Fill(customerDataTable);
     return customers;
 } 

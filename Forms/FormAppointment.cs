@@ -310,9 +310,9 @@ public partial class FormAppointment : Form
 
     private Address addressFromTBs()
     {
-       return Helpers.MakeAddress
-        (address1TB.Text, address2TB.Text,
-            cityTB.Text, stateTB.Text, countryTB.Text);
+        return Helpers.MakeAddress
+         (address1TB.Text, address2TB.Text,
+             cityTB.Text, stateTB.Text, countryTB.Text);
     }
 
     private void saveAppointmentData()
