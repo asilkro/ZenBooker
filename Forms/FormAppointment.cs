@@ -8,15 +8,18 @@ public partial class FormAppointment : Form
 {
     private static DateTime _tomorrowDate = DateTime.Now.Date.AddDays(1);
     private static int _nowHours = DateTime.Now.TimeOfDay.Hours;
-    private static DateTime _defaultStart = new(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, 00, 0);
+    private static int _minutes = 00;
+    private static int _seconds = 00;
+    private static DateTime _defaultStart = new(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, _minutes, 0);
     private static DateTime _defaultEnd = _defaultStart.AddHours(1);
+
 
     public FormAppointment()
     {
         InitializeComponent();
+        dateTimeSetup(null);
         apptIdTB.Text = Helpers.AutoIncrementId("appointment");
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
-
     }
 
     public FormAppointment(UnifiedApptData appt)
@@ -31,12 +34,14 @@ public partial class FormAppointment : Form
                 HideOfficeStuff();
                 ShowHomeStuff();
                 Helpers.ReturnAddress(appt.service_address_id.ToString());
+                populateAddressTb();
                 break;
             case 0:
                 officeRadioBtn.Checked = true;
                 HideHomeStuff();
                 ShowOfficeStuff();
                 Helpers.ReturnOffice(appt.office_id.ToString());
+                populateOfficeTb();
                 break;
             default:
                 MessageBox.Show("There was an issue loading appointment data.", "Error.");
@@ -51,15 +56,15 @@ public partial class FormAppointment : Form
         {
             startDtPicker.Format = DateTimePickerFormat.Time;
             endDtPicker.Format = DateTimePickerFormat.Time;
-            startDtPicker.Value = _defaultStart.ToLocalTime();
-            endDtPicker.Value = _defaultEnd.ToLocalTime();
+            startDtPicker.Value = _defaultStart;
+            endDtPicker.Value = _defaultEnd;
         }
         else
         {
             startDtPicker.Format = DateTimePickerFormat.Time;
             endDtPicker.Format = DateTimePickerFormat.Time;
-            startDtPicker.Value = appt.start.ToLocalTime();
-            endDtPicker.Value = appt.end.ToLocalTime();
+            startDtPicker.Value = appt.start;
+            endDtPicker.Value = appt.end;
         }
     }
 
@@ -69,8 +74,17 @@ public partial class FormAppointment : Form
         FillCxFields(appt);
         FillStaffFields(appt);
         FillServiceFields(appt);
-        Helpers.ReturnOffice(appt.office_id.ToString());
-        Helpers.ReturnAddress(appt.service_address_id.ToString());
+        if (homeRadioBtn.Checked)
+        {
+            Helpers.ReturnAddress(appt.service_address_id.ToString());
+            populateAddressTb();
+        }
+
+        if (officeRadioBtn.Checked)
+        {
+            Helpers.ReturnOffice(appt.office_id.ToString());
+            populateOfficeTb();
+        }
     }
 
     private void FillDt(UnifiedApptData appt)

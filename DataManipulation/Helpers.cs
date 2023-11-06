@@ -916,7 +916,7 @@ public class Helpers
         var result = connection.Exists("address", fields);
         return result;
     }
-    public static Address? ReturnAddress(string searchTerm)
+    public static Address? ReturnAddress(string? searchTerm)
     {
         using var connection = new Builder().Connect();
         if (int.TryParse(searchTerm, out var i))

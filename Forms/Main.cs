@@ -46,50 +46,10 @@ public partial class Main : Form
 
             var uAppt = Helpers.GetAppointment(selected);
 
-            var apptFill = new UnifiedApptData();
             if (uAppt == null) return;
-            apptFill.appointment_id = uAppt.appointment_id;
-            apptFill.customer_id = uAppt.customer_id;
-            apptFill.service_id = uAppt.service_id;
-            apptFill.staff_id = uAppt.staff_id;
-            apptFill.start = uAppt.start;
-            apptFill.end = uAppt.end;
 
-            switch (uAppt.office_id != 0 && uAppt.inhomeservice != 1)
-            {
-                case true:
-                    //This should be the case for a OfficeAppt
-                    var officeAppt = new OfficeAppointment
-                    {
-                        appointment_id = uAppt.appointment_id,
-                        customer_id = uAppt.customer_id,
-                        staff_id = uAppt.staff_id,
-                        office_id = uAppt.office_id,
-                        service_id = uAppt.service_id,
-                        start = uAppt.start,
-                        end = uAppt.end,
-                        inhomeservice = uAppt.inhomeservice
-                    };
-                    var apptOForm = new FormAppointment(apptFill);
-                    apptOForm.ShowDialog();
-                    break;
-                case false:
-                    var homeAppt = new HomeAppointment
-                    {
-                        appointment_id = uAppt.appointment_id,
-                        customer_id = uAppt.customer_id,
-                        staff_id = uAppt.staff_id,
-                        service_id = uAppt.service_id,
-                        start = uAppt.start,
-                        end = uAppt.end,
-                        service_address_id = uAppt.service_address_id,
-                        inhomeservice = uAppt.inhomeservice
-                    };
-                    var apptHForm = new FormAppointment(apptFill);
-                    apptHForm.ShowDialog();
-                    break;
-            }
-
+            var apptForm = new FormAppointment(uAppt);
+            apptForm.ShowDialog();
             connection.Close();
         }
     }
