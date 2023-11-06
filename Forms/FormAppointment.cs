@@ -8,16 +8,14 @@ public partial class FormAppointment : Form
 {
     private static DateTime _tomorrowDate = DateTime.Now.Date.AddDays(1);
     private static int _nowHours = DateTime.Now.TimeOfDay.Hours;
-    private static int _minutes = 00;
-    private static int _seconds = 00;
-    private static DateTime _defaultStart = new(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, _minutes, 0);
+    private static DateTime _defaultStart = new(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, 00, 00);
     private static DateTime _defaultEnd = _defaultStart.AddHours(1);
 
 
     public FormAppointment()
     {
         InitializeComponent();
-        dateTimeSetup(null);
+        DateTimeSetup(null);
         apptIdTB.Text = Helpers.AutoIncrementId("appointment");
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
     }
@@ -53,30 +51,24 @@ public partial class FormAppointment : Form
         endDtPicker.Value = end;
     }
 
-    private void dateTimeSetup(UnifiedApptData? appt)
+    private void DateTimeSetup(UnifiedApptData? appt)
     {
-        var dbgStart = startDtPicker.Value.ToString();
-        var dbgEnd = endDtPicker.Value.ToString();
 
         if (appt == null)
         {
             startDtPicker.Value = _defaultStart;
             endDtPicker.Value = _defaultEnd;
-            MessageBox.Show(dbgStart, "NULL START");
-            MessageBox.Show(dbgEnd, "NULL END");
         }
         else
         {
             startDtPicker.Value = appt.start;
             endDtPicker.Value = appt.end;
-            MessageBox.Show(dbgStart, "START");
-            MessageBox.Show(dbgEnd, "END");
         }
     }
 
     public void UpdateTbs(UnifiedApptData appt)
     {
-        dateTimeSetup(appt);
+        DateTimeSetup(appt);
         FillCxFields(appt);
         FillStaffFields(appt);
         FillServiceFields(appt);
@@ -195,131 +187,6 @@ public partial class FormAppointment : Form
                 break;
         }
     }
-
-    #region Logic for Radio Buttons / Visibility of Relevant Options
-
-    private void HideOfficeStuff()
-    {
-        officeIdTB.Hide();
-        officeNameTB.Hide();
-        officeSearchButton.Hide();
-        officeSearchTB.Hide();
-    }
-
-    private void HideHomeStuff()
-    {
-        addressIdTB.Hide();
-        address1TB.Hide();
-        address2TB.Hide();
-        cityTB.Hide();
-        stateTB.Hide();
-        countryTB.Hide();
-        homeSearchBtn.Hide();
-        saSearchTB.Hide();
-    }
-
-    private void ShowOfficeStuff()
-    {
-        officeIdTB.Show();
-        officeNameTB.Show();
-        officeSearchButton.Show();
-        officeSearchTB.Show();
-    }
-
-    private void ShowHomeStuff()
-    {
-        addressIdTB.Show();
-        address1TB.Show();
-        address2TB.Show();
-        cityTB.Show();
-        stateTB.Show();
-        countryTB.Show();
-        homeSearchBtn.Show();
-        saSearchTB.Show();
-    }
-
-    private void CheckedChanged(object sender, EventArgs e)
-    {
-        if (sender.Equals(officeRadioBtn))
-        {
-            switch (officeRadioBtn.Checked)
-            {
-                case true:
-                    homeRadioBtn.Checked = false;
-                    HideHomeStuff();
-                    ShowOfficeStuff();
-                    break;
-                case false:
-                    homeRadioBtn.Checked = true;
-                    HideOfficeStuff();
-                    ShowHomeStuff();
-                    break;
-            }
-        }
-
-        if (!sender.Equals(homeRadioBtn)) return;
-        switch (homeRadioBtn.Checked)
-        {
-            case true:
-                officeRadioBtn.Checked = false;
-                HideOfficeStuff();
-                ShowHomeStuff();
-                break;
-            case false:
-                officeRadioBtn.Checked = true;
-                HideHomeStuff();
-                ShowOfficeStuff();
-                break;
-        }
-    }
-
-    #endregion
-
-    #region Event Handlers
-
-    private void cxSearchButton_Click(object sender, EventArgs e)
-    {
-        populateCxTb();
-    }
-
-    private void staffSearchButton_Click(object sender, EventArgs e)
-    {
-        populateStaffTb();
-    }
-
-    private void serviceSearchButton_Click(object sender, EventArgs e)
-    {
-        populateServiceTb();
-    }
-
-    private void officeSearchButton_Click(object sender, EventArgs e)
-    {
-        populateOfficeTb();
-    }
-
-    private void homeSearchBtn_Click(object sender, EventArgs e)
-    {
-        populateAddressTb();
-    }
-
-    private void saveBtn_Click(object sender, EventArgs e)
-    {
-        if (!(homeRadioBtn.Checked) && !(officeRadioBtn.Checked))
-        {
-            MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
-        }
-
-        try
-        {
-            saveAppointmentData();
-        }
-        catch (Exception exception)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, exception);
-        }
-
-    }
-
     private Address addressFromTBs()
     {
         return Helpers.MakeAddress
@@ -449,6 +316,129 @@ public partial class FormAppointment : Form
         return homeAppt;
     }
 
+    #region Logic for Radio Buttons / Visibility of Relevant Options
+
+    private void HideOfficeStuff()
+    {
+        officeIdTB.Hide();
+        officeNameTB.Hide();
+        officeSearchButton.Hide();
+        officeSearchTB.Hide();
+    }
+
+    private void HideHomeStuff()
+    {
+        addressIdTB.Hide();
+        address1TB.Hide();
+        address2TB.Hide();
+        cityTB.Hide();
+        stateTB.Hide();
+        countryTB.Hide();
+        homeSearchBtn.Hide();
+        saSearchTB.Hide();
+    }
+
+    private void ShowOfficeStuff()
+    {
+        officeIdTB.Show();
+        officeNameTB.Show();
+        officeSearchButton.Show();
+        officeSearchTB.Show();
+    }
+
+    private void ShowHomeStuff()
+    {
+        addressIdTB.Show();
+        address1TB.Show();
+        address2TB.Show();
+        cityTB.Show();
+        stateTB.Show();
+        countryTB.Show();
+        homeSearchBtn.Show();
+        saSearchTB.Show();
+    }
+
+    private void CheckedChanged(object sender, EventArgs e)
+    {
+        if (sender.Equals(officeRadioBtn))
+        {
+            switch (officeRadioBtn.Checked)
+            {
+                case true:
+                    homeRadioBtn.Checked = false;
+                    HideHomeStuff();
+                    ShowOfficeStuff();
+                    break;
+                case false:
+                    homeRadioBtn.Checked = true;
+                    HideOfficeStuff();
+                    ShowHomeStuff();
+                    break;
+            }
+        }
+
+        if (!sender.Equals(homeRadioBtn)) return;
+        switch (homeRadioBtn.Checked)
+        {
+            case true:
+                officeRadioBtn.Checked = false;
+                HideOfficeStuff();
+                ShowHomeStuff();
+                break;
+            case false:
+                officeRadioBtn.Checked = true;
+                HideHomeStuff();
+                ShowOfficeStuff();
+                break;
+        }
+    }
+
+    #endregion
+
+    #region Event Handlers
+
+    private void cxSearchButton_Click(object sender, EventArgs e)
+    {
+        populateCxTb();
+    }
+
+    private void staffSearchButton_Click(object sender, EventArgs e)
+    {
+        populateStaffTb();
+    }
+
+    private void serviceSearchButton_Click(object sender, EventArgs e)
+    {
+        populateServiceTb();
+    }
+
+    private void officeSearchButton_Click(object sender, EventArgs e)
+    {
+        populateOfficeTb();
+    }
+
+    private void homeSearchBtn_Click(object sender, EventArgs e)
+    {
+        populateAddressTb();
+    }
+
+    private void saveBtn_Click(object sender, EventArgs e)
+    {
+        if (!(homeRadioBtn.Checked) && !(officeRadioBtn.Checked))
+        {
+            MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
+        }
+
+        try
+        {
+            saveAppointmentData();
+        }
+        catch (Exception exception)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, exception);
+        }
+
+    }
     #endregion
 
 }

@@ -1,11 +1,11 @@
-﻿using log4net;
-using MySqlConnector;
-using RepoDb;
-using System.Data;
+﻿using System.Data;
 using System.Security.Cryptography;
 using System.Text;
-using RepoDb.Extensions;
+using log4net;
+using MySqlConnector;
+using RepoDb;
 using ZenoBook.Classes;
+
 namespace ZenoBook.DataManipulation;
 
 public class Helpers
@@ -1059,7 +1059,7 @@ public class Helpers
         try
         {
             {
-                var id = connection.Insert<UnifiedApptData>(entity: appt,
+                var id = connection.Insert(entity: appt,
                     fields: fields,tableName:"appointment");
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " created.", "Appointment Created");
             }
@@ -1090,7 +1090,7 @@ public class Helpers
         try
         {
             {
-                var apptId = connection.Update<UnifiedApptData>(entity:appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
+                var apptId = connection.Update(entity:appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " updated.", "Appointment Updated");
             }
             return true;

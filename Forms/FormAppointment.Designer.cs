@@ -1,11 +1,13 @@
-﻿namespace ZenoBook.Forms
+﻿using System.ComponentModel;
+
+namespace ZenoBook.Forms
 {
     partial class FormAppointment
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -29,11 +31,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAppointment));
+            startDtPicker = new DateTimePicker();
+            endDtPicker = new DateTimePicker();
             saveBtn = new Button();
             cancelBtn = new Button();
             dateCalendar = new MonthCalendar();
-            startDtPicker = new DateTimePicker();
-            endDtPicker = new DateTimePicker();
             cxSearchTB = new TextBox();
             cxSearchButton = new Button();
             cxIdTB = new TextBox();
@@ -68,6 +70,32 @@
             saSearchTB = new TextBox();
             SuspendLayout();
             // 
+            // startDtPicker
+            // 
+            startDtPicker.CustomFormat = "H:mm tt";
+            startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            startDtPicker.Format = DateTimePickerFormat.Time;
+            startDtPicker.Location = new Point(601, 203);
+            startDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
+            startDtPicker.Name = "startDtPicker";
+            startDtPicker.ShowUpDown = true;
+            startDtPicker.Size = new Size(111, 29);
+            startDtPicker.TabIndex = 8;
+            startDtPicker.Value = new DateTime(2023, 10, 1, 0, 0, 0, 0);
+            // 
+            // endDtPicker
+            // 
+            endDtPicker.CustomFormat = "H:mm tt";
+            endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            endDtPicker.Format = DateTimePickerFormat.Time;
+            endDtPicker.Location = new Point(601, 233);
+            endDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
+            endDtPicker.Name = "endDtPicker";
+            endDtPicker.ShowUpDown = true;
+            endDtPicker.Size = new Size(111, 29);
+            endDtPicker.TabIndex = 9;
+            endDtPicker.Value = new DateTime(2023, 10, 1, 0, 0, 0, 0);
+            // 
             // saveBtn
             // 
             saveBtn.BackColor = Color.LightSteelBlue;
@@ -98,32 +126,6 @@
             dateCalendar.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
             dateCalendar.Name = "dateCalendar";
             dateCalendar.TabIndex = 7;
-            // 
-            // startDtPicker
-            // 
-            startDtPicker.Checked = false;
-            startDtPicker.CustomFormat = "H:mm tt";
-            startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            startDtPicker.Format = DateTimePickerFormat.Time;
-            startDtPicker.Location = new Point(601, 203);
-            startDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
-            startDtPicker.Name = "startDtPicker";
-            startDtPicker.ShowUpDown = true;
-            startDtPicker.Size = new Size(111, 29);
-            startDtPicker.TabIndex = 8;
-            // 
-            // endDtPicker
-            // 
-            endDtPicker.Checked = false;
-            endDtPicker.CustomFormat = "H:mm tt";
-            endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            endDtPicker.Format = DateTimePickerFormat.Time;
-            endDtPicker.Location = new Point(601, 233);
-            endDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
-            endDtPicker.Name = "endDtPicker";
-            endDtPicker.ShowUpDown = true;
-            endDtPicker.Size = new Size(111, 29);
-            endDtPicker.TabIndex = 9;
             // 
             // cxSearchTB
             // 

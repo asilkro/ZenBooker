@@ -1,8 +1,4 @@
-﻿using log4net;
-using RepoDb;
-using ZenoBook.DataManipulation;
-
-namespace ZenoBook.Classes;
+﻿namespace ZenoBook.Classes;
 
 public class HomeAppointment : Appointment
 {

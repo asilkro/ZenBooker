@@ -1,3 +1,4 @@
+using System.Reflection;
 using log4net;
 using MySqlConnector.Logging;
 using RepoDb;
@@ -7,8 +8,8 @@ namespace ZenoBook;
 
 internal static class Program
 {
-    private static readonly ILog log = log4net.LogManager.GetLogger
-        (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+    private static readonly ILog log = LogManager.GetLogger
+        (MethodBase.GetCurrentMethod().DeclaringType);
     /// <summary>
     ///     The main entry point for the application.
     /// </summary>

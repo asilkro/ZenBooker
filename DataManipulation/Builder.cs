@@ -1,6 +1,5 @@
-﻿using MySqlConnector;
-using System.Data;
-using System.Runtime.CompilerServices;
+﻿using System.Data;
+using MySqlConnector;
 
 namespace ZenoBook.DataManipulation;
 

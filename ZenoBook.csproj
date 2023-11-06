@@ -9,15 +9,10 @@
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Platforms>AnyCPU;x64</Platforms>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Properties\DataSources\**" />
-    <EmbeddedResource Remove="Properties\DataSources\**" />
-    <None Remove="Properties\DataSources\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="appicon.ico" />
