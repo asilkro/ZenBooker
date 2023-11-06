@@ -24,9 +24,10 @@ public partial class FormAppointment : Form
 
     public FormAppointment(UnifiedApptData appt)
     {
-        InitializeComponent();
-        dateTimeSetup(appt);
+        var start = appt.start;
+        var end = appt.end;
 
+        InitializeComponent();
         switch (appt.inhomeservice)
         {
             case 1:
@@ -48,29 +49,34 @@ public partial class FormAppointment : Form
                 break;
         }
         UpdateTbs(appt);
+        startDtPicker.Value = start;
+        endDtPicker.Value = end;
     }
 
     private void dateTimeSetup(UnifiedApptData? appt)
     {
+        var dbgStart = startDtPicker.Value.ToString();
+        var dbgEnd = endDtPicker.Value.ToString();
+
         if (appt == null)
         {
-            startDtPicker.Format = DateTimePickerFormat.Time;
-            endDtPicker.Format = DateTimePickerFormat.Time;
             startDtPicker.Value = _defaultStart;
             endDtPicker.Value = _defaultEnd;
+            MessageBox.Show(dbgStart, "NULL START");
+            MessageBox.Show(dbgEnd, "NULL END");
         }
         else
         {
-            startDtPicker.Format = DateTimePickerFormat.Time;
-            endDtPicker.Format = DateTimePickerFormat.Time;
             startDtPicker.Value = appt.start;
             endDtPicker.Value = appt.end;
+            MessageBox.Show(dbgStart, "START");
+            MessageBox.Show(dbgEnd, "END");
         }
     }
 
     public void UpdateTbs(UnifiedApptData appt)
     {
-        FillDt(appt);
+        dateTimeSetup(appt);
         FillCxFields(appt);
         FillStaffFields(appt);
         FillServiceFields(appt);
@@ -85,14 +91,6 @@ public partial class FormAppointment : Form
             Helpers.ReturnOffice(appt.office_id.ToString());
             populateOfficeTb();
         }
-    }
-
-    private void FillDt(UnifiedApptData appt)
-    {
-        apptIdTB.Text = appt.appointment_id.ToString();
-        dateCalendar.SetDate(appt.start.Date);
-        startDtPicker.Value = appt.start.ToLocalTime();
-        endDtPicker.Value = appt.end.ToLocalTime();
     }
 
     private void FillServiceFields(UnifiedApptData appt)

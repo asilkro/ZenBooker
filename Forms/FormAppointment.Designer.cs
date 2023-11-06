@@ -104,12 +104,12 @@
             startDtPicker.Checked = false;
             startDtPicker.CustomFormat = "H:mm tt";
             startDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            startDtPicker.Format = DateTimePickerFormat.Custom;
+            startDtPicker.Format = DateTimePickerFormat.Time;
             startDtPicker.Location = new Point(601, 203);
             startDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
             startDtPicker.Name = "startDtPicker";
             startDtPicker.ShowUpDown = true;
-            startDtPicker.Size = new Size(100, 29);
+            startDtPicker.Size = new Size(111, 29);
             startDtPicker.TabIndex = 8;
             // 
             // endDtPicker
@@ -117,12 +117,12 @@
             endDtPicker.Checked = false;
             endDtPicker.CustomFormat = "H:mm tt";
             endDtPicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            endDtPicker.Format = DateTimePickerFormat.Custom;
+            endDtPicker.Format = DateTimePickerFormat.Time;
             endDtPicker.Location = new Point(601, 233);
             endDtPicker.MinDate = new DateTime(2023, 10, 1, 0, 0, 0, 0);
             endDtPicker.Name = "endDtPicker";
             endDtPicker.ShowUpDown = true;
-            endDtPicker.Size = new Size(100, 29);
+            endDtPicker.Size = new Size(111, 29);
             endDtPicker.TabIndex = 9;
             // 
             // cxSearchTB
