@@ -25,14 +25,11 @@ public class Helpers
             new QueryField("password", HashedString(password))
         };
         var existing = connection.Exists("user", fields);
-        if (existing)
-        {
-            result = true;
-            connection.Close();
-            return result;
-        }
-
+        if (!existing) return result;
+        result = true;
+        connection.Close();
         return result;
+
     }
     public static string HashedString(string input)
     {
@@ -41,9 +38,9 @@ public class Helpers
 
 
         StringBuilder builder = new();
-        for (var i = 0; i < bytes.Length; i++)
+        foreach (var t in bytes)
         {
-            builder.Append(bytes[i].ToString("x2")); //format string to match format in DB; could be changed
+            builder.Append(t.ToString("x2")); //format string to match format in DB; could be changed
             //if updated formatting of the hashes in the DB is desired
         }
 
@@ -70,7 +67,7 @@ public class Helpers
                     var apptDataAdapter = new MySqlDataAdapter(apptSelectQuery, connection);
                     using (apptDataAdapter)
                     {
-                        var appointments = apptToDataTable(apptDataAdapter, out var appointmentsDataTable);
+                        var appointments = ApptToDataTable(apptDataAdapter, out var appointmentsDataTable);
                         addApptToRows(appointmentsDataTable, appointments);
                         dgv.DataSource = appointmentsDataTable;
                     }
@@ -81,8 +78,8 @@ public class Helpers
                     var cxDataAdapter = new MySqlDataAdapter(cxSelectQuery, connection);
                     using (cxDataAdapter)
                     {
-                        var customers = cxToDataTable(cxDataAdapter, out var customerDataTable);
-                        addCxToRows(customerDataTable, customers);
+                        var customers = CxToDataTable(cxDataAdapter, out var customerDataTable);
+                        AddCxToRows(customerDataTable, customers);
                         dgv.DataSource = customerDataTable;
                     }
                     break;
@@ -129,19 +126,17 @@ public class Helpers
                 { 
                     case "appointment":
                     {
-                        if (searchType == "datetime")
-                        { 
-                            sql = "SELECT * FROM appointment WHERE start like '@VALUE%' order by start;";
-                        }
-                        if (searchType == "integer")
+                        sql = searchType switch
                         {
-                            sql = "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;";
-                        }
+                            "datetime" => "SELECT * FROM appointment WHERE start like '@VALUE%' order by start;",
+                            "integer" => "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;",
+                            _ => sql
+                        };
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
                         {
-                            var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
+                            var appointments = ApptToDataTable(dataAdapter, out var appointmentsDataTable);
                             addApptToRows(appointmentsDataTable, appointments);
                             dgv.DataSource = appointmentsDataTable;
                         }
@@ -149,25 +144,20 @@ public class Helpers
                     }
                     case "customer":
                     {
-                        if (searchType == "email")
+                        sql = searchType switch
                         {
-                            sql = "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;";
-                        }
-                        if (searchType == "integer")
-                        {
-                            sql = "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;";
-                        }
-                        if (searchType == "name")
-                        {
-                            sql =
-                                "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';";
-                        }
+                            "email" => "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;",
+                            "integer" => "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;",
+                            "name" =>
+                                "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';",
+                            _ => sql
+                        };
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
                         {
-                            var customers = cxToDataTable(dataAdapter, out var customerDataTable);
-                            addCxToRows(customerDataTable, customers);
+                            var customers = CxToDataTable(dataAdapter, out var customerDataTable);
+                            AddCxToRows(customerDataTable, customers);
                             dgv.DataSource = customerDataTable;
                         }
 
@@ -175,14 +165,12 @@ public class Helpers
                     }
                     case "service":
                     {
-                        if (searchType == "name")
+                        sql = searchType switch
                         {
-                            sql = "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;";
-                        }
-                        if (searchType == "integer")
-                        {
-                            sql = "SELECT * FROM service WHERE service_id LIKE '@VALUE';";
-                        }
+                            "name" => "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;",
+                            "integer" => "SELECT * FROM service WHERE service_id LIKE '@VALUE';",
+                            _ => sql
+                        };
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
@@ -195,15 +183,13 @@ public class Helpers
                         break;
                     }
                     case "staff":
-                        if (searchType == "email")
+                        sql = searchType switch
                         {
-                            sql = "SELECT * FROM staff WHERE email like '@VALUE%';";
-                        }
+                            "email" => "SELECT * FROM staff WHERE email like '@VALUE%';",
+                            "name" => "SELECT * FROM 'staff' WHERE name like '@VALUE%';",
+                            _ => sql
+                        };
 
-                        if (searchType == "name")
-                        {
-                            sql = "SELECT * FROM 'staff' WHERE name like '@VALUE%';";
-                        }
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
@@ -217,7 +203,7 @@ public class Helpers
             }
         }
     }
-    public static void GenerateApptReportInDGV(DataGridView dgv, string reportParams)
+    public static void GenerateApptReportInDgv(DataGridView dgv, string reportParams)
     {
         {
             var connection = Builder.SmartConnect(connection: new Builder().Connect());
@@ -256,7 +242,7 @@ public class Helpers
             var apptDataAdapter = new MySqlDataAdapter(selectQuery, connection);
             using (apptDataAdapter)
             {
-                var appointments = apptToDataTable(apptDataAdapter, out var appointmentsDataTable);
+                var appointments = ApptToDataTable(apptDataAdapter, out var appointmentsDataTable);
                 addApptToRows(appointmentsDataTable, appointments);
                 dgv.DataSource = appointmentsDataTable;
             }
@@ -264,7 +250,7 @@ public class Helpers
     }
     
 
-    private static List<UnifiedApptData> apptToDataTable(MySqlDataAdapter mySqlDataAdapter,
+    private static List<UnifiedApptData> ApptToDataTable(MySqlDataAdapter mySqlDataAdapter,
     out DataTable appointmentsDataTable1) 
     {
     var list = new List<UnifiedApptData>();
@@ -281,25 +267,22 @@ public class Helpers
     mySqlDataAdapter.Fill(appointmentsDataTable1);
     return list;
 } 
-    private static void addCxToRows(DataTable customerDataTable, List<Customer> customers)
-{
-    foreach (DataRow row in customerDataTable.Rows)
+    private static void AddCxToRows(DataTable customerDataTable, List<Customer> customers)
     {
-        var cx = new Customer
-        {
-            customer_id = (int)row["Customer_Id"],
-            first = row["First"].ToString(),
-            last = row["Last"].ToString(),
-            phone = row["Phone"].ToString(),
-            email = row["Email"].ToString(),
-            preferred_office = Convert.IsDBNull(row["Preferred_Office"])
-                ? 1
-                : (int)row["Preferred_Office"]
-        };
-        customers.Add(cx);
-    }
-} 
-    private static List<Customer> cxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
+        customers.AddRange(from DataRow row in customerDataTable.Rows
+            select new Customer
+            {
+                customer_id = (int) row["Customer_Id"],
+                first = row["First"].ToString(),
+                last = row["Last"].ToString(),
+                phone = row["Phone"].ToString(),
+                email = row["Email"].ToString(),
+                preferred_office = Convert.IsDBNull(row["Preferred_Office"])
+                    ? 1
+                    : (int) row["Preferred_Office"]
+            });
+    } 
+    private static List<Customer> CxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
 {
     List<Customer> customers = new();
     customerDataTable = new DataTable();
@@ -414,13 +397,10 @@ public class Helpers
             return result; // If it has an @ sign, treat as an email address
         }
 
-        if (valueToCheck.Contains(space))
-        {
-            result = "name";
-            return result; // If it has a whitespace, treat as a name
-        }
+        if (!valueToCheck.Contains(space)) return result;
+        result = "name";
+        return result; // If it has a whitespace, treat as a name
 
-        return result;
     }
     public static Address MakeAddress(string address1, string address2, string city, string state, string country)
     {
@@ -450,11 +430,7 @@ public class Helpers
                 break;
         }
 
-        if (buttonPressed == "Yes")
-        {
-            return true;
-        }
-        return false;
+        return buttonPressed == "Yes";
     }
 
     public static string GetFromInputBox(string prompt, string title)
@@ -467,13 +443,10 @@ public class Helpers
         try
         {
             var result = DateTime.TryParseExact(input,"YYYY-MM-DD", default, DateTimeStyles.None, out _);
-            if (!result)
-            {
-                MessageBox.Show("Check your formatting: YYYY-MM-DD is required", "Invalid formatting.");
-                return "error";
-            }
-            
-            return input;
+            if (result) return input;
+            MessageBox.Show("Check your formatting: YYYY-MM-DD is required", "Invalid formatting.");
+            return "error";
+
         }
         catch (Exception e)
         {
@@ -913,7 +886,7 @@ public class Helpers
         try
         {
             var deletedCount = connection.Delete("address", addressId);
-            MessageBox.Show("Address id " + addressId + " removed.", "Address Removed");
+            MessageBox.Show(deletedCount + " address with Address id " + addressId + " removed.", "Address Removed");
             return true;
         }
         catch (Exception e)
@@ -929,7 +902,7 @@ public class Helpers
         {
             {
                 var result = connection.Update("address", address);
-                MessageBox.Show("Address id " + address.address_id + " updated.", "Address Updated");
+                MessageBox.Show(result + "address with Address id " + address.address_id + " updated.", "Address Updated");
             }
             return true;
         }
@@ -1082,15 +1055,7 @@ public class Helpers
             cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
             cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
 
-            if (cmd.ExecuteNonQuery() == 1)
-            {
-                success = true;
-
-            }
-            else
-            {
-                success = false;
-            }
+            success = cmd.ExecuteNonQuery() == 1;
             return success;
         }
     }
@@ -1146,7 +1111,7 @@ public class Helpers
             customer_id = appt.customer_id,
             staff_id = appt.staff_id,
             office_id = 1, // Home appt has no office ID but
-                           // needs a value due to constraints
+                           // needs a value due to normalization constraints
             service_id = appt.service_id,
             start = appt.start,
             end = appt.end,

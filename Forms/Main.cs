@@ -137,27 +137,27 @@ public partial class Main : Form
             "Enter a date to search");
         if (searchParams != "error")
         {
-            Helpers.GenerateApptReportInDGV(apptsDataGridView, searchParams);
+            Helpers.GenerateApptReportInDgv(apptsDataGridView, searchParams);
         }
     }
 
     private void todayApptsBtn_Click(object sender, EventArgs e)
     {
-        Helpers.GenerateApptReportInDGV(apptsDataGridView, "today");
+        Helpers.GenerateApptReportInDgv(apptsDataGridView, "today");
     }
 
     private void tomorrowApptsBtn_Click(object sender, EventArgs e)
     {
-        Helpers.GenerateApptReportInDGV(apptsDataGridView, "tomorrow");
+        Helpers.GenerateApptReportInDgv(apptsDataGridView, "tomorrow");
     }
 
     private void weekApptsBtn_Click(object sender, EventArgs e)
     {
-        Helpers.GenerateApptReportInDGV(apptsDataGridView, "week");
+        Helpers.GenerateApptReportInDgv(apptsDataGridView, "week");
     }
 
     private void monthApptsBtn_Click(object sender, EventArgs e)
     {
-        Helpers.GenerateApptReportInDGV(apptsDataGridView, "month");
+        Helpers.GenerateApptReportInDgv(apptsDataGridView, "month");
     }
 }
