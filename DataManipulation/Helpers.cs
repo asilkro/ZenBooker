@@ -6,12 +6,21 @@ using log4net;
 using Microsoft.VisualBasic;
 using MySqlConnector;
 using RepoDb;
+using Windows.ApplicationModel.Appointments;
 using ZenoBook.Classes;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace ZenoBook.DataManipulation;
 
 public class Helpers
 {
+    #region Constants
+    private const char space = ' ';
+    private const char atSign = '@';
+    private const char slash = '/';
+    private const char dash = '-';
+    #endregion
+    
     #region Login Related
     public static bool ValidateLogin(string login, string password)
     {
@@ -63,7 +72,7 @@ public class Helpers
             {
                 case "appointment":
                     var apptSelectQuery = "SELECT * FROM " + tableName +
-                                          " WHERE start >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 DAY) ORDER BY start LIMIT 200;";
+                                          " WHERE start >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 3 DAY) ORDER BY start LIMIT 200;"; //within 3 days as default
                     var apptDataAdapter = new MySqlDataAdapter(apptSelectQuery, connection);
                     using (apptDataAdapter)
                     {
@@ -128,7 +137,7 @@ public class Helpers
                     {
                         sql = searchType switch
                         {
-                            "datetime" => "SELECT * FROM appointment WHERE start like '@VALUE%' order by start;",
+                            "datetime" => "SELECT * FROM appointment WHERE DATE(start) like '%@VALUE%' order by start;",
                             "integer" => "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;",
                             _ => sql
                         };
@@ -374,12 +383,12 @@ public class Helpers
 
     public static string WhatIsThisThing(string valueToCheck)
     {
-        const char space = ' ';
-        const char atSign = '@';
+        var containsSlash = valueToCheck.Contains(slash);
+        var containsDash = valueToCheck.Contains(dash);
+
         var result = "default";
 
-
-        if (DateTime.TryParse(valueToCheck, out _))
+        if (containsDash || containsSlash)
         {
             result = "datetime";
             return result; // If it parses as a date, treat as date
