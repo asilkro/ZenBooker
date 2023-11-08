@@ -30,7 +30,7 @@ namespace ZenoBook.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAppointment));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(FormAppointment));
             startDtPicker = new DateTimePicker();
             endDtPicker = new DateTimePicker();
             saveBtn = new Button();

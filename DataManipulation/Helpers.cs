@@ -234,8 +234,8 @@ public class Helpers
 
                 default: // Easiest way to capture specific date
                     selectQuery =
-                        "SELECT * FROM appointment WHERE DATE(start) like '@SEARCHVALUE' ORDER BY start, inhomeservice;";
-                    selectQuery.Replace("@SEARCHVALUE", reportParams);
+                        "SELECT * FROM appointment WHERE DATE(start) like '@SEARCHVALUE%' ORDER BY start, inhomeservice;";
+                    selectQuery = selectQuery.Replace("@SEARCHVALUE", reportParams);
                     break;
             }
 
@@ -437,24 +437,10 @@ public class Helpers
     {
         var input = Interaction.InputBox(prompt,
             title,
-            null,
+            null!,
             0,
             0);
-        try
-        {
-            var result = DateTime.TryParseExact(input,"YYYY-MM-DD", default, DateTimeStyles.None, out _);
-            if (result) return input;
-            MessageBox.Show("Check your formatting: YYYY-MM-DD is required", "Invalid formatting.");
-            return "error";
-
-        }
-        catch (Exception e)
-        {
-            LogManager.GetLogger("LoggingRepo").Warn(e, e);
-            {
-                return "error";
-            }
-        }
+        return input;
     }
 
     #region SQL - Misc
@@ -915,18 +901,18 @@ public class Helpers
     #endregion
 
     #region SQL - Appt
-    public static UnifiedApptData? GetAppointment(int apptId)
+    public static UnifiedApptData? GetAppointment(int apptId, out UnifiedApptData? appt)
     {
+        appt = null;
         using var connection = new Builder().Connect();
         try
         {
-            {
                 if (connection.State != ConnectionState.Open)
                 {
                     connection.Open();
                 }
 
-                Field.Parse<UnifiedApptData>(e => new
+                var fields = Field.Parse<UnifiedApptData>(e => new
                 {
                     e.appointment_id,
                     e.customer_id,
@@ -938,13 +924,10 @@ public class Helpers
                     e.inhomeservice,
                     e.service_address_id
                 });
-                var appt = connection
-                    .ExecuteQuery<UnifiedApptData>(
-                        "SELECT * FROM appointment WHERE (appointment_id = @appointment_id);",
-                        new { appointment_id = apptId }).FirstOrDefault();
-                connection.Close();
+                var sql = "SELECT * FROM appointment WHERE appointment_id = @appt_id";
+                sql = sql.Replace("@appt_id", apptId.ToString());
+                appt = connection.ExecuteQuery<UnifiedApptData>(sql).FirstOrDefault();
                 return appt;
-            }
         }
         catch (Exception e)
         {
@@ -952,6 +935,7 @@ public class Helpers
             return null;
         }
     }
+
     public static bool ApptExists(UnifiedApptData appt)
     {
         using var connection = new Builder().Connect();
@@ -1024,8 +1008,8 @@ public class Helpers
         try
         {
             {
-                var apptId = connection.Update(entity:appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
-                MessageBox.Show("Appointment with Id: " + appt.appointment_id + " updated.", "Appointment Updated");
+                var count = connection.Update(entity:appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
+                MessageBox.Show(count + " appointment with Id: " + appt.appointment_id + " updated.", "Appointment Updated");
             }
             return true;
         }
@@ -1042,7 +1026,6 @@ public class Helpers
         var connection = Builder.SmartConnect(new Builder().Connect());
         using (connection)
         {
-            var success = false;
             var cmd = new MySqlCommand("", connection);
             cmd.CommandText = "INSERT INTO appointment (`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " +
                               "VALUES (@cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
@@ -1055,7 +1038,7 @@ public class Helpers
             cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
             cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
 
-            success = cmd.ExecuteNonQuery() == 1;
+            var success = cmd.ExecuteNonQuery() == 1;
             return success;
         }
     }
@@ -1066,7 +1049,6 @@ public class Helpers
         var connection = Builder.SmartConnect(new Builder().Connect());
         using (connection)
         {
-            var success = false;
             var cmd = new MySqlCommand("", connection);
             cmd.CommandText = "UPDATE appointment SET customer_id=@cxId, staff_id=@staffId, office_id=@officeId, service_id=@svcId, start=@start, end=@end, inhomeservice=@inhomesvc, service_address_id=@svcAddressId WHERE appointment_id=@apptId";
             cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
@@ -1079,17 +1061,7 @@ public class Helpers
             cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
             cmd.Parameters.AddWithValue("@apptId", appt.appointment_id);
 
-            if (cmd.ExecuteNonQuery() == 1)
-            {
-                success = true;
-                MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
-
-            }
-            else
-            {
-                success = false;
-                MessageBox.Show("Did not work", "DEBUG: FAILURE");
-            }
+            var success = cmd.ExecuteNonQuery() == 1;
             return success;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using log4net;
+using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -24,8 +25,8 @@ public partial class FormAppointment : Form
     {
         var start = appt.start;
         var end = appt.end;
-
         InitializeComponent();
+        MessageBox.Show(appt.appointment_id + " is the appointment Id");
         switch (appt.inhomeservice)
         {
             case 1:
@@ -49,6 +50,15 @@ public partial class FormAppointment : Form
         UpdateTbs(appt);
         startDtPicker.Value = start;
         endDtPicker.Value = end;
+        switch (apptIdTB.Text.IsNullOrEmpty())
+        {
+            case true:
+                apptIdTB.Text = Helpers.AutoIncrementId("appointment");
+                break;
+            case false:
+                apptIdTB.Text = appt.appointment_id.ToString();
+                break;
+        }
     }
 
     private void DateTimeSetup(UnifiedApptData? appt)
@@ -72,6 +82,7 @@ public partial class FormAppointment : Form
         FillCxFields(appt);
         FillStaffFields(appt);
         FillServiceFields(appt);
+
         if (homeRadioBtn.Checked)
         {
             Helpers.ReturnAddress(appt.service_address_id.ToString());
@@ -83,6 +94,8 @@ public partial class FormAppointment : Form
             Helpers.ReturnOffice(appt.office_id.ToString());
             populateOfficeTb();
         }
+
+        SetApptId(appt);
     }
 
     private void FillServiceFields(UnifiedApptData appt)
@@ -91,6 +104,11 @@ public partial class FormAppointment : Form
         serviceIdTB.Text = appt.service_id.ToString();
         serviceNameTb.Text = service?.service_name;
         serviceDescTb.Text = service?.service_description;
+    }
+
+    private void SetApptId(UnifiedApptData appt)
+    {
+        apptIdTB.Text = appt.appointment_id.ToString();
     }
 
     private void FillStaffFields(UnifiedApptData appt)
@@ -104,7 +122,7 @@ public partial class FormAppointment : Form
     {
         var cx = Helpers.ReturnCustomer(appt.customer_id.ToString());
         cxIdTB.Text = appt.customer_id.ToString();
-        var v = cx?.first + cx?.last;
+        var v = cx?.first + " " + cx?.last;
         cxNameTb.Text = v;
         cxEmailTB.Text = cx?.email;
         cxPhoneTB.Text = cx?.phone;
