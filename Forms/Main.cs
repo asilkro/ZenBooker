@@ -125,4 +125,39 @@ public partial class Main : Form
         var adminForm = new Admin();
         adminForm.ShowDialog();
     }
+
+    #region Reporting
+
+
+
+    #endregion
+    private void allApptsBtn_Click(object sender, EventArgs e)
+    {
+        var searchParams = Helpers.GetFromInputBox("Enter a date to view just those results: YYYY-MM-DD format",
+            "Enter a date to search");
+        if (searchParams != "error")
+        {
+            Helpers.GenerateApptReportInDGV(apptsDataGridView, searchParams);
+        }
+    }
+
+    private void todayApptsBtn_Click(object sender, EventArgs e)
+    {
+        Helpers.GenerateApptReportInDGV(apptsDataGridView, "today");
+    }
+
+    private void tomorrowApptsBtn_Click(object sender, EventArgs e)
+    {
+        Helpers.GenerateApptReportInDGV(apptsDataGridView, "tomorrow");
+    }
+
+    private void weekApptsBtn_Click(object sender, EventArgs e)
+    {
+        Helpers.GenerateApptReportInDGV(apptsDataGridView, "week");
+    }
+
+    private void monthApptsBtn_Click(object sender, EventArgs e)
+    {
+        Helpers.GenerateApptReportInDGV(apptsDataGridView, "month");
+    }
 }

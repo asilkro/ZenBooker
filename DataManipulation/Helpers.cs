@@ -1,7 +1,9 @@
 ﻿using System.Data;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using log4net;
+using Microsoft.VisualBasic;
 using MySqlConnector;
 using RepoDb;
 using ZenoBook.Classes;
@@ -109,7 +111,6 @@ public class Helpers
             }
         }
     }
-
     public static void SearchDgv(DataGridView dgv, string tableName, string searchQuery)
     {
         {
@@ -261,6 +262,53 @@ public class Helpers
             }
         }
     }
+    public static void GenerateApptReportInDGV(DataGridView dgv, string reportParams)
+    {
+        {
+            var connection = Builder.SmartConnect(connection: new Builder().Connect());
+            var selectQuery = "";
+            switch (reportParams)
+            {
+
+                case "all":
+                    selectQuery =
+                        "SELECT * FROM appointment ORDER BY start, inhomeservice;"; // Would limit results if this was default behavior
+                    break;
+                case "today":
+                    selectQuery =
+                        "SELECT * FROM appointment WHERE DATE(start) = CURDATE() ORDER BY start, inhomeservice;";
+                    break;
+                case "tomorrow":
+                    selectQuery =
+                        "SELECT * FROM appointment WHERE DATE(start) = DATE_ADD(CURDATE(), interval 1 day) ORDER BY start, inhomeservice;";
+                    break;
+                case "week":
+                    selectQuery =
+                        "SELECT * FROM appointment WHERE YEARWEEK(start, 1) = YEARWEEK(CURDATE(), 1) ORDER BY start, inhomeservice;";
+                    break;
+                case "month":
+                    selectQuery =
+                        "SELECT * FROM appointment WHERE MONTH(start) = MONTH(CURDATE()) ORDER BY start, inhomeservice;";
+                    break;
+
+                default: // Easiest way to capture specific date
+                    selectQuery =
+                        "SELECT * FROM appointment WHERE DATE(start) like '@SEARCHVALUE' ORDER BY start, inhomeservice;";
+                    selectQuery.Replace("@SEARCHVALUE", reportParams);
+                    break;
+            }
+
+            var apptDataAdapter = new MySqlDataAdapter(selectQuery, connection);
+            using (apptDataAdapter)
+            {
+                var appointments = apptToDataTable(apptDataAdapter, out var appointmentsDataTable);
+                addApptToRows(appointmentsDataTable, appointments);
+                dgv.DataSource = appointmentsDataTable;
+            }
+        }
+    }
+    
+
     private static List<UnifiedApptData> apptToDataTable(MySqlDataAdapter mySqlDataAdapter,
     out DataTable appointmentsDataTable1) 
     {
@@ -432,75 +480,6 @@ public class Helpers
         return tempAddy;
     }
 
-    public static bool RawAppointmentInsert(UnifiedApptData appt)
-    {
-        
-        var connection = Builder.SmartConnect(new Builder().Connect());
-        using(connection)
-        {
-            var success = false;
-            var cmd = new MySqlCommand("",connection);
-            //cmd.CommandText = cmd.CommandText = "INSERT INTO appointment (`appointment_id`,`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " + "VALUES (<{ appointment_id: }>, @cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
-            cmd.CommandText = "INSERT INTO appointment (`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " +
-                              "VALUES (@cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
-            cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
-            cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
-            cmd.Parameters.AddWithValue("@officeId", appt.office_id);
-            cmd.Parameters.AddWithValue("@svcId", appt.service_id);
-            cmd.Parameters.AddWithValue("@start", appt.start.ToString("yyyy-MM-dd H:mm:ss"));
-            cmd.Parameters.AddWithValue("@end", appt.end.ToString("yyyy-MM-dd H:mm:ss"));
-            cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
-            cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
-
-            if (cmd.ExecuteNonQuery() == 1)
-            {
-                success = true;
-                MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
-                
-            }
-            else
-            {
-                success = false;
-                MessageBox.Show("Did not work", "DEBUG: FAILURE");
-            }
-            return success;
-        }
-    }
-
-    public static bool RawAppointmentUpdate(UnifiedApptData appt)
-    {
-
-        var connection = Builder.SmartConnect(new Builder().Connect());
-        using (connection)
-        {
-            var success = false;
-            var cmd = new MySqlCommand("", connection);
-            cmd.CommandText = "UPDATE appointment SET customer_id=@cxId, staff_id=@staffId, office_id=@officeId, service_id=@svcId, start=@start, end=@end, inhomeservice=@inhomesvc, service_address_id=@svcAddressId WHERE appointment_id=@apptId";
-            cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
-            cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
-            cmd.Parameters.AddWithValue("@officeId", appt.office_id);
-            cmd.Parameters.AddWithValue("@svcId", appt.service_id);
-            cmd.Parameters.AddWithValue("@start", appt.start.ToString("yyyy-MM-dd H:mm:ss"));
-            cmd.Parameters.AddWithValue("@end", appt.end.ToString("yyyy-MM-dd H:mm:ss"));
-            cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
-            cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
-            cmd.Parameters.AddWithValue("@apptId", appt.appointment_id);
-
-            if (cmd.ExecuteNonQuery() == 1)
-            {
-                success = true;
-                MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
-
-            }
-            else
-            {
-                success = false;
-                MessageBox.Show("Did not work", "DEBUG: FAILURE");
-            }
-            return success;
-        }
-    }
-
     public static bool ConfirmedAction()
     {
         var buttonPressed = "No";
@@ -521,6 +500,33 @@ public class Helpers
             return true;
         }
         return false;
+    }
+
+    public static string GetFromInputBox(string prompt, string title)
+    {
+        var input = Interaction.InputBox(prompt,
+            title,
+            null,
+            0,
+            0);
+        try
+        {
+            var result = DateTime.TryParseExact(input,"YYYY-MM-DD", default, DateTimeStyles.None, out _);
+            if (!result)
+            {
+                MessageBox.Show("Check your formatting: YYYY-MM-DD is required", "Invalid formatting.");
+                return "error";
+            }
+            
+            return input;
+        }
+        catch (Exception e)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, e);
+            {
+                return "error";
+            }
+        }
     }
 
     #region SQL - Misc
@@ -1101,6 +1107,73 @@ public class Helpers
             return false;
         }
     }
+
+    public static bool RawAppointmentInsert(UnifiedApptData appt)
+    {
+
+        var connection = Builder.SmartConnect(new Builder().Connect());
+        using (connection)
+        {
+            var success = false;
+            var cmd = new MySqlCommand("", connection);
+            cmd.CommandText = "INSERT INTO appointment (`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " +
+                              "VALUES (@cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
+            cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
+            cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
+            cmd.Parameters.AddWithValue("@officeId", appt.office_id);
+            cmd.Parameters.AddWithValue("@svcId", appt.service_id);
+            cmd.Parameters.AddWithValue("@start", appt.start.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", appt.end.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
+            cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
+
+            if (cmd.ExecuteNonQuery() == 1)
+            {
+                success = true;
+
+            }
+            else
+            {
+                success = false;
+            }
+            return success;
+        }
+    }
+
+    public static bool RawAppointmentUpdate(UnifiedApptData appt)
+    {
+
+        var connection = Builder.SmartConnect(new Builder().Connect());
+        using (connection)
+        {
+            var success = false;
+            var cmd = new MySqlCommand("", connection);
+            cmd.CommandText = "UPDATE appointment SET customer_id=@cxId, staff_id=@staffId, office_id=@officeId, service_id=@svcId, start=@start, end=@end, inhomeservice=@inhomesvc, service_address_id=@svcAddressId WHERE appointment_id=@apptId";
+            cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
+            cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
+            cmd.Parameters.AddWithValue("@officeId", appt.office_id);
+            cmd.Parameters.AddWithValue("@svcId", appt.service_id);
+            cmd.Parameters.AddWithValue("@start", appt.start.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@end", appt.end.ToString("yyyy-MM-dd H:mm:ss"));
+            cmd.Parameters.AddWithValue("@inhomesvc", appt.inhomeservice);
+            cmd.Parameters.AddWithValue("@svcAddressId", appt.service_address_id);
+            cmd.Parameters.AddWithValue("@apptId", appt.appointment_id);
+
+            if (cmd.ExecuteNonQuery() == 1)
+            {
+                success = true;
+                MessageBox.Show("Should have worked?", "DEBUG: SUCCESS");
+
+            }
+            else
+            {
+                success = false;
+                MessageBox.Show("Did not work", "DEBUG: FAILURE");
+            }
+            return success;
+        }
+    }
+
     #endregion
 
     #region Conversions

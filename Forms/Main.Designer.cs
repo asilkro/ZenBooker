@@ -30,7 +30,7 @@ namespace ZenoBook.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(Main));
             logoutBtn = new Button();
             CxLabel = new Label();
             CreateCxBtn = new Button();
@@ -47,9 +47,14 @@ namespace ZenoBook.Forms
             apptSearchTB = new TextBox();
             apptSearchBtn = new Button();
             cxSearchBtn = new Button();
-            ((System.ComponentModel.ISupportInitialize)Logo).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)apptsDataGridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cxDataGridView).BeginInit();
+            otherBtn = new Button();
+            todayApptsBtn = new Button();
+            tomorrowApptsBtn = new Button();
+            weekApptsBtn = new Button();
+            monthApptsBtn = new Button();
+            ((ISupportInitialize)Logo).BeginInit();
+            ((ISupportInitialize)apptsDataGridView).BeginInit();
+            ((ISupportInitialize)cxDataGridView).BeginInit();
             SuspendLayout();
             // 
             // logoutBtn
@@ -74,7 +79,7 @@ namespace ZenoBook.Forms
             // 
             // CreateCxBtn
             // 
-            CreateCxBtn.Location = new Point(351, 437);
+            CreateCxBtn.Location = new Point(266, 438);
             CreateCxBtn.Margin = new Padding(3, 2, 3, 2);
             CreateCxBtn.Name = "CreateCxBtn";
             CreateCxBtn.Size = new Size(82, 22);
@@ -85,7 +90,7 @@ namespace ZenoBook.Forms
             // 
             // UpdateCxBtn
             // 
-            UpdateCxBtn.Location = new Point(435, 437);
+            UpdateCxBtn.Location = new Point(350, 438);
             UpdateCxBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateCxBtn.Name = "UpdateCxBtn";
             UpdateCxBtn.Size = new Size(82, 22);
@@ -96,7 +101,7 @@ namespace ZenoBook.Forms
             // 
             // RemoveCxBtn
             // 
-            RemoveCxBtn.Location = new Point(520, 437);
+            RemoveCxBtn.Location = new Point(435, 438);
             RemoveCxBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveCxBtn.Name = "RemoveCxBtn";
             RemoveCxBtn.Size = new Size(82, 22);
@@ -107,7 +112,7 @@ namespace ZenoBook.Forms
             // 
             // RemoveApptBtn
             // 
-            RemoveApptBtn.Location = new Point(520, 209);
+            RemoveApptBtn.Location = new Point(435, 210);
             RemoveApptBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveApptBtn.Name = "RemoveApptBtn";
             RemoveApptBtn.Size = new Size(82, 22);
@@ -118,7 +123,7 @@ namespace ZenoBook.Forms
             // 
             // UpdateApptBtn
             // 
-            UpdateApptBtn.Location = new Point(435, 209);
+            UpdateApptBtn.Location = new Point(350, 210);
             UpdateApptBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateApptBtn.Name = "UpdateApptBtn";
             UpdateApptBtn.Size = new Size(82, 22);
@@ -129,7 +134,7 @@ namespace ZenoBook.Forms
             // 
             // CreateApptBtn
             // 
-            CreateApptBtn.Location = new Point(351, 209);
+            CreateApptBtn.Location = new Point(266, 210);
             CreateApptBtn.Margin = new Padding(3, 2, 3, 2);
             CreateApptBtn.Name = "CreateApptBtn";
             CreateApptBtn.Size = new Size(82, 22);
@@ -151,10 +156,10 @@ namespace ZenoBook.Forms
             // Logo
             // 
             Logo.Image = Properties.Resources.Zenobia_Transparent;
-            Logo.Location = new Point(647, 11);
+            Logo.Location = new Point(684, 0);
             Logo.Margin = new Padding(3, 2, 3, 2);
             Logo.Name = "Logo";
-            Logo.Size = new Size(129, 112);
+            Logo.Size = new Size(100, 100);
             Logo.SizeMode = PictureBoxSizeMode.StretchImage;
             Logo.TabIndex = 10;
             Logo.TabStop = false;
@@ -174,7 +179,7 @@ namespace ZenoBook.Forms
             apptsDataGridView.RowTemplate.Height = 29;
             apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             apptsDataGridView.ShowEditingIcon = false;
-            apptsDataGridView.Size = new Size(570, 141);
+            apptsDataGridView.Size = new Size(485, 141);
             apptsDataGridView.TabIndex = 11;
             // 
             // cxDataGridView
@@ -191,7 +196,7 @@ namespace ZenoBook.Forms
             cxDataGridView.RowTemplate.Height = 29;
             cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             cxDataGridView.ShowCellErrors = false;
-            cxDataGridView.Size = new Size(570, 141);
+            cxDataGridView.Size = new Size(485, 141);
             cxDataGridView.TabIndex = 12;
             // 
             // cxSearchTB
@@ -236,12 +241,67 @@ namespace ZenoBook.Forms
             cxSearchBtn.UseVisualStyleBackColor = true;
             cxSearchBtn.Click += cxSearchBtn_Click;
             // 
+            // otherBtn
+            // 
+            otherBtn.Location = new Point(523, 181);
+            otherBtn.Name = "otherBtn";
+            otherBtn.Size = new Size(75, 51);
+            otherBtn.TabIndex = 17;
+            otherBtn.Text = "Specific Date";
+            otherBtn.UseVisualStyleBackColor = true;
+            otherBtn.Click += allApptsBtn_Click;
+            // 
+            // todayApptsBtn
+            // 
+            todayApptsBtn.Location = new Point(523, 65);
+            todayApptsBtn.Name = "todayApptsBtn";
+            todayApptsBtn.Size = new Size(75, 23);
+            todayApptsBtn.TabIndex = 18;
+            todayApptsBtn.Text = "Today";
+            todayApptsBtn.UseVisualStyleBackColor = true;
+            todayApptsBtn.Click += todayApptsBtn_Click;
+            // 
+            // tomorrowApptsBtn
+            // 
+            tomorrowApptsBtn.Location = new Point(523, 94);
+            tomorrowApptsBtn.Name = "tomorrowApptsBtn";
+            tomorrowApptsBtn.Size = new Size(75, 23);
+            tomorrowApptsBtn.TabIndex = 18;
+            tomorrowApptsBtn.Text = "Tomorrow";
+            tomorrowApptsBtn.UseVisualStyleBackColor = true;
+            tomorrowApptsBtn.Click += tomorrowApptsBtn_Click;
+            // 
+            // weekApptsBtn
+            // 
+            weekApptsBtn.Location = new Point(523, 123);
+            weekApptsBtn.Name = "weekApptsBtn";
+            weekApptsBtn.Size = new Size(75, 23);
+            weekApptsBtn.TabIndex = 18;
+            weekApptsBtn.Text = "This Week";
+            weekApptsBtn.UseVisualStyleBackColor = true;
+            weekApptsBtn.Click += weekApptsBtn_Click;
+            // 
+            // monthApptsBtn
+            // 
+            monthApptsBtn.Location = new Point(523, 152);
+            monthApptsBtn.Name = "monthApptsBtn";
+            monthApptsBtn.Size = new Size(75, 23);
+            monthApptsBtn.TabIndex = 19;
+            monthApptsBtn.Text = "This Month";
+            monthApptsBtn.UseVisualStyleBackColor = true;
+            monthApptsBtn.Click += monthApptsBtn_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = logoutBtn;
             ClientSize = new Size(784, 495);
+            Controls.Add(monthApptsBtn);
+            Controls.Add(weekApptsBtn);
+            Controls.Add(tomorrowApptsBtn);
+            Controls.Add(todayApptsBtn);
+            Controls.Add(otherBtn);
             Controls.Add(cxSearchBtn);
             Controls.Add(apptSearchBtn);
             Controls.Add(apptSearchTB);
@@ -261,9 +321,9 @@ namespace ZenoBook.Forms
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Main";
             Text = "ZTH - ZenoBook";
-            ((System.ComponentModel.ISupportInitialize)Logo).EndInit();
-            ((System.ComponentModel.ISupportInitialize)apptsDataGridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cxDataGridView).EndInit();
+            ((ISupportInitialize)Logo).EndInit();
+            ((ISupportInitialize)apptsDataGridView).EndInit();
+            ((ISupportInitialize)cxDataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -286,5 +346,10 @@ namespace ZenoBook.Forms
         private TextBox apptSearchTB;
         private Button apptSearchBtn;
         private Button cxSearchBtn;
+        private Button otherBtn;
+        private Button todayApptsBtn;
+        private Button tomorrowApptsBtn;
+        private Button weekApptsBtn;
+        private Button monthApptsBtn;
     }
 }
