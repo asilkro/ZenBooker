@@ -47,7 +47,7 @@ namespace ZenoBook.Forms
             exitBtn.TabIndex = 0;
             exitBtn.Text = "Exit";
             exitBtn.UseVisualStyleBackColor = true;
-            exitBtn.Click += exitBtn_Click;
+            exitBtn.Click += ExitBtn_Click;
             // 
             // loginBtn
             // 
@@ -57,7 +57,7 @@ namespace ZenoBook.Forms
             loginBtn.TabIndex = 1;
             loginBtn.Text = "Login";
             loginBtn.UseVisualStyleBackColor = true;
-            loginBtn.Click += loginBtn_Click;
+            loginBtn.Click += LoginBtn_Click;
             // 
             // logo
             // 

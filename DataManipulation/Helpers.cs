@@ -19,6 +19,8 @@ public class Helpers
     private const char atSign = '@';
     private const char slash = '/';
     private const char dash = '-';
+    private const char semicolon = ';';
+    private static readonly string _dropTable = "DROP table";
     #endregion
     
     #region Login Related
@@ -1124,5 +1126,19 @@ public class Helpers
 
         return convertedAppt;
     }
+    #endregion
+
+    #region Minimal Controls
+
+    public static bool NoProhibitedContent(string content)
+    {
+        var result = true;
+
+        if (!content.Contains(_dropTable) && !content.Contains(semicolon)) return result;
+        result = false;
+        MessageBox.Show("This entry is not permitted, please check your input and try again.", "Prohibited Operation");
+        return result;
+    }
+
     #endregion
 }

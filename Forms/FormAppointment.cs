@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using System.Net.Mime;
+using log4net;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
@@ -214,6 +215,11 @@ public partial class FormAppointment : Form
 
     private void saveAppointmentData()
     {
+        if (this.Controls.OfType<TextBox>().Any(tb => !Helpers.NoProhibitedContent(tb.Text)))
+        {
+            return;
+        }
+
         switch (homeRadioBtn.Checked)
         {
             case true:
@@ -417,27 +423,42 @@ public partial class FormAppointment : Form
 
     private void cxSearchButton_Click(object sender, EventArgs e)
     {
-        populateCxTb();
+        if (Helpers.NoProhibitedContent(cxSearchTB.Text))
+        {
+            populateCxTb();
+        }
     }
 
     private void staffSearchButton_Click(object sender, EventArgs e)
     {
-        populateStaffTb();
+        if (Helpers.NoProhibitedContent(staffSearchTB.Text))
+        {
+            populateStaffTb();
+        }
     }
 
     private void serviceSearchButton_Click(object sender, EventArgs e)
     {
-        populateServiceTb();
+        if (Helpers.NoProhibitedContent(serviceSearchTB.Text))
+        {
+            populateServiceTb();
+        }
     }
 
     private void officeSearchButton_Click(object sender, EventArgs e)
     {
-        populateOfficeTb();
+        if (Helpers.NoProhibitedContent(officeSearchTB.Text))
+        {
+            populateOfficeTb();
+        }
     }
 
     private void homeSearchBtn_Click(object sender, EventArgs e)
     {
-        populateAddressTb();
+        if (Helpers.NoProhibitedContent(saSearchTB.Text))
+        {
+            populateAddressTb();
+        }
     }
 
     private void saveBtn_Click(object sender, EventArgs e)

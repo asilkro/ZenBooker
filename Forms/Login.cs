@@ -7,10 +7,10 @@ public partial class Login : Form
     public Login()
     {
         InitializeComponent();
-        DebugLogin();
+        DebugLogin(); //TODO: REMOVE ME
     }
 
-    public void DebugLogin()
+    public void DebugLogin() //TODO: REMOVE ME
     {
         loginTB.Text = "DarthVader";
         pwTB.Text = "DeathStar77";
@@ -18,9 +18,10 @@ public partial class Login : Form
 
     #region Buttons
 
-    private void loginBtn_Click(object sender, EventArgs e)
+    private void LoginBtn_Click(object sender, EventArgs e)
     {
-        var result = loginResult();
+        if (!Helpers.NoProhibitedContent(loginTB.Text)) return;
+        var result = LoginResult();
         switch (result)
         {
             case true:
@@ -32,9 +33,10 @@ public partial class Login : Form
                 MessageBox.Show("The login failed, check your credentials and try again.", "Login failed");
                 break;
         }
+
     }
 
-    private bool loginResult()
+    private bool LoginResult()
     {
         using var connection = new Builder().Connect();
         var login = loginTB.Text;
@@ -43,7 +45,7 @@ public partial class Login : Form
         return result;
     }
 
-    private void exitBtn_Click(object sender, EventArgs e)
+    private void ExitBtn_Click(object sender, EventArgs e)
     {
         Application.Exit();
     }
