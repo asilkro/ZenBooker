@@ -123,79 +123,52 @@ public class Helpers
                     MessageBox.Show("Invalid search parameter.");
                     tableName = "discard";
                 }
-
+                var sql = "";
+                MySqlDataAdapter? dataAdapter;
                 switch (tableName)
-                {
+                { 
                     case "appointment":
                     {
                         if (searchType == "datetime")
-                        {
-                            var sql = "SELECT * FROM appointment WHERE start like '@VALUE%' order by start;";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
-                                addApptToRows(appointmentsDataTable, appointments);
-                                dgv.DataSource = appointmentsDataTable;
-                            }
+                        { 
+                            sql = "SELECT * FROM appointment WHERE start like '@VALUE%' order by start;";
                         }
-
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
-                                addApptToRows(appointmentsDataTable, appointments);
-                                dgv.DataSource = appointmentsDataTable;
-                            }
+                            sql = "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;";
                         }
-
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        dataAdapter = new MySqlDataAdapter(sql, connection);
+                        using (dataAdapter)
+                        {
+                            var appointments = apptToDataTable(dataAdapter, out var appointmentsDataTable);
+                            addApptToRows(appointmentsDataTable, appointments);
+                            dgv.DataSource = appointmentsDataTable;
+                        }
                         break;
                     }
                     case "customer":
                     {
                         if (searchType == "email")
                         {
-                            var sql = "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var customers = cxToDataTable(dataAdapter, out var customerDataTable);
-                                addCxToRows(customerDataTable, customers);
-                                dgv.DataSource = customerDataTable;
-                            }
+                            sql = "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;";
                         }
-
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var customers = cxToDataTable(dataAdapter, out var customerDataTable);
-                                addCxToRows(customerDataTable, customers);
-                                dgv.DataSource = customerDataTable;
-                            }
+                            sql = "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;";
                         }
-
                         if (searchType == "name")
                         {
-                            var sql =
+                            sql =
                                 "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                                using (dataAdapter)
-                            {
-                                var customers = cxToDataTable(dataAdapter, out var customerDataTable);
-                                addCxToRows(customerDataTable, customers);
-                                dgv.DataSource = customerDataTable;
-                            }
+                        }
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        dataAdapter = new MySqlDataAdapter(sql, connection);
+                        using (dataAdapter)
+                        {
+                            var customers = cxToDataTable(dataAdapter, out var customerDataTable);
+                            addCxToRows(customerDataTable, customers);
+                            dgv.DataSource = customerDataTable;
                         }
 
                         break;
@@ -204,28 +177,19 @@ public class Helpers
                     {
                         if (searchType == "name")
                         {
-                            var sql = "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
-                                addServiceToRows(serviceDataTable, services);
-                                dgv.DataSource = serviceDataTable;
-                            }
+                            sql = "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;";
                         }
-
                         if (searchType == "integer")
                         {
-                            var sql = "SELECT * FROM service WHERE service_id LIKE '@VALUE';";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
-                                addServiceToRows(serviceDataTable, services);
-                                dgv.DataSource = serviceDataTable;
-                            }
+                            sql = "SELECT * FROM service WHERE service_id LIKE '@VALUE';";
+                        }
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        dataAdapter = new MySqlDataAdapter(sql, connection);
+                        using (dataAdapter)
+                        {
+                            var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
+                            addServiceToRows(serviceDataTable, services);
+                            dgv.DataSource = serviceDataTable;
                         }
 
                         break;
@@ -233,30 +197,21 @@ public class Helpers
                     case "staff":
                         if (searchType == "email")
                         {
-                            var sql = "SELECT * FROM staff WHERE email like '@VALUE%';";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var staff = staffToDataTable(dataAdapter, out var staffDataTable);
-                                addStaffToRows(staffDataTable, staff);
-                                dgv.DataSource = staffDataTable;
-                            }
+                            sql = "SELECT * FROM staff WHERE email like '@VALUE%';";
                         }
 
                         if (searchType == "name")
                         {
-                            var sql = "SELECT * FROM 'staff' WHERE name like '@VALUE%';";
-                            sql = sql.Replace("@VALUE", searchQuery);
-                            var dataAdapter = new MySqlDataAdapter(sql, connection);
-                            using (dataAdapter)
-                            {
-                                var staff = staffToDataTable(dataAdapter, out var staffDataTable);
-                                addStaffToRows(staffDataTable, staff);
-                                dgv.DataSource = staffDataTable;
-                            }
+                            sql = "SELECT * FROM 'staff' WHERE name like '@VALUE%';";
                         }
-
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        dataAdapter = new MySqlDataAdapter(sql, connection);
+                        using (dataAdapter)
+                        {
+                            var staff = staffToDataTable(dataAdapter, out var staffDataTable);
+                            addStaffToRows(staffDataTable, staff);
+                            dgv.DataSource = staffDataTable;
+                        }
                         break;
                 }
             }
