@@ -44,15 +44,14 @@ public class Helpers
     }
     public static string HashedString(string input)
     {
-        using var sha256Hash = SHA256.Create();
-        var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
 
         StringBuilder builder = new();
         foreach (var t in bytes)
         {
-            builder.Append(t.ToString("x2")); //format string to match format in DB; could be changed
-            //if updated formatting of the hashes in the DB is desired
+            builder.Append(t.ToString("x2")); 
+            // Format string to match DB; could be changed in future
+            // if changes to the hashes in the DB is desired.
         }
 
         return builder.ToString();
@@ -79,7 +78,7 @@ public class Helpers
                     using (apptDataAdapter)
                     {
                         var appointments = ApptToDataTable(apptDataAdapter, out var appointmentsDataTable);
-                        addApptToRows(appointmentsDataTable, appointments);
+                        AddApptToRows(appointmentsDataTable, appointments);
                         dgv.DataSource = appointmentsDataTable;
                     }
                     break;
@@ -100,8 +99,8 @@ public class Helpers
                     var staffDataAdapter = new MySqlDataAdapter(staffSelectQuery, connection);
                     using (staffDataAdapter)
                     {
-                        var staff = staffToDataTable(staffDataAdapter, out var staffDataTable);
-                        addStaffToRows(staffDataTable, staff);
+                        var staff = StaffToDataTable(staffDataAdapter, out var staffDataTable);
+                        AddStaffToRows(staffDataTable, staff);
                         dgv.DataSource = staffDataTable;
                     }
                     break;
@@ -111,8 +110,8 @@ public class Helpers
                     var serviceDataAdapter = new MySqlDataAdapter(serviceSelectQuery, connection);
                     using (serviceDataAdapter)
                     {
-                        var services = serviceToDataTable(serviceDataAdapter, out var serviceDataTable);
-                        addServiceToRows(serviceDataTable, services);
+                        var services = ServiceToDataTable(serviceDataAdapter, out var serviceDataTable);
+                        AddServiceToRows(serviceDataTable, services);
                         dgv.DataSource = serviceDataTable;
                     }
                     break;
@@ -148,7 +147,7 @@ public class Helpers
                         using (dataAdapter)
                         {
                             var appointments = ApptToDataTable(dataAdapter, out var appointmentsDataTable);
-                            addApptToRows(appointmentsDataTable, appointments);
+                            AddApptToRows(appointmentsDataTable, appointments);
                             dgv.DataSource = appointmentsDataTable;
                         }
                         break;
@@ -186,8 +185,8 @@ public class Helpers
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
                         {
-                            var services = serviceToDataTable(dataAdapter, out var serviceDataTable);
-                            addServiceToRows(serviceDataTable, services);
+                            var services = ServiceToDataTable(dataAdapter, out var serviceDataTable);
+                            AddServiceToRows(serviceDataTable, services);
                             dgv.DataSource = serviceDataTable;
                         }
 
@@ -205,8 +204,8 @@ public class Helpers
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
                         {
-                            var staff = staffToDataTable(dataAdapter, out var staffDataTable);
-                            addStaffToRows(staffDataTable, staff);
+                            var staff = StaffToDataTable(dataAdapter, out var staffDataTable);
+                            AddStaffToRows(staffDataTable, staff);
                             dgv.DataSource = staffDataTable;
                         }
                         break;
@@ -254,7 +253,7 @@ public class Helpers
             using (apptDataAdapter)
             {
                 var appointments = ApptToDataTable(apptDataAdapter, out var appointmentsDataTable);
-                addApptToRows(appointmentsDataTable, appointments);
+                AddApptToRows(appointmentsDataTable, appointments);
                 dgv.DataSource = appointmentsDataTable;
             }
         }
@@ -280,18 +279,16 @@ public class Helpers
 } 
     private static void AddCxToRows(DataTable customerDataTable, List<Customer> customers)
     {
-        customers.AddRange(from DataRow row in customerDataTable.Rows
-            select new Customer
+        customers.AddRange(customerDataTable.Rows.Cast<DataRow>()
+            .Select(row => new Customer
             {
                 customer_id = (int) row["Customer_Id"],
-                first = row["First"].ToString(),
-                last = row["Last"].ToString(),
-                phone = row["Phone"].ToString(),
-                email = row["Email"].ToString(),
-                preferred_office = Convert.IsDBNull(row["Preferred_Office"])
-                    ? 1
-                    : (int) row["Preferred_Office"]
-            });
+                first = row["First"].ToString() ?? string.Empty,
+                last = row["Last"].ToString() ?? string.Empty,
+                phone = row["Phone"].ToString() ?? string.Empty,
+                email = row["Email"].ToString() ?? string.Empty,
+                preferred_office = Convert.IsDBNull(row["Preferred_Office"]) ? 1 : (int) row["Preferred_Office"]
+            }));
     } 
     private static List<Customer> CxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
 {
@@ -307,27 +304,23 @@ public class Helpers
     dataAdapter.Fill(customerDataTable);
     return customers;
 } 
-    private static void addApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
-{
-    foreach (DataRow row in dataTable.Rows)
+    private static void AddApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
     {
-        
-        var uApptData = new UnifiedApptData
-        {
-            appointment_id = (int)row["appointment_id"], // Set the correct property names
-            customer_id = (int)row["customer_id"],
-            staff_id = (int)row["staff_id"],
-            service_id = (int)row["service_id"],
-            start = (DateTime)row["start"],
-            end = (DateTime)row["end"],
-            office_id = (int)row["office_id"],
-            service_address_id = (int)row["service_address_id"],
-            inhomeservice = (sbyte)(int)row["inhomeservice"]
-        };
-        unifiedApptDatas.Add(uApptData);
+        unifiedApptDatas.AddRange(from DataRow row in dataTable.Rows
+            select new UnifiedApptData
+            {
+                appointment_id = (int) row["appointment_id"], // Set the correct property names
+                customer_id = (int) row["customer_id"],
+                staff_id = (int) row["staff_id"],
+                service_id = (int) row["service_id"],
+                start = (DateTime) row["start"],
+                end = (DateTime) row["end"],
+                office_id = (int) row["office_id"],
+                service_address_id = (int) row["service_address_id"],
+                inhomeservice = (sbyte) (int) row["inhomeservice"]
+            });
     }
-}
-    private static List<Staff> staffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
+    private static List<Staff> StaffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
 {
     var staffList = new List<Staff>();
     staffDataTable = new DataTable();
@@ -339,26 +332,23 @@ public class Helpers
     staffDataTable.Columns.Add("email", typeof(string));
     dataAdapter.Fill(staffDataTable);
 
-    addStaffToRows(staffDataTable, staffList);
+    AddStaffToRows(staffDataTable, staffList);
     return staffList;
 }
-    private static void addStaffToRows(DataTable staffDataTable, List<Staff> staffList)
-{
-    foreach (DataRow row in staffDataTable.Rows)
+    private static void AddStaffToRows(DataTable staffDataTable, List<Staff> staffList)
     {
-        var staff = new Staff
-        {
-            staff_id = (int) row["staff_id"],
-            user_id = (int) row["user_id"],
-            office_id = (int) row["office_id"],
-            name = row["name"].ToString(),
-            phone = row["phone"].ToString(),
-            email = row["email"].ToString()
-        };
-        staffList.Add(staff);
+        staffList.AddRange(staffDataTable.Rows.Cast<DataRow>()
+            .Select(row => new Staff
+            {
+                staff_id = (int) row["staff_id"],
+                user_id = (int) row["user_id"],
+                office_id = (int) row["office_id"],
+                name = row["name"].ToString() ?? string.Empty,
+                phone = row["phone"].ToString() ?? string.Empty,
+                email = row["email"].ToString() ?? string.Empty
+            }));
     }
-}
-    private static List<Service> serviceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
+    private static List<Service> ServiceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
 {
     var services = new List<Service>();
     serviceDataTable = new DataTable();
@@ -368,19 +358,16 @@ public class Helpers
     dataAdapter.Fill(serviceDataTable);
     return services;
 }
-    private static void addServiceToRows(DataTable serviceDataTable, List<Service> services)
-{
-    foreach (DataRow row in serviceDataTable.Rows)
+    private static void AddServiceToRows(DataTable serviceDataTable, List<Service> services)
     {
-        var svc = new Service
-        {
-            service_id = (int) row["service_id"],
-            service_name = row["service_name"].ToString(),
-            service_description = row["service_description"].ToString()
-        };
-        services.Add(svc);
+        services.AddRange(serviceDataTable.Rows.Cast<DataRow>()
+            .Select(row => new Service
+            {
+                service_id = (int) row["service_id"],
+                service_name = row["service_name"].ToString() ?? string.Empty,
+                service_description = row["service_description"].ToString() ?? string.Empty
+            }));
     }
-}
     #endregion
 
     public static string WhatIsThisThing(string valueToCheck)
@@ -438,6 +425,22 @@ public class Helpers
             case DialogResult.No:
                 buttonPressed = "No";
                 MessageBox.Show("Aborting action.");
+                break;
+            case DialogResult.None:
+                break;
+            case DialogResult.OK:
+                break;
+            case DialogResult.Cancel:
+                break;
+            case DialogResult.Abort:
+                break;
+            case DialogResult.Retry:
+                break;
+            case DialogResult.Ignore:
+                break;
+            case DialogResult.TryAgain:
+                break;
+            case DialogResult.Continue:
                 break;
         }
 
@@ -850,6 +853,10 @@ public class Helpers
     public static Address? ReturnAddress(string? searchTerm)
     {
         using var connection = new Builder().Connect();
+        if (searchTerm == null)
+        {
+            return null;
+        }
         if (int.TryParse(searchTerm, out var i))
         {
             var officeById = connection.Query<Address>("address", e => e.address_id == i).FirstOrDefault();
@@ -1037,9 +1044,11 @@ public class Helpers
         var connection = Builder.SmartConnect(new Builder().Connect());
         using (connection)
         {
-            var cmd = new MySqlCommand("", connection);
-            cmd.CommandText = "INSERT INTO appointment (`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " +
-                              "VALUES (@cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);";
+            var cmd = new MySqlCommand("", connection)
+            {
+                CommandText = "INSERT INTO appointment (`customer_id`,`staff_id`,`office_id`,`service_id`,`start`,`end`,`inhomeservice`,`service_address_id`) " +
+                              "VALUES (@cxId, @staffId, @officeId, @svcId, @start, @end, @inhomesvc, @svcAddressId);"
+            };
             cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
             cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
             cmd.Parameters.AddWithValue("@officeId", appt.office_id);
@@ -1060,8 +1069,10 @@ public class Helpers
         var connection = Builder.SmartConnect(new Builder().Connect());
         using (connection)
         {
-            var cmd = new MySqlCommand("", connection);
-            cmd.CommandText = "UPDATE appointment SET customer_id=@cxId, staff_id=@staffId, office_id=@officeId, service_id=@svcId, start=@start, end=@end, inhomeservice=@inhomesvc, service_address_id=@svcAddressId WHERE appointment_id=@apptId";
+            var cmd = new MySqlCommand("", connection)
+            {
+                CommandText = "UPDATE appointment SET customer_id=@cxId, staff_id=@staffId, office_id=@officeId, service_id=@svcId, start=@start, end=@end, inhomeservice=@inhomesvc, service_address_id=@svcAddressId WHERE appointment_id=@apptId"
+            };
             cmd.Parameters.AddWithValue("@cxId", appt.customer_id);
             cmd.Parameters.AddWithValue("@staffId", appt.staff_id);
             cmd.Parameters.AddWithValue("@officeId", appt.office_id);

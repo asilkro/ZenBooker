@@ -17,7 +17,7 @@ public partial class Main : Form
 
     #region Event Handlers
 
-    private void logoutBtn_Click(object sender, EventArgs e)
+    private void LogoutBtn_Click(object sender, EventArgs e)
     {
         var newLogin = new Login();
         newLogin.Show();
@@ -103,7 +103,7 @@ public partial class Main : Form
         }
     }
 
-    private void apptSearchBtn_Click(object sender, EventArgs e)
+    private void ApptSearchBtn_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(apptSearchTB.Text))
         {
@@ -111,7 +111,7 @@ public partial class Main : Form
         }
     }
 
-    private void cxSearchBtn_Click(object sender, EventArgs e)
+    private void CxSearchBtn_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(cxSearchTB.Text))
         {
@@ -128,30 +128,31 @@ public partial class Main : Form
 
     #region Reporting
 
-    private void todayApptsBtn_Click(object sender, EventArgs e)
+    private void TodayApptsBtn_Click(object sender, EventArgs e)
     {
         Helpers.GenerateApptReportInDgv(apptsDataGridView, "today");
     }
 
-    private void tomorrowApptsBtn_Click(object sender, EventArgs e)
+    private void TomorrowApptsBtn_Click(object sender, EventArgs e)
     {
         Helpers.GenerateApptReportInDgv(apptsDataGridView, "tomorrow");
     }
 
-    private void weekApptsBtn_Click(object sender, EventArgs e)
+    private void WeekApptsBtn_Click(object sender, EventArgs e)
     {
         Helpers.GenerateApptReportInDgv(apptsDataGridView, "week");
     }
 
-    private void monthApptsBtn_Click(object sender, EventArgs e)
+    private void MonthApptsBtn_Click(object sender, EventArgs e)
     {
         Helpers.GenerateApptReportInDgv(apptsDataGridView, "month");
     }
 
-    private void allApptsBtn_Click(object sender, EventArgs e)
+    private void AllApptsBtn_Click(object sender, EventArgs e)
     {
         var searchParams = Helpers.GetFromInputBox("Enter a date to view just those results: YYYY-MM-DD format",
             "Enter a date to search");
+        if (!Helpers.NoProhibitedContent(searchParams)) return;
         if (searchParams != "error")
         {
             Helpers.GenerateApptReportInDgv(apptsDataGridView, searchParams);

@@ -105,7 +105,7 @@ namespace ZenoBook.Forms
             saveBtn.TabIndex = 5;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // cancelBtn
             // 
@@ -144,7 +144,7 @@ namespace ZenoBook.Forms
             cxSearchButton.TabIndex = 15;
             cxSearchButton.Text = "Search";
             cxSearchButton.UseVisualStyleBackColor = true;
-            cxSearchButton.Click += cxSearchButton_Click;
+            cxSearchButton.Click += CxSearchButton_Click;
             // 
             // cxIdTB
             // 
@@ -191,7 +191,7 @@ namespace ZenoBook.Forms
             staffSearchButton.TabIndex = 21;
             staffSearchButton.Text = "Search";
             staffSearchButton.UseVisualStyleBackColor = true;
-            staffSearchButton.Click += staffSearchButton_Click;
+            staffSearchButton.Click += StaffSearchButton_Click;
             // 
             // staffSearchTB
             // 
@@ -248,7 +248,7 @@ namespace ZenoBook.Forms
             serviceSearchButton.TabIndex = 27;
             serviceSearchButton.Text = "Search";
             serviceSearchButton.UseVisualStyleBackColor = true;
-            serviceSearchButton.Click += serviceSearchButton_Click;
+            serviceSearchButton.Click += ServiceSearchButton_Click;
             // 
             // serviceSearchTB
             // 
@@ -312,7 +312,7 @@ namespace ZenoBook.Forms
             officeSearchButton.TabIndex = 32;
             officeSearchButton.Text = "Search";
             officeSearchButton.UseVisualStyleBackColor = true;
-            officeSearchButton.Click += officeSearchButton_Click;
+            officeSearchButton.Click += OfficeSearchButton_Click;
             // 
             // officeSearchTB
             // 
@@ -413,7 +413,7 @@ namespace ZenoBook.Forms
             homeSearchBtn.TabIndex = 54;
             homeSearchBtn.Text = "Search";
             homeSearchBtn.UseVisualStyleBackColor = true;
-            homeSearchBtn.Click += homeSearchBtn_Click;
+            homeSearchBtn.Click += HomeSearchBtn_Click;
             // 
             // saSearchTB
             // 

@@ -65,7 +65,7 @@ namespace ZenoBook.Forms
             logoutBtn.TabIndex = 1;
             logoutBtn.Text = "Log Out";
             logoutBtn.UseVisualStyleBackColor = true;
-            logoutBtn.Click += logoutBtn_Click;
+            logoutBtn.Click += LogoutBtn_Click;
             // 
             // CxLabel
             // 
@@ -228,7 +228,7 @@ namespace ZenoBook.Forms
             apptSearchBtn.TabIndex = 15;
             apptSearchBtn.Text = "Search";
             apptSearchBtn.UseVisualStyleBackColor = true;
-            apptSearchBtn.Click += apptSearchBtn_Click;
+            apptSearchBtn.Click += ApptSearchBtn_Click;
             // 
             // cxSearchBtn
             // 
@@ -239,7 +239,7 @@ namespace ZenoBook.Forms
             cxSearchBtn.TabIndex = 16;
             cxSearchBtn.Text = "Search";
             cxSearchBtn.UseVisualStyleBackColor = true;
-            cxSearchBtn.Click += cxSearchBtn_Click;
+            cxSearchBtn.Click += CxSearchBtn_Click;
             // 
             // otherBtn
             // 
@@ -249,7 +249,7 @@ namespace ZenoBook.Forms
             otherBtn.TabIndex = 17;
             otherBtn.Text = "Specific Date";
             otherBtn.UseVisualStyleBackColor = true;
-            otherBtn.Click += allApptsBtn_Click;
+            otherBtn.Click += AllApptsBtn_Click;
             // 
             // todayApptsBtn
             // 
@@ -259,7 +259,7 @@ namespace ZenoBook.Forms
             todayApptsBtn.TabIndex = 18;
             todayApptsBtn.Text = "Today";
             todayApptsBtn.UseVisualStyleBackColor = true;
-            todayApptsBtn.Click += todayApptsBtn_Click;
+            todayApptsBtn.Click += TodayApptsBtn_Click;
             // 
             // tomorrowApptsBtn
             // 
@@ -269,7 +269,7 @@ namespace ZenoBook.Forms
             tomorrowApptsBtn.TabIndex = 18;
             tomorrowApptsBtn.Text = "Tomorrow";
             tomorrowApptsBtn.UseVisualStyleBackColor = true;
-            tomorrowApptsBtn.Click += tomorrowApptsBtn_Click;
+            tomorrowApptsBtn.Click += TomorrowApptsBtn_Click;
             // 
             // weekApptsBtn
             // 
@@ -279,7 +279,7 @@ namespace ZenoBook.Forms
             weekApptsBtn.TabIndex = 18;
             weekApptsBtn.Text = "This Week";
             weekApptsBtn.UseVisualStyleBackColor = true;
-            weekApptsBtn.Click += weekApptsBtn_Click;
+            weekApptsBtn.Click += WeekApptsBtn_Click;
             // 
             // monthApptsBtn
             // 
@@ -289,7 +289,7 @@ namespace ZenoBook.Forms
             monthApptsBtn.TabIndex = 19;
             monthApptsBtn.Text = "This Month";
             monthApptsBtn.UseVisualStyleBackColor = true;
-            monthApptsBtn.Click += monthApptsBtn_Click;
+            monthApptsBtn.Click += MonthApptsBtn_Click;
             // 
             // Main
             // 

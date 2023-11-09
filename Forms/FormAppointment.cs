@@ -8,10 +8,10 @@ namespace ZenoBook.Forms;
 
 public partial class FormAppointment : Form
 {
-    private static DateTime _tomorrowDate = DateTime.Now.Date.AddDays(1);
-    private static int _nowHours = DateTime.Now.TimeOfDay.Hours;
-    private static DateTime _defaultStart = new(_tomorrowDate.Year, _tomorrowDate.Month, _tomorrowDate.Day, _nowHours, 00, 00);
-    private static DateTime _defaultEnd = _defaultStart.AddHours(1);
+    private static readonly DateTime TomorrowDate = DateTime.Now.Date.AddDays(1);
+    private static readonly int NowHours = DateTime.Now.TimeOfDay.Hours;
+    private static readonly DateTime DefaultStart = new(TomorrowDate.Year, TomorrowDate.Month, TomorrowDate.Day, NowHours, 00, 00);
+    private static readonly DateTime DefaultEnd = DefaultStart.AddHours(1);
 
 
     public FormAppointment()
@@ -27,7 +27,6 @@ public partial class FormAppointment : Form
         var start = appt.start;
         var end = appt.end;
         InitializeComponent();
-        MessageBox.Show(appt.appointment_id + " is the appointment Id");
         switch (appt.inhomeservice)
         {
             case 1:
@@ -35,31 +34,28 @@ public partial class FormAppointment : Form
                 HideOfficeStuff();
                 ShowHomeStuff();
                 Helpers.ReturnAddress(appt.service_address_id.ToString());
-                populateAddressTb();
+                PopulateAddressTb();
                 break;
             case 0:
                 officeRadioBtn.Checked = true;
                 HideHomeStuff();
                 ShowOfficeStuff();
                 Helpers.ReturnOffice(appt.office_id.ToString());
-                populateOfficeTb();
+                PopulateOfficeTb();
                 break;
             default:
                 MessageBox.Show("There was an issue loading appointment data.", "Error.");
                 break;
         }
         UpdateTbs(appt);
+        dateCalendar.SetSelectionRange(start,end);
         startDtPicker.Value = start;
         endDtPicker.Value = end;
-        switch (apptIdTB.Text.IsNullOrEmpty())
+        apptIdTB.Text = apptIdTB.Text.IsNullOrEmpty() switch
         {
-            case true:
-                apptIdTB.Text = Helpers.AutoIncrementId("appointment");
-                break;
-            case false:
-                apptIdTB.Text = appt.appointment_id.ToString();
-                break;
-        }
+            true => Helpers.AutoIncrementId("appointment"),
+            false => appt.appointment_id.ToString()
+        };
     }
 
     private void DateTimeSetup(UnifiedApptData? appt)
@@ -67,13 +63,15 @@ public partial class FormAppointment : Form
 
         if (appt == null)
         {
-            startDtPicker.Value = _defaultStart;
-            endDtPicker.Value = _defaultEnd;
+            startDtPicker.Value = DefaultStart;
+            endDtPicker.Value = DefaultEnd;
+            dateCalendar.SetSelectionRange(TomorrowDate, TomorrowDate);
         }
         else
         {
             startDtPicker.Value = appt.start;
             endDtPicker.Value = appt.end;
+            dateCalendar.SetSelectionRange(appt.start, appt.end);
         }
     }
 
@@ -87,13 +85,13 @@ public partial class FormAppointment : Form
         if (homeRadioBtn.Checked)
         {
             Helpers.ReturnAddress(appt.service_address_id.ToString());
-            populateAddressTb();
+            PopulateAddressTb();
         }
 
         if (officeRadioBtn.Checked)
         {
             Helpers.ReturnOffice(appt.office_id.ToString());
-            populateOfficeTb();
+            PopulateOfficeTb();
         }
 
         SetApptId(appt);
@@ -129,7 +127,7 @@ public partial class FormAppointment : Form
         cxPhoneTB.Text = cx?.phone;
         officeSearchTB.Text = cx?.preferred_office.ToString();
     }
-    private void populateCxTb()
+    private void PopulateCxTb()
     {
         var cx = Helpers.ReturnCustomer(cxSearchTB.Text);
         switch (cx == null)
@@ -145,7 +143,7 @@ public partial class FormAppointment : Form
                 break;
         }
     }
-    private void populateOfficeTb()
+    private void PopulateOfficeTb()
     {
         var office = Helpers.ReturnOffice(officeSearchTB.Text);
         switch (office == null)
@@ -159,7 +157,7 @@ public partial class FormAppointment : Form
                 break;
         }
     }
-    private void populateAddressTb()
+    private void PopulateAddressTb()
     {
         var result = Helpers.ReturnAddress(saSearchTB.Text);
         if (result == null)
@@ -176,7 +174,7 @@ public partial class FormAppointment : Form
         stateTB.Text = result.state;
         countryTB.Text = result.country;
     }
-    private void populateServiceTb()
+    private void PopulateServiceTb()
     {
         var service = Helpers.ReturnService(serviceSearchTB.Text);
         switch (service == null)
@@ -192,7 +190,7 @@ public partial class FormAppointment : Form
                 break;
         }
     }
-    private void populateStaffTb()
+    private void PopulateStaffTb()
     {
         var staff = Helpers.ReturnStaff(staffSearchTB.Text);
         switch (staff == null)
@@ -206,14 +204,14 @@ public partial class FormAppointment : Form
                 break;
         }
     }
-    private Address addressFromTBs()
+    private Address AddressFromTBs()
     {
         return Helpers.MakeAddress
          (address1TB.Text, address2TB.Text,
              cityTB.Text, stateTB.Text, countryTB.Text);
     }
 
-    private void saveAppointmentData()
+    private void SaveAppointmentData()
     {
         if (this.Controls.OfType<TextBox>().Any(tb => !Helpers.NoProhibitedContent(tb.Text)))
         {
@@ -225,16 +223,16 @@ public partial class FormAppointment : Form
             case true:
                 var homeAppt = MakeHomeAppt();
 
-                var tempAddy = addressFromTBs();
+                var tempAddy = AddressFromTBs();
                 switch (Helpers.DoesThisAddressExist(tempAddy))
                 {
                     case false:
                         Helpers.InsertAddress(tempAddy, out var tempSid);
                         addressIdTB.Text = tempSid.ToString();
-                        populateAddressTb();
+                        PopulateAddressTb();
                         break;
                     case true:
-                        populateAddressTb();
+                        PopulateAddressTb();
                         break;
                 }
 
@@ -421,47 +419,47 @@ public partial class FormAppointment : Form
 
     #region Event Handlers
 
-    private void cxSearchButton_Click(object sender, EventArgs e)
+    private void CxSearchButton_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(cxSearchTB.Text))
         {
-            populateCxTb();
+            PopulateCxTb();
         }
     }
 
-    private void staffSearchButton_Click(object sender, EventArgs e)
+    private void StaffSearchButton_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(staffSearchTB.Text))
         {
-            populateStaffTb();
+            PopulateStaffTb();
         }
     }
 
-    private void serviceSearchButton_Click(object sender, EventArgs e)
+    private void ServiceSearchButton_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(serviceSearchTB.Text))
         {
-            populateServiceTb();
+            PopulateServiceTb();
         }
     }
 
-    private void officeSearchButton_Click(object sender, EventArgs e)
+    private void OfficeSearchButton_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(officeSearchTB.Text))
         {
-            populateOfficeTb();
+            PopulateOfficeTb();
         }
     }
 
-    private void homeSearchBtn_Click(object sender, EventArgs e)
+    private void HomeSearchBtn_Click(object sender, EventArgs e)
     {
         if (Helpers.NoProhibitedContent(saSearchTB.Text))
         {
-            populateAddressTb();
+            PopulateAddressTb();
         }
     }
 
-    private void saveBtn_Click(object sender, EventArgs e)
+    private void SaveBtn_Click(object sender, EventArgs e)
     {
         if (!(homeRadioBtn.Checked) && !(officeRadioBtn.Checked))
         {
@@ -470,7 +468,7 @@ public partial class FormAppointment : Form
 
         try
         {
-            saveAppointmentData();
+            SaveAppointmentData();
         }
         catch (Exception exception)
         {
