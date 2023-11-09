@@ -30,7 +30,7 @@ namespace ZenoBook.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminService));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(AdminService));
             backBtn = new Button();
             saveBtn = new Button();
             serviceNameTB = new TextBox();
@@ -40,7 +40,7 @@ namespace ZenoBook.Forms
             // 
             // backBtn
             // 
-            backBtn.Location = new Point(192, 226);
+            backBtn.Location = new Point(105, 202);
             backBtn.Margin = new Padding(1);
             backBtn.Name = "backBtn";
             backBtn.Size = new Size(75, 23);
@@ -52,7 +52,7 @@ namespace ZenoBook.Forms
             // saveBtn
             // 
             saveBtn.BackColor = Color.LightSteelBlue;
-            saveBtn.Location = new Point(285, 226);
+            saveBtn.Location = new Point(182, 202);
             saveBtn.Margin = new Padding(1);
             saveBtn.Name = "saveBtn";
             saveBtn.Size = new Size(75, 23);
@@ -63,7 +63,8 @@ namespace ZenoBook.Forms
             // 
             // serviceNameTB
             // 
-            serviceNameTB.Location = new Point(34, 80);
+            serviceNameTB.Location = new Point(24, 80);
+            serviceNameTB.MaxLength = 32;
             serviceNameTB.Name = "serviceNameTB";
             serviceNameTB.PlaceholderText = "Service Name";
             serviceNameTB.Size = new Size(233, 23);
@@ -71,17 +72,20 @@ namespace ZenoBook.Forms
             // 
             // serviceDescTB
             // 
-            serviceDescTB.Location = new Point(34, 109);
+            serviceDescTB.Location = new Point(24, 109);
+            serviceDescTB.MaxLength = 128;
+            serviceDescTB.Multiline = true;
             serviceDescTB.Name = "serviceDescTB";
             serviceDescTB.PlaceholderText = "Service Description";
-            serviceDescTB.Size = new Size(326, 23);
+            serviceDescTB.Size = new Size(233, 64);
             serviceDescTB.TabIndex = 3;
             // 
             // serviceIdTB
             // 
-            serviceIdTB.Location = new Point(34, 51);
+            serviceIdTB.Location = new Point(24, 51);
             serviceIdTB.Name = "serviceIdTB";
             serviceIdTB.PlaceholderText = "Service Id";
+            serviceIdTB.ReadOnly = true;
             serviceIdTB.Size = new Size(83, 23);
             serviceIdTB.TabIndex = 4;
             // 
@@ -91,7 +95,7 @@ namespace ZenoBook.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = backBtn;
-            ClientSize = new Size(384, 261);
+            ClientSize = new Size(284, 261);
             Controls.Add(serviceIdTB);
             Controls.Add(serviceDescTB);
             Controls.Add(serviceNameTB);

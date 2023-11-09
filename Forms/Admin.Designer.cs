@@ -34,8 +34,8 @@ namespace ZenoBook.Forms
             staffSearchBtn = new Button();
             staffSearchTB = new TextBox();
             servicesSearchTB = new TextBox();
-            serviceDataGridView = new DataGridView();
-            staffDataGridView = new DataGridView();
+            serviceDGV = new DataGridView();
+            staffDGV = new DataGridView();
             RemoveStaffBtn = new Button();
             UpdateStaffBtn = new Button();
             CreateStaffBtn = new Button();
@@ -46,8 +46,16 @@ namespace ZenoBook.Forms
             ServicesLabel = new Label();
             backBtn = new Button();
             changePWbtn = new Button();
-            ((System.ComponentModel.ISupportInitialize)serviceDataGridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)staffDataGridView).BeginInit();
+            officeLbl = new Label();
+            officeCreateBtn = new Button();
+            officeUpdateBtn = new Button();
+            officeRemoveBtn = new Button();
+            officeDGV = new DataGridView();
+            officeSearchTB = new TextBox();
+            officeSearchBtn = new Button();
+            ((ISupportInitialize)serviceDGV).BeginInit();
+            ((ISupportInitialize)staffDGV).BeginInit();
+            ((ISupportInitialize)officeDGV).BeginInit();
             SuspendLayout();
             // 
             // servicesSearchBtn
@@ -63,7 +71,7 @@ namespace ZenoBook.Forms
             // 
             // staffSearchBtn
             // 
-            staffSearchBtn.Location = new Point(303, 41);
+            staffSearchBtn.Location = new Point(304, 39);
             staffSearchBtn.Margin = new Padding(0);
             staffSearchBtn.Name = "staffSearchBtn";
             staffSearchBtn.Size = new Size(81, 22);
@@ -77,7 +85,7 @@ namespace ZenoBook.Forms
             staffSearchTB.Location = new Point(32, 39);
             staffSearchTB.Margin = new Padding(2, 1, 2, 1);
             staffSearchTB.Name = "staffSearchTB";
-            staffSearchTB.PlaceholderText = "Search for staff";
+            staffSearchTB.PlaceholderText = "Enter staff name or email";
             staffSearchTB.Size = new Size(264, 23);
             staffSearchTB.TabIndex = 28;
             // 
@@ -90,43 +98,43 @@ namespace ZenoBook.Forms
             servicesSearchTB.Size = new Size(264, 23);
             servicesSearchTB.TabIndex = 27;
             // 
-            // serviceDataGridView
+            // serviceDGV
             // 
-            serviceDataGridView.AllowUserToAddRows = false;
-            serviceDataGridView.AllowUserToDeleteRows = false;
-            serviceDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            serviceDataGridView.Location = new Point(32, 291);
-            serviceDataGridView.Margin = new Padding(3, 2, 3, 2);
-            serviceDataGridView.Name = "serviceDataGridView";
-            serviceDataGridView.ReadOnly = true;
-            serviceDataGridView.RowHeadersVisible = false;
-            serviceDataGridView.RowHeadersWidth = 51;
-            serviceDataGridView.RowTemplate.Height = 29;
-            serviceDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            serviceDataGridView.ShowEditingIcon = false;
-            serviceDataGridView.Size = new Size(475, 141);
-            serviceDataGridView.TabIndex = 26;
+            serviceDGV.AllowUserToAddRows = false;
+            serviceDGV.AllowUserToDeleteRows = false;
+            serviceDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            serviceDGV.Location = new Point(32, 291);
+            serviceDGV.Margin = new Padding(3, 2, 3, 2);
+            serviceDGV.Name = "serviceDGV";
+            serviceDGV.ReadOnly = true;
+            serviceDGV.RowHeadersVisible = false;
+            serviceDGV.RowHeadersWidth = 51;
+            serviceDGV.RowTemplate.Height = 29;
+            serviceDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            serviceDGV.ShowEditingIcon = false;
+            serviceDGV.Size = new Size(352, 141);
+            serviceDGV.TabIndex = 26;
             // 
-            // staffDataGridView
+            // staffDGV
             // 
-            staffDataGridView.AllowUserToAddRows = false;
-            staffDataGridView.AllowUserToDeleteRows = false;
-            staffDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            staffDataGridView.Location = new Point(32, 65);
-            staffDataGridView.Margin = new Padding(3, 2, 3, 2);
-            staffDataGridView.Name = "staffDataGridView";
-            staffDataGridView.ReadOnly = true;
-            staffDataGridView.RowHeadersVisible = false;
-            staffDataGridView.RowHeadersWidth = 51;
-            staffDataGridView.RowTemplate.Height = 29;
-            staffDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            staffDataGridView.ShowEditingIcon = false;
-            staffDataGridView.Size = new Size(475, 141);
-            staffDataGridView.TabIndex = 25;
+            staffDGV.AllowUserToAddRows = false;
+            staffDGV.AllowUserToDeleteRows = false;
+            staffDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            staffDGV.Location = new Point(32, 65);
+            staffDGV.Margin = new Padding(3, 2, 3, 2);
+            staffDGV.Name = "staffDGV";
+            staffDGV.ReadOnly = true;
+            staffDGV.RowHeadersVisible = false;
+            staffDGV.RowHeadersWidth = 51;
+            staffDGV.RowTemplate.Height = 29;
+            staffDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            staffDGV.ShowEditingIcon = false;
+            staffDGV.Size = new Size(352, 141);
+            staffDGV.TabIndex = 25;
             // 
             // RemoveStaffBtn
             // 
-            RemoveStaffBtn.Location = new Point(425, 210);
+            RemoveStaffBtn.Location = new Point(303, 210);
             RemoveStaffBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveStaffBtn.Name = "RemoveStaffBtn";
             RemoveStaffBtn.Size = new Size(82, 22);
@@ -137,7 +145,7 @@ namespace ZenoBook.Forms
             // 
             // UpdateStaffBtn
             // 
-            UpdateStaffBtn.Location = new Point(337, 212);
+            UpdateStaffBtn.Location = new Point(215, 210);
             UpdateStaffBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateStaffBtn.Name = "UpdateStaffBtn";
             UpdateStaffBtn.Size = new Size(82, 22);
@@ -148,7 +156,7 @@ namespace ZenoBook.Forms
             // 
             // CreateStaffBtn
             // 
-            CreateStaffBtn.Location = new Point(249, 212);
+            CreateStaffBtn.Location = new Point(127, 210);
             CreateStaffBtn.Margin = new Padding(3, 2, 3, 2);
             CreateStaffBtn.Name = "CreateStaffBtn";
             CreateStaffBtn.Size = new Size(82, 22);
@@ -169,7 +177,7 @@ namespace ZenoBook.Forms
             // 
             // RemoveServiceBtn
             // 
-            RemoveServiceBtn.Location = new Point(425, 439);
+            RemoveServiceBtn.Location = new Point(303, 439);
             RemoveServiceBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveServiceBtn.Name = "RemoveServiceBtn";
             RemoveServiceBtn.Size = new Size(82, 22);
@@ -180,7 +188,7 @@ namespace ZenoBook.Forms
             // 
             // UpdateServiceBtn
             // 
-            UpdateServiceBtn.Location = new Point(336, 440);
+            UpdateServiceBtn.Location = new Point(215, 439);
             UpdateServiceBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateServiceBtn.Name = "UpdateServiceBtn";
             UpdateServiceBtn.Size = new Size(82, 22);
@@ -191,7 +199,7 @@ namespace ZenoBook.Forms
             // 
             // CreateServiceBtn
             // 
-            CreateServiceBtn.Location = new Point(248, 440);
+            CreateServiceBtn.Location = new Point(127, 439);
             CreateServiceBtn.Margin = new Padding(3, 2, 3, 2);
             CreateServiceBtn.Name = "CreateServiceBtn";
             CreateServiceBtn.Size = new Size(82, 22);
@@ -222,12 +230,91 @@ namespace ZenoBook.Forms
             // 
             // changePWbtn
             // 
-            changePWbtn.Location = new Point(672, 65);
+            changePWbtn.Location = new Point(400, 439);
             changePWbtn.Name = "changePWbtn";
-            changePWbtn.Size = new Size(100, 44);
+            changePWbtn.Size = new Size(164, 44);
             changePWbtn.TabIndex = 32;
             changePWbtn.Text = "Change Password";
             changePWbtn.UseVisualStyleBackColor = true;
+            // 
+            // officeLbl
+            // 
+            officeLbl.AutoSize = true;
+            officeLbl.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            officeLbl.Location = new Point(400, 9);
+            officeLbl.Name = "officeLbl";
+            officeLbl.Size = new Size(51, 21);
+            officeLbl.TabIndex = 21;
+            officeLbl.Text = "Office";
+            // 
+            // officeCreateBtn
+            // 
+            officeCreateBtn.Location = new Point(495, 210);
+            officeCreateBtn.Margin = new Padding(3, 2, 3, 2);
+            officeCreateBtn.Name = "officeCreateBtn";
+            officeCreateBtn.Size = new Size(82, 22);
+            officeCreateBtn.TabIndex = 22;
+            officeCreateBtn.Text = "Create";
+            officeCreateBtn.UseVisualStyleBackColor = true;
+            officeCreateBtn.Click += officeCreateBtn_Click;
+            // 
+            // officeUpdateBtn
+            // 
+            officeUpdateBtn.Location = new Point(583, 210);
+            officeUpdateBtn.Margin = new Padding(3, 2, 3, 2);
+            officeUpdateBtn.Name = "officeUpdateBtn";
+            officeUpdateBtn.Size = new Size(82, 22);
+            officeUpdateBtn.TabIndex = 23;
+            officeUpdateBtn.Text = "Update";
+            officeUpdateBtn.UseVisualStyleBackColor = true;
+            officeUpdateBtn.Click += officeUpdateBtn_Click;
+            // 
+            // officeRemoveBtn
+            // 
+            officeRemoveBtn.Location = new Point(671, 210);
+            officeRemoveBtn.Margin = new Padding(3, 2, 3, 2);
+            officeRemoveBtn.Name = "officeRemoveBtn";
+            officeRemoveBtn.Size = new Size(82, 22);
+            officeRemoveBtn.TabIndex = 24;
+            officeRemoveBtn.Text = "Remove";
+            officeRemoveBtn.UseVisualStyleBackColor = true;
+            officeRemoveBtn.Click += officeRemoveBtn_Click;
+            // 
+            // officeDGV
+            // 
+            officeDGV.AllowUserToAddRows = false;
+            officeDGV.AllowUserToDeleteRows = false;
+            officeDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            officeDGV.Location = new Point(400, 65);
+            officeDGV.Margin = new Padding(3, 2, 3, 2);
+            officeDGV.Name = "officeDGV";
+            officeDGV.ReadOnly = true;
+            officeDGV.RowHeadersVisible = false;
+            officeDGV.RowHeadersWidth = 51;
+            officeDGV.RowTemplate.Height = 29;
+            officeDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            officeDGV.ShowEditingIcon = false;
+            officeDGV.Size = new Size(352, 141);
+            officeDGV.TabIndex = 25;
+            // 
+            // officeSearchTB
+            // 
+            officeSearchTB.Location = new Point(400, 39);
+            officeSearchTB.Margin = new Padding(2, 1, 2, 1);
+            officeSearchTB.Name = "officeSearchTB";
+            officeSearchTB.PlaceholderText = "Enter Office Search Here";
+            officeSearchTB.Size = new Size(264, 23);
+            officeSearchTB.TabIndex = 28;
+            // 
+            // officeSearchBtn
+            // 
+            officeSearchBtn.Location = new Point(672, 39);
+            officeSearchBtn.Margin = new Padding(0);
+            officeSearchBtn.Name = "officeSearchBtn";
+            officeSearchBtn.Size = new Size(81, 22);
+            officeSearchBtn.TabIndex = 29;
+            officeSearchBtn.Text = "Search";
+            officeSearchBtn.UseVisualStyleBackColor = true;
             // 
             // Admin
             // 
@@ -238,13 +325,20 @@ namespace ZenoBook.Forms
             Controls.Add(changePWbtn);
             Controls.Add(backBtn);
             Controls.Add(servicesSearchBtn);
+            Controls.Add(officeSearchBtn);
             Controls.Add(staffSearchBtn);
+            Controls.Add(officeSearchTB);
             Controls.Add(staffSearchTB);
             Controls.Add(servicesSearchTB);
-            Controls.Add(serviceDataGridView);
-            Controls.Add(staffDataGridView);
+            Controls.Add(serviceDGV);
+            Controls.Add(officeDGV);
+            Controls.Add(officeRemoveBtn);
+            Controls.Add(staffDGV);
+            Controls.Add(officeUpdateBtn);
             Controls.Add(RemoveStaffBtn);
+            Controls.Add(officeCreateBtn);
             Controls.Add(UpdateStaffBtn);
+            Controls.Add(officeLbl);
             Controls.Add(CreateStaffBtn);
             Controls.Add(StaffLbl);
             Controls.Add(RemoveServiceBtn);
@@ -254,8 +348,9 @@ namespace ZenoBook.Forms
             Name = "Admin";
             StartPosition = FormStartPosition.CenterParent;
             Text = "ZTH - Admin";
-            ((System.ComponentModel.ISupportInitialize)serviceDataGridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)staffDataGridView).EndInit();
+            ((ISupportInitialize)serviceDGV).EndInit();
+            ((ISupportInitialize)staffDGV).EndInit();
+            ((ISupportInitialize)officeDGV).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -266,8 +361,8 @@ namespace ZenoBook.Forms
         private Button staffSearchBtn;
         private TextBox staffSearchTB;
         private TextBox servicesSearchTB;
-        private DataGridView serviceDataGridView;
-        private DataGridView staffDataGridView;
+        private DataGridView serviceDGV;
+        private DataGridView staffDGV;
         private Button RemoveStaffBtn;
         private Button UpdateStaffBtn;
         private Button CreateStaffBtn;
@@ -278,5 +373,12 @@ namespace ZenoBook.Forms
         private Label ServicesLabel;
         private Button backBtn;
         private Button changePWbtn;
+        private Label officeLbl;
+        private Button officeCreateBtn;
+        private Button officeUpdateBtn;
+        private Button officeRemoveBtn;
+        private DataGridView officeDGV;
+        private TextBox officeSearchTB;
+        private Button officeSearchBtn;
     }
 }

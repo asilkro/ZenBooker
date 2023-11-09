@@ -1,14 +1,11 @@
 ﻿using System.Data;
-using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using log4net;
 using Microsoft.VisualBasic;
 using MySqlConnector;
 using RepoDb;
-using Windows.ApplicationModel.Appointments;
 using ZenoBook.Classes;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace ZenoBook.DataManipulation;
 
@@ -95,7 +92,7 @@ public class Helpers
                     break;
 
                 case "staff":
-                    var staffSelectQuery = "SELECT * FROM " + tableName + " ORDER BY name, staff_id LIMIT 200;";
+                    var staffSelectQuery = "SELECT name, staff_id, email, office_id, phone FROM " + tableName + " ORDER BY name LIMIT 200;"; //To avoid performance issues
                     var staffDataAdapter = new MySqlDataAdapter(staffSelectQuery, connection);
                     using (staffDataAdapter)
                     {
@@ -106,13 +103,24 @@ public class Helpers
                     break;
 
                 case "service":
-                    var serviceSelectQuery = "SELECT * FROM " + tableName + " ORDER BY service_name, service_id LIMIT 200;";
+                    var serviceSelectQuery = "SELECT service_name, service_id, service_description FROM " + tableName + " ORDER BY service_name, service_id LIMIT 200;"; //To avoid performance issues
                     var serviceDataAdapter = new MySqlDataAdapter(serviceSelectQuery, connection);
                     using (serviceDataAdapter)
                     {
                         var services = ServiceToDataTable(serviceDataAdapter, out var serviceDataTable);
                         AddServiceToRows(serviceDataTable, services);
                         dgv.DataSource = serviceDataTable;
+                    }
+                    break;
+
+                case "office":
+                    var officeSelectQuery = "SELECT * FROM " + tableName + " ORDER BY office_name;";
+                    var officeDataAdapter = new MySqlDataAdapter(officeSelectQuery, connection);
+                    using (officeDataAdapter)
+                    {
+                        var offices = OfficeToDataTable(officeDataAdapter, out var officeDataTable);
+                        AddOfficeToRows(officeDataTable, offices);
+                        dgv.DataSource = officeDataTable;
                     }
                     break;
             }
@@ -345,19 +353,32 @@ public class Helpers
                 office_id = (int) row["office_id"],
                 name = row["name"].ToString() ?? string.Empty,
                 phone = row["phone"].ToString() ?? string.Empty,
-                email = row["email"].ToString() ?? string.Empty
+                email = row["email"].ToString() ?? string.Empty,
             }));
     }
     private static List<Service> ServiceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
-{
-    var services = new List<Service>();
-    serviceDataTable = new DataTable();
-    serviceDataTable.Columns.Add("service_id", typeof(int));
-    serviceDataTable.Columns.Add("service_name", typeof(string));
-    serviceDataTable.Columns.Add("service_description", typeof(string));
-    dataAdapter.Fill(serviceDataTable);
-    return services;
-}
+    {
+        var services = new List<Service>();
+        serviceDataTable = new DataTable();
+        serviceDataTable.Columns.Add("service_id", typeof(int));
+        serviceDataTable.Columns.Add("service_name", typeof(string));
+        serviceDataTable.Columns.Add("service_description", typeof(string));
+        dataAdapter.Fill(serviceDataTable);
+        return services;
+    }
+
+    private static List<Office> OfficeToDataTable(MySqlDataAdapter dataAdapter, out DataTable officeDataTable)
+    {
+        var offices = new List<Office>();
+        officeDataTable = new DataTable();
+        officeDataTable.Columns.Add("office_id", typeof(int));
+        officeDataTable.Columns.Add("address_id", typeof(int));
+        officeDataTable.Columns.Add("office_name", typeof(string));
+        dataAdapter.Fill(officeDataTable);
+        return offices;
+    }
+
+
     private static void AddServiceToRows(DataTable serviceDataTable, List<Service> services)
     {
         services.AddRange(serviceDataTable.Rows.Cast<DataRow>()
@@ -368,6 +389,18 @@ public class Helpers
                 service_description = row["service_description"].ToString() ?? string.Empty
             }));
     }
+
+    private static void AddOfficeToRows(DataTable officeDataTable, List<Office> offices)
+    {
+        offices.AddRange(officeDataTable.Rows.Cast<DataRow>()
+            .Select(row => new Office
+            {
+                office_id = (int)row["office_id"],
+                address_id = (int)row["address_id"],
+                office_name = row["office_name"].ToString() ?? string.Empty
+            }));
+    }
+
     #endregion
 
     public static string WhatIsThisThing(string valueToCheck)

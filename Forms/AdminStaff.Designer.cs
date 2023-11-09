@@ -30,7 +30,7 @@ namespace ZenoBook.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminStaff));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(AdminStaff));
             staffIdTB = new TextBox();
             staffPhoneTB = new TextBox();
             staffNameTB = new TextBox();
@@ -44,14 +44,17 @@ namespace ZenoBook.Forms
             // staffIdTB
             // 
             staffIdTB.Location = new Point(12, 12);
+            staffIdTB.MaxLength = 7;
             staffIdTB.Name = "staffIdTB";
             staffIdTB.PlaceholderText = "Staff Id #";
+            staffIdTB.ReadOnly = true;
             staffIdTB.Size = new Size(114, 23);
             staffIdTB.TabIndex = 9;
             // 
             // staffPhoneTB
             // 
             staffPhoneTB.Location = new Point(12, 70);
+            staffPhoneTB.MaxLength = 12;
             staffPhoneTB.Name = "staffPhoneTB";
             staffPhoneTB.PlaceholderText = "Staff Phone";
             staffPhoneTB.Size = new Size(348, 23);
@@ -60,6 +63,7 @@ namespace ZenoBook.Forms
             // staffNameTB
             // 
             staffNameTB.Location = new Point(12, 41);
+            staffNameTB.MaxLength = 45;
             staffNameTB.Name = "staffNameTB";
             staffNameTB.PlaceholderText = "Staff Name";
             staffNameTB.Size = new Size(348, 23);
@@ -91,6 +95,7 @@ namespace ZenoBook.Forms
             // staffEmailTB
             // 
             staffEmailTB.Location = new Point(12, 99);
+            staffEmailTB.MaxLength = 45;
             staffEmailTB.Name = "staffEmailTB";
             staffEmailTB.PlaceholderText = "Staff Email";
             staffEmailTB.Size = new Size(348, 23);
@@ -99,6 +104,7 @@ namespace ZenoBook.Forms
             // officeIdTB
             // 
             officeIdTB.Location = new Point(132, 12);
+            officeIdTB.MaxLength = 7;
             officeIdTB.Name = "officeIdTB";
             officeIdTB.PlaceholderText = "Staff Office Id #";
             officeIdTB.Size = new Size(111, 23);
@@ -106,7 +112,8 @@ namespace ZenoBook.Forms
             // 
             // userIdTB
             // 
-            userIdTB.Location = new Point(249, 12);
+            userIdTB.Location = new Point(250, 12);
+            userIdTB.MaxLength = 7;
             userIdTB.Name = "userIdTB";
             userIdTB.PlaceholderText = "Staff User Id #";
             userIdTB.Size = new Size(111, 23);

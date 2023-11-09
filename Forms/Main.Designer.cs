@@ -249,7 +249,7 @@ namespace ZenoBook.Forms
             otherBtn.TabIndex = 17;
             otherBtn.Text = "Specific Date";
             otherBtn.UseVisualStyleBackColor = true;
-            otherBtn.Click += AllApptsBtn_Click;
+            otherBtn.Click += SpecificDateBtn_Click;
             // 
             // todayApptsBtn
             // 
@@ -321,6 +321,7 @@ namespace ZenoBook.Forms
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Main";
             Text = "ZTH - ZenoBook";
+            Activated += FormPulledFocus;
             ((ISupportInitialize)Logo).EndInit();
             ((ISupportInitialize)apptsDataGridView).EndInit();
             ((ISupportInitialize)cxDataGridView).EndInit();

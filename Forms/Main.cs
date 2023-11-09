@@ -35,7 +35,7 @@ public partial class Main : Form
         var selectedRow = apptsDataGridView.CurrentRow;
         if (selectedRow == null) return;
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
-        var selected = (int) apptsDataGridView["Appointment_id", row].Value;
+        var selected = (int)apptsDataGridView["Appointment_id", row].Value;
         using var connection = new Builder().Connect();
         {
             connection.Open();
@@ -53,7 +53,7 @@ public partial class Main : Form
         if (selectedRow == null) return;
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
 
-        var selected = (int) apptsDataGridView["Appointment_id", row].Value;
+        var selected = (int)apptsDataGridView["Appointment_id", row].Value;
         if (Helpers.ConfirmedAction())
         {
             var result = Helpers.RemoveAppointment(selected);
@@ -75,7 +75,7 @@ public partial class Main : Form
         var selectedRow = cxDataGridView.CurrentRow;
         if (selectedRow == null) return;
         var row = cxDataGridView.Rows.IndexOf(selectedRow);
-        var selected = (int) cxDataGridView["customer_id", row].Value;
+        var selected = (int)cxDataGridView["customer_id", row].Value;
         {
             using var connection = new Builder().Connect();
             var customer = connection.Query<Customer>("customer", selected).FirstOrDefault();
@@ -91,7 +91,7 @@ public partial class Main : Form
         if (selectedRow != null)
         {
             var row = cxDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int) cxDataGridView["customer_id", row].Value;
+            var selected = (int)cxDataGridView["customer_id", row].Value;
             if (Helpers.ConfirmedAction())
             {
                 var result = Helpers.DeleteCustomer(selected);
@@ -148,7 +148,7 @@ public partial class Main : Form
         Helpers.GenerateApptReportInDgv(apptsDataGridView, "month");
     }
 
-    private void AllApptsBtn_Click(object sender, EventArgs e)
+    private void SpecificDateBtn_Click(object sender, EventArgs e)
     {
         var searchParams = Helpers.GetFromInputBox("Enter a date to view just those results: YYYY-MM-DD format",
             "Enter a date to search");
@@ -157,6 +157,12 @@ public partial class Main : Form
         {
             Helpers.GenerateApptReportInDgv(apptsDataGridView, searchParams);
         }
+    }
+
+    private void FormPulledFocus(object sender, EventArgs e)
+    {
+        Helpers.PopulateDgv(apptsDataGridView, "appointment");
+        Helpers.PopulateDgv(cxDataGridView, "customer");
     }
 
     #endregion

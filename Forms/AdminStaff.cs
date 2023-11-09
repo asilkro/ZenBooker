@@ -106,5 +106,4 @@ public partial class AdminStaff : Form
     }
 
     #endregion
-
 }
