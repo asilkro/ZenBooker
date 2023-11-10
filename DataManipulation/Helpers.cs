@@ -5,6 +5,7 @@ using log4net;
 using Microsoft.VisualBasic;
 using MySqlConnector;
 using RepoDb;
+using RepoDb.Extensions;
 using ZenoBook.Classes;
 
 namespace ZenoBook.DataManipulation;
@@ -92,7 +93,7 @@ public class Helpers
                     break;
 
                 case "staff":
-                    var staffSelectQuery = "SELECT name, staff_id, email, office_id, phone FROM " + tableName + " ORDER BY name LIMIT 200;"; //To avoid performance issues
+                    var staffSelectQuery = "SELECT * FROM " + tableName + " ORDER BY name LIMIT 200;"; //To avoid performance issues
                     var staffDataAdapter = new MySqlDataAdapter(staffSelectQuery, connection);
                     using (staffDataAdapter)
                     {
@@ -132,7 +133,7 @@ public class Helpers
             using var connection = new Builder().Connect();
 
             {
-                var searchType = WhatIsThisThing(searchQuery);
+                var searchType = WhatIsBeingSearched(searchQuery);
                 if (searchType == "default")
                 {
                     MessageBox.Show("Invalid search parameter.");
@@ -204,7 +205,7 @@ public class Helpers
                         sql = searchType switch
                         {
                             "email" => "SELECT * FROM staff WHERE email like '@VALUE%';",
-                            "name" => "SELECT * FROM 'staff' WHERE name like '@VALUE%';",
+                            "name" => "SELECT * FROM staff WHERE name like '@VALUE%';",
                             _ => sql
                         };
 
@@ -225,7 +226,7 @@ public class Helpers
     {
         {
             var connection = Builder.SmartConnect(connection: new Builder().Connect());
-            var selectQuery = "";
+            string selectQuery;
             switch (reportParams)
             {
 
@@ -266,25 +267,26 @@ public class Helpers
             }
         }
     }
-    
+
 
     private static List<UnifiedApptData> ApptToDataTable(MySqlDataAdapter mySqlDataAdapter,
-    out DataTable appointmentsDataTable1) 
+        out DataTable appointmentsDataTable1)
     {
-    var list = new List<UnifiedApptData>();
-    appointmentsDataTable1 = new DataTable();
-    appointmentsDataTable1.Columns.Add("Appointment_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("Customer_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("Start", typeof(DateTime));
-    appointmentsDataTable1.Columns.Add("End", typeof(DateTime));
-    appointmentsDataTable1.Columns.Add("Service_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("Staff_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("Office_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("Service_address_id", typeof(int));
-    appointmentsDataTable1.Columns.Add("Inhomeservice", typeof(int));
-    mySqlDataAdapter.Fill(appointmentsDataTable1);
-    return list;
-} 
+        var list = new List<UnifiedApptData>();
+        appointmentsDataTable1 = new DataTable();
+        appointmentsDataTable1.Columns.Add("Appointment_id", typeof(int));
+        appointmentsDataTable1.Columns.Add("Customer_id", typeof(int));
+        appointmentsDataTable1.Columns.Add("Start", typeof(DateTime));
+        appointmentsDataTable1.Columns.Add("End", typeof(DateTime));
+        appointmentsDataTable1.Columns.Add("Service_id", typeof(int));
+        appointmentsDataTable1.Columns.Add("Staff_id", typeof(int));
+        appointmentsDataTable1.Columns.Add("Office_id", typeof(int));
+        appointmentsDataTable1.Columns.Add("Service_address_id", typeof(int));
+        appointmentsDataTable1.Columns.Add("Inhomeservice", typeof(int));
+        mySqlDataAdapter.Fill(appointmentsDataTable1);
+        return list;
+    }
+
     private static void AddCxToRows(DataTable customerDataTable, List<Customer> customers)
     {
         customers.AddRange(customerDataTable.Rows.Cast<DataRow>()
@@ -297,21 +299,23 @@ public class Helpers
                 email = row["Email"].ToString() ?? string.Empty,
                 preferred_office = Convert.IsDBNull(row["Preferred_Office"]) ? 1 : (int) row["Preferred_Office"]
             }));
-    } 
+    }
+
     private static List<Customer> CxToDataTable(MySqlDataAdapter dataAdapter, out DataTable customerDataTable)
-{
-    List<Customer> customers = new();
-    customerDataTable = new DataTable();
-    customerDataTable.Columns.Add("Name", typeof(string));
-    customerDataTable.Columns.Add("Customer_id", typeof(int));
-    customerDataTable.Columns.Add("Phone", typeof(string));
-    customerDataTable.Columns.Add("Email", typeof(string));
-    customerDataTable.Columns.Add("First", typeof(string));
-    customerDataTable.Columns.Add("Last", typeof(string));
-    customerDataTable.Columns.Add("Preferred_Office", typeof(int));
-    dataAdapter.Fill(customerDataTable);
-    return customers;
-} 
+    {
+        List<Customer> customers = new();
+        customerDataTable = new DataTable();
+        customerDataTable.Columns.Add("Name", typeof(string));
+        customerDataTable.Columns.Add("Customer_id", typeof(int));
+        customerDataTable.Columns.Add("Phone", typeof(string));
+        customerDataTable.Columns.Add("Email", typeof(string));
+        customerDataTable.Columns.Add("First", typeof(string));
+        customerDataTable.Columns.Add("Last", typeof(string));
+        customerDataTable.Columns.Add("Preferred_Office", typeof(int));
+        dataAdapter.Fill(customerDataTable);
+        return customers;
+    }
+
     private static void AddApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
     {
         unifiedApptDatas.AddRange(from DataRow row in dataTable.Rows
@@ -328,33 +332,35 @@ public class Helpers
                 inhomeservice = (sbyte) (int) row["inhomeservice"]
             });
     }
-    private static List<Staff> StaffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
-{
-    var staffList = new List<Staff>();
-    staffDataTable = new DataTable();
-    staffDataTable.Columns.Add("staff_id", typeof(int));
-    staffDataTable.Columns.Add("user_id", typeof(int));
-    staffDataTable.Columns.Add("office_id", typeof(int));
-    staffDataTable.Columns.Add("name", typeof(string));
-    staffDataTable.Columns.Add("phone", typeof(string));
-    staffDataTable.Columns.Add("email", typeof(string));
-    dataAdapter.Fill(staffDataTable);
 
-    AddStaffToRows(staffDataTable, staffList);
-    return staffList;
-}
-    private static void AddStaffToRows(DataTable staffDataTable, List<Staff> staffList)
+    private static List<Staff> StaffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
     {
-        staffList.AddRange(staffDataTable.Rows.Cast<DataRow>()
-            .Select(row => new Staff
+        List<Staff> staff = new();
+        staffDataTable = new DataTable();
+        //name, staff_id, email, office_id, phone
+        staffDataTable.Columns.Add("staff_id", typeof(int));
+        staffDataTable.Columns.Add("name", typeof(string));
+        staffDataTable.Columns.Add("email", typeof(string));
+        staffDataTable.Columns.Add("office_id", typeof(int));
+        staffDataTable.Columns.Add("phone", typeof(string));
+        staffDataTable.Columns.Add("user_id", typeof(int));
+        dataAdapter.Fill(staffDataTable);
+        return staff;
+    }
+
+    private static void AddStaffToRows(DataTable staffDataTable, List<Staff> staff)
+    {
+        //name, staff_id, email, office_id, phone
+        staff.AddRange(from DataRow row in staffDataTable.Rows select new Staff
             {
                 staff_id = (int) row["staff_id"],
-                user_id = (int) row["user_id"],
-                office_id = (int) row["office_id"],
                 name = row["name"].ToString() ?? string.Empty,
-                phone = row["phone"].ToString() ?? string.Empty,
                 email = row["email"].ToString() ?? string.Empty,
-            }));
+                office_id = (int) row["office_id"],
+                phone = row["phone"].ToString() ?? string.Empty,
+                user_id = (int)row["user_id"],
+
+        });
     }
     private static List<Service> ServiceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
     {
@@ -403,12 +409,14 @@ public class Helpers
 
     #endregion
 
-    public static string WhatIsThisThing(string valueToCheck)
+    public static string WhatIsBeingSearched(string valueToCheck)
     {
         var containsSlash = valueToCheck.Contains(slash);
         var containsDash = valueToCheck.Contains(dash);
+        var chars = valueToCheck.ToCharArray();
 
         var result = "default";
+        if (!NoProhibitedContent(valueToCheck)) return "error"; // Reject bad input
 
         if (containsDash || containsSlash)
         {
@@ -428,10 +436,9 @@ public class Helpers
             return result; // If it has an @ sign, treat as an email address
         }
 
-        if (!valueToCheck.Contains(space)) return result;
+        if (!valueToCheck.Contains(space) && !chars.All(char.IsAsciiLetter)) return result;
         result = "name";
-        return result; // If it has a whitespace, treat as a name
-
+        return result; // If it has a whitespace or is all letters, treat as a name
     }
     public static Address MakeAddress(string address1, string address2, string city, string state, string country)
     {

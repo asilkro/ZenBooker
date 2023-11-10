@@ -119,13 +119,14 @@ namespace ZenoBook.Forms
             // 
             staffDGV.AllowUserToAddRows = false;
             staffDGV.AllowUserToDeleteRows = false;
+            staffDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             staffDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             staffDGV.Location = new Point(32, 65);
             staffDGV.Margin = new Padding(3, 2, 3, 2);
             staffDGV.Name = "staffDGV";
             staffDGV.ReadOnly = true;
             staffDGV.RowHeadersVisible = false;
-            staffDGV.RowHeadersWidth = 51;
+            staffDGV.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             staffDGV.RowTemplate.Height = 29;
             staffDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             staffDGV.ShowEditingIcon = false;
