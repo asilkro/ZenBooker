@@ -357,7 +357,7 @@ namespace ZenoBook.Forms
             removeAddressBtn.TabIndex = 36;
             removeAddressBtn.Text = "Remove";
             removeAddressBtn.UseVisualStyleBackColor = true;
-            removeAddressBtn.Click += removeAddressBtn_Click;
+            removeAddressBtn.Click += RemoveAddressBtn_Click;
             // 
             // updateAddressBtn
             // 
@@ -368,7 +368,7 @@ namespace ZenoBook.Forms
             updateAddressBtn.TabIndex = 35;
             updateAddressBtn.Text = "Update";
             updateAddressBtn.UseVisualStyleBackColor = true;
-            updateAddressBtn.Click += updateAddressBtn_Click;
+            updateAddressBtn.Click += UpdateAddressBtn_Click;
             // 
             // createAddressBtn
             // 

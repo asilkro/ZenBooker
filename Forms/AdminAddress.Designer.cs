@@ -49,7 +49,7 @@
             saveBtn.TabIndex = 3;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // backBtn
             // 
@@ -60,7 +60,7 @@
             backBtn.TabIndex = 2;
             backBtn.Text = "Back";
             backBtn.UseVisualStyleBackColor = true;
-            backBtn.Click += backBtn_Click;
+            backBtn.Click += BackBtn_Click;
             // 
             // addressIdTB
             // 

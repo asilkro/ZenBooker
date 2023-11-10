@@ -31,7 +31,7 @@ namespace ZenoBook.Forms
             countryTb.Text = addy.country;
         }
 
-        private void saveBtn_Click(object sender, EventArgs e)
+        private void SaveBtn_Click(object sender, EventArgs e)
         {
             var addyToSave = Helpers.MakeAddress(address1Tb.Text, address2Tb.Text,
                 cityTb.Text, stateTb.Text, countryTb.Text);
@@ -53,6 +53,6 @@ namespace ZenoBook.Forms
             }
         }
 
-        private void backBtn_Click(object sender, EventArgs e) => Close();
+        private void BackBtn_Click(object sender, EventArgs e) => Close();
     }
 }

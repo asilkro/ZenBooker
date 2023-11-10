@@ -137,7 +137,7 @@ public partial class Admin : Form
         addressForm.ShowDialog();
     }
 
-    private void updateAddressBtn_Click(object sender, EventArgs e)
+    private void UpdateAddressBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = addressDGV.CurrentRow;
         if (selectedRow == null) return;
@@ -152,7 +152,7 @@ public partial class Admin : Form
         }
     }
 
-    private void removeAddressBtn_Click(object sender, EventArgs e)
+    private void RemoveAddressBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = addressDGV.CurrentRow;
         if (selectedRow == null) return;
