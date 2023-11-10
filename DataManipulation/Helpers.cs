@@ -218,6 +218,42 @@ public class Helpers
                             dgv.DataSource = staffDataTable;
                         }
                         break;
+                    case "office":
+                        sql = searchType switch
+                        {
+                            "integer" =>
+                                "SELECT * FROM office WHERE office_id like '@VALUE%' ORDER BY office_name, office_id;",
+                            "name" =>
+                                "SELECT * FROM office WHERE office_name like '@VALUE%' ORDER BY office_name, office_id;",
+                            _ => sql
+                        };
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        dataAdapter = new MySqlDataAdapter(sql, connection);
+                        using (dataAdapter)
+                        {
+                            var office = OfficeToDataTable(dataAdapter, out var officeDataTable);
+                            AddOfficeToRows(officeDataTable, office);
+                            dgv.DataSource = officeDataTable;
+                        }
+                        break;
+                    case "address": //TODO: FINISH
+                        sql = searchType switch
+                        {
+                            "integer" =>
+                                "SELECT * FROM address WHERE address_id like '@VALUE%' ORDER BY address1, city, state;",
+                            "name" =>
+                                "SELECT * FROM address WHERE office_name like '@VALUE%' ORDER BY office_name, office_id;",
+                            _ => sql
+                        };
+                        sql = sql.Replace("@VALUE", searchQuery);
+                        dataAdapter = new MySqlDataAdapter(sql, connection);
+                        using (dataAdapter)
+                        {
+                            var office = OfficeToDataTable(dataAdapter, out var officeDataTable);
+                            AddOfficeToRows(officeDataTable, office);
+                            dgv.DataSource = officeDataTable;
+                        }
+                        break;
                 }
             }
         }
@@ -267,7 +303,6 @@ public class Helpers
             }
         }
     }
-
 
     private static List<UnifiedApptData> ApptToDataTable(MySqlDataAdapter mySqlDataAdapter,
         out DataTable appointmentsDataTable1)
@@ -337,7 +372,6 @@ public class Helpers
     {
         List<Staff> staff = new();
         staffDataTable = new DataTable();
-        //name, staff_id, email, office_id, phone
         staffDataTable.Columns.Add("staff_id", typeof(int));
         staffDataTable.Columns.Add("name", typeof(string));
         staffDataTable.Columns.Add("email", typeof(string));
@@ -350,7 +384,6 @@ public class Helpers
 
     private static void AddStaffToRows(DataTable staffDataTable, List<Staff> staff)
     {
-        //name, staff_id, email, office_id, phone
         staff.AddRange(from DataRow row in staffDataTable.Rows select new Staff
             {
                 staff_id = (int) row["staff_id"],
@@ -384,6 +417,33 @@ public class Helpers
         return offices;
     }
 
+    private static List<Address> AddressToDataTable(MySqlDataAdapter dataAdapter, out DataTable addressDataTable)
+    {
+        var addresses = new List<Address>();
+        addressDataTable = new DataTable();
+        addressDataTable.Columns.Add("address_id", typeof(int));
+        addressDataTable.Columns.Add("address1", typeof(string));
+        addressDataTable.Columns.Add("address2", typeof(string));
+        addressDataTable.Columns.Add("city", typeof(string));
+        addressDataTable.Columns.Add("state", typeof(string));
+        addressDataTable.Columns.Add("country", typeof(string));
+        dataAdapter.Fill(addressDataTable);
+        return addresses;
+    }
+
+    private static void AddAddressToRows(DataTable dataTable, List<Address> addresses)
+    {
+        addresses.AddRange(from DataRow row in dataTable.Rows
+            select new Address
+            {
+                address_id = (int)row["appointment_id"], // Set the correct property names
+                address1 = row["address1"].ToString() ?? string.Empty,
+                address2 = row["address2"].ToString() ?? string.Empty,
+                city = row["city"].ToString() ?? string.Empty,
+                state = row["state"].ToString() ?? string.Empty,
+                country = row["country"].ToString() ?? string.Empty,
+            });
+    }
 
     private static void AddServiceToRows(DataTable serviceDataTable, List<Service> services)
     {
@@ -456,7 +516,7 @@ public class Helpers
     public static bool ConfirmedAction()
     {
         var buttonPressed = "No";
-        DialogResult confirmResult = MessageBox.Show("Click yes to confirm your action.", "Confirmation Required", MessageBoxButtons.YesNo,MessageBoxIcon.None,MessageBoxDefaultButton.Button2);
+        var confirmResult = MessageBox.Show("Click yes to confirm your action.", "Confirmation Required", MessageBoxButtons.YesNo,MessageBoxIcon.None,MessageBoxDefaultButton.Button2);
         switch (confirmResult)
         {
             case DialogResult.Yes:
@@ -582,7 +642,7 @@ public class Helpers
         try
         {
             var result = connection.Insert("service", service);
-            MessageBox.Show("Service id: " + service.service_id + " created.", "Service Created");
+            MessageBox.Show("Service id: " + result + " created.", "Service Created");
             return true;
         }
         catch (Exception e)
@@ -596,7 +656,7 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("service", serviceId);
+            connection.Delete("service", serviceId);
             MessageBox.Show("Service id: " + serviceId + " removed.", "Service Removed");
             return true;
         }
@@ -613,7 +673,7 @@ public class Helpers
         {
             {
                 var updatedService = connection.Update("service", service);
-                MessageBox.Show("Service id: " + service.service_id + " updated.", "Service Updated");
+                MessageBox.Show("Service id: " + updatedService + " updated.", "Service Updated");
             }
             return true;
         }

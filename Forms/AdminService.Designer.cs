@@ -47,7 +47,7 @@ namespace ZenoBook.Forms
             backBtn.TabIndex = 0;
             backBtn.Text = "Back";
             backBtn.UseVisualStyleBackColor = true;
-            backBtn.Click += backBtn_Click;
+            backBtn.Click += BackBtn_Click;
             // 
             // saveBtn
             // 
@@ -59,7 +59,7 @@ namespace ZenoBook.Forms
             saveBtn.TabIndex = 1;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // serviceNameTB
             // 

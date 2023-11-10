@@ -14,10 +14,7 @@ public partial class Admin : Form
         Helpers.PopulateDgv(officeDGV, "office");
     }
 
-    private void backBtn_Click(object sender, EventArgs e)
-    {
-        Close();
-    }
+    private void BackBtn_Click(object sender, EventArgs e) => Close();
 
     private void RemoveStaffBtn_Click(object sender, EventArgs e)
     {
@@ -91,23 +88,17 @@ public partial class Admin : Form
         }
     }
 
-    private void staffSearchBtn_Click(object sender, EventArgs e)
-    {
-        Helpers.SearchDgv(staffDGV, "staff", staffSearchTB.Text);
-    }
+    private void StaffSearchBtn_Click(object sender, EventArgs e) => Helpers.SearchDgv(staffDGV, "staff", staffSearchTB.Text);
 
-    private void servicesSearchBtn_Click(object sender, EventArgs e)
-    {
-        Helpers.SearchDgv(serviceDGV, "services", servicesSearchTB.Text);
-    }
+    private void ServicesSearchBtn_Click(object sender, EventArgs e) => Helpers.SearchDgv(serviceDGV, "services", servicesSearchTB.Text);
 
-    private void officeCreateBtn_Click(object sender, EventArgs e)
+    private void OfficeCreateBtn_Click(object sender, EventArgs e)
     {
         var form = new AdminOffice();
         form.ShowDialog();
     }
 
-    private void officeUpdateBtn_Click(object sender, EventArgs e)
+    private void OfficeUpdateBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = officeDGV.CurrentRow;
         if (selectedRow == null) return;
@@ -122,7 +113,7 @@ public partial class Admin : Form
         }
     }
 
-    private void officeRemoveBtn_Click(object sender, EventArgs e)
+    private void OfficeRemoveBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = officeDGV.CurrentRow;
         if (selectedRow == null) return;
@@ -134,5 +125,24 @@ public partial class Admin : Form
         {
             Helpers.PopulateDgv(officeDGV, "office");
         }
+    }
+
+    private void officeSearchBtn_Click(object sender, EventArgs e) =>
+        Helpers.SearchDgv(officeDGV, "office", officeSearchTB.Text);
+
+    private void createAddressBtn_Click(object sender, EventArgs e)
+    {
+        var form = new AdminAddress();
+        form.ShowDialog();
+    }
+
+    private void updateAddressBtn_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void removeAddressBtn_Click(object sender, EventArgs e)
+    {
+
     }
 }

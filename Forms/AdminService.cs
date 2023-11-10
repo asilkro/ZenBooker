@@ -53,12 +53,10 @@ public partial class AdminService : Form
     #endregion
 
     #region Event Handlers
-    private void backBtn_Click(object sender, EventArgs e)
-    {
-        Close();
-    }
 
-    private void saveBtn_Click(object sender, EventArgs e)
+    private void BackBtn_Click(object sender, EventArgs e) => Close();
+
+    private void SaveBtn_Click(object sender, EventArgs e)
     {
         if (!IsThereAProblem())
         {

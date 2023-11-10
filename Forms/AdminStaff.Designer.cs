@@ -79,7 +79,7 @@ namespace ZenoBook.Forms
             saveBtn.TabIndex = 6;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // backBtn
             // 
@@ -90,7 +90,7 @@ namespace ZenoBook.Forms
             backBtn.TabIndex = 5;
             backBtn.Text = "Back";
             backBtn.UseVisualStyleBackColor = true;
-            backBtn.Click += backBtn_Click;
+            backBtn.Click += BackBtn_Click;
             // 
             // staffEmailTB
             // 
