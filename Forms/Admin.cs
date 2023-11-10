@@ -12,6 +12,7 @@ public partial class Admin : Form
         Helpers.PopulateDgv(staffDGV, "staff");
         Helpers.PopulateDgv(serviceDGV, "service");
         Helpers.PopulateDgv(officeDGV, "office");
+        Helpers.PopulateDgv(addressDGV, "address");
     }
 
     private void BackBtn_Click(object sender, EventArgs e) => Close();
@@ -132,17 +133,36 @@ public partial class Admin : Form
 
     private void createAddressBtn_Click(object sender, EventArgs e)
     {
-        var form = new AdminAddress();
-        form.ShowDialog();
+        var addressForm = new AdminAddress();
+        addressForm.ShowDialog();
     }
 
     private void updateAddressBtn_Click(object sender, EventArgs e)
     {
-
+        var selectedRow = addressDGV.CurrentRow;
+        if (selectedRow == null) return;
+        var row = addressDGV.Rows.IndexOf(selectedRow);
+        var selected = (int)addressDGV["address_id", row].Value;
+        {
+            using var connection = new Builder().Connect();
+            var address = connection.Query<Address>("address", selected).FirstOrDefault();
+            if (address == null) return;
+            var addressForm = new AdminAddress(address);
+            addressForm.ShowDialog();
+        }
     }
 
     private void removeAddressBtn_Click(object sender, EventArgs e)
     {
-
+        var selectedRow = addressDGV.CurrentRow;
+        if (selectedRow == null) return;
+        var row = addressDGV.Rows.IndexOf(selectedRow);
+        var selected = (int)addressDGV["address_id", row].Value;
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.DeleteAddress(selected);
+        if (result)
+        {
+            Helpers.PopulateDgv(addressDGV, "address");
+        }
     }
 }

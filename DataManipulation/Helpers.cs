@@ -19,8 +19,28 @@ public class Helpers
     private const char dash = '-';
     private const char semicolon = ';';
     private static readonly string _dropTable = "DROP table";
+
+    private static bool OnlyLettersDigitsSpaces(string s)
+    {
+        foreach (char c in s)
+        {
+            if (!Char.IsLetterOrDigit(c) && c != ' ')
+                return false;
+        }
+        return true;
+    }
+    private static bool OnlyLettersSpaces(string s)
+    {
+        foreach (char c in s)
+        {
+            if (!Char.IsLetter(c) && c != ' ')
+                return false;
+        }
+        return true;
+    }
+
     #endregion
-    
+
     #region Login Related
     public static bool ValidateLogin(string login, string password)
     {
@@ -124,6 +144,17 @@ public class Helpers
                         dgv.DataSource = officeDataTable;
                     }
                     break;
+
+                case "address":
+                    var addressSelectQuery = "SELECT * FROM " + tableName + " ORDER BY city, country, address_id;";
+                    var addressDataAdapter = new MySqlDataAdapter(addressSelectQuery, connection);
+                    using (addressDataAdapter)
+                    {
+                        var addresses = AddressToDataTable(addressDataAdapter, out var addressDataTable);
+                        AddAddressToRows(addressDataTable, addresses);
+                        dgv.DataSource = addressDataTable;
+                        break;
+                    }
             }
         }
     }
@@ -133,11 +164,12 @@ public class Helpers
             using var connection = new Builder().Connect();
 
             {
-                var searchType = WhatIsBeingSearched(searchQuery);
-                if (searchType == "default")
+                //var searchType = WhatIsBeingSearched(searchQuery);
+                var searchType = SearchType(searchQuery);
+                if (searchType == "unknown")
                 {
-                    MessageBox.Show("Invalid search parameter.");
-                    tableName = "discard";
+                    MessageBox.Show("There was a problem parsing your input. Check your entry and try again.","Error: Unable to parse entry.");
+                    return;
                 }
                 var sql = "";
                 MySqlDataAdapter? dataAdapter;
@@ -239,10 +271,11 @@ public class Helpers
                     case "address": //TODO: FINISH
                         sql = searchType switch
                         {
+                            "address" => "SELECT * FROM address WHERE address1 like '@VALUE%' ORDER BY city, address_id;",
                             "integer" =>
                                 "SELECT * FROM address WHERE address_id like '@VALUE%' ORDER BY address1, city, state;",
                             "name" =>
-                                "SELECT * FROM address WHERE office_name like '@VALUE%' ORDER BY office_name, office_id;",
+                                "SELECT * FROM address WHERE city like '@VALUE%' ORDER BY address1, state,;",
                             _ => sql
                         };
                         sql = sql.Replace("@VALUE", searchQuery);
@@ -436,7 +469,7 @@ public class Helpers
         addresses.AddRange(from DataRow row in dataTable.Rows
             select new Address
             {
-                address_id = (int)row["appointment_id"], // Set the correct property names
+                address_id = (int)row["address_id"], // Set the correct property names
                 address1 = row["address1"].ToString() ?? string.Empty,
                 address2 = row["address2"].ToString() ?? string.Empty,
                 city = row["city"].ToString() ?? string.Empty,
@@ -469,6 +502,58 @@ public class Helpers
 
     #endregion
 
+    public static string SearchType(string searchValue)
+    {
+        if (!NoProhibitedContent(searchValue)) return "bad"; // Don't wait to reject bad data!
+
+        var containsSlash = searchValue.Contains(slash);
+        var containsDash = searchValue.Contains(dash);
+        var containsAtSign = searchValue.Contains(atSign);
+        
+        var chars = searchValue.ToCharArray();
+        var result = "unknown";
+        
+        switch (chars.All(char.IsDigit))
+        {
+            case true:
+                result = "integer";
+                return result;
+            case false:
+                switch (containsDash || containsSlash)
+                {
+                    case true:
+                        result = "datetime";
+                        return result;
+                    case false:
+                        switch (containsAtSign)
+                        {
+                            case true:
+                                result = "email";
+                                return result;
+                            case false:
+                                switch (OnlyLettersSpaces(searchValue))
+                                {
+                                    case true:
+                                        result = "name";
+                                        return result;
+                                    case false:
+                                        switch (OnlyLettersDigitsSpaces(searchValue))
+                                        {
+                                            case true:
+                                                result = "address";
+                                                return result;
+                                            case false:
+                                                break;
+                                        }
+                                        break;
+                                }break;
+                        }break;
+                }break;
+        }
+        return result;
+    }
+
+
     public static string WhatIsBeingSearched(string valueToCheck)
     {
         var containsSlash = valueToCheck.Contains(slash);
@@ -496,9 +581,18 @@ public class Helpers
             return result; // If it has an @ sign, treat as an email address
         }
 
+
+        if (valueToCheck.Contains(space) && chars.All(char.IsAsciiLetterOrDigit))
+        {
+            result = "address";
+            return result;
+        }
+
         if (!valueToCheck.Contains(space) && !chars.All(char.IsAsciiLetter)) return result;
         result = "name";
         return result; // If it has a whitespace or is all letters, treat as a name
+
+
     }
     public static Address MakeAddress(string address1, string address2, string city, string state, string country)
     {

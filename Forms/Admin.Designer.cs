@@ -96,7 +96,7 @@ namespace ZenoBook.Forms
             staffSearchTB.Name = "staffSearchTB";
             staffSearchTB.PlaceholderText = "Enter staff name or email";
             staffSearchTB.Size = new Size(264, 23);
-            staffSearchTB.TabIndex = 28;
+            staffSearchTB.TabIndex = 1;
             // 
             // servicesSearchTB
             // 
@@ -105,12 +105,13 @@ namespace ZenoBook.Forms
             servicesSearchTB.Name = "servicesSearchTB";
             servicesSearchTB.PlaceholderText = "Search for services";
             servicesSearchTB.Size = new Size(264, 23);
-            servicesSearchTB.TabIndex = 27;
+            servicesSearchTB.TabIndex = 3;
             // 
             // serviceDGV
             // 
             serviceDGV.AllowUserToAddRows = false;
             serviceDGV.AllowUserToDeleteRows = false;
+            serviceDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             serviceDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             serviceDGV.Location = new Point(15, 291);
             serviceDGV.Margin = new Padding(3, 2, 3, 2);
@@ -295,6 +296,7 @@ namespace ZenoBook.Forms
             // 
             officeDGV.AllowUserToAddRows = false;
             officeDGV.AllowUserToDeleteRows = false;
+            officeDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             officeDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             officeDGV.Location = new Point(400, 65);
             officeDGV.Margin = new Padding(3, 2, 3, 2);
@@ -315,7 +317,7 @@ namespace ZenoBook.Forms
             officeSearchTB.Name = "officeSearchTB";
             officeSearchTB.PlaceholderText = "Enter Office Search Here";
             officeSearchTB.Size = new Size(264, 23);
-            officeSearchTB.TabIndex = 28;
+            officeSearchTB.TabIndex = 2;
             // 
             // officeSearchBtn
             // 
@@ -332,6 +334,7 @@ namespace ZenoBook.Forms
             // 
             addressDGV.AllowUserToAddRows = false;
             addressDGV.AllowUserToDeleteRows = false;
+            addressDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             addressDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             addressDGV.Location = new Point(400, 291);
             addressDGV.Margin = new Padding(3, 2, 3, 2);
@@ -395,7 +398,7 @@ namespace ZenoBook.Forms
             addressSearchTB.Name = "addressSearchTB";
             addressSearchTB.PlaceholderText = "Search for addresses";
             addressSearchTB.Size = new Size(264, 23);
-            addressSearchTB.TabIndex = 38;
+            addressSearchTB.TabIndex = 4;
             // 
             // AddressesLbl
             // 

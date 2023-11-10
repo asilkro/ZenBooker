@@ -1,16 +1,22 @@
 ﻿using ZenoBook.Classes;
+using ZenoBook.DataManipulation;
 
 namespace ZenoBook.Forms
 {
     public partial class AdminAddress : Form
     {
+        private readonly bool _existing;
         public AdminAddress()
         {
+            _existing = false;
             InitializeComponent();
+            
+            addressIdTB.Text = Helpers.AutoIncrementId("address");
         }
 
         public AdminAddress(Address addy)
         {
+            _existing = true;
             InitializeComponent();
             FillAddressTbs(addy);
         }
@@ -27,7 +33,24 @@ namespace ZenoBook.Forms
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            //TODO
+            var addyToSave = Helpers.MakeAddress(address1Tb.Text, address2Tb.Text,
+                cityTb.Text, stateTb.Text, countryTb.Text);
+
+            if (_existing)
+            {
+                addyToSave.address_id = int.Parse(addressIdTB.Text);
+                if (Helpers.UpdateAddress(addyToSave))
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                if (Helpers.InsertAddress(addyToSave, out int _))
+                {
+                    Close();
+                }
+            }
         }
 
         private void backBtn_Click(object sender, EventArgs e) => Close();
