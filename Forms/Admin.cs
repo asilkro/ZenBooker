@@ -16,24 +16,19 @@ public partial class Admin : Form
     }
 
     #region Staff Buttons
-    private void CreateStaffBtn_Click(object sender, EventArgs e)
-    {
-        var form = new AdminStaff();
-        form.ShowDialog();
-    }
+    private void CreateStaffBtn_Click(object sender, EventArgs e) => 
+        new AdminStaff().ShowDialog();
     private void RemoveStaffBtn_Click(object sender, EventArgs e)
-    {
+    { 
+        var selectedRow = staffDGV.CurrentRow;
+        if (selectedRow == null) return;
+        var row = staffDGV.Rows.IndexOf(selectedRow);
+        var selected = (int)staffDGV["staff_id", row].Value;
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.DeleteStaff(selected);
+        if (result)
         {
-            var selectedRow = staffDGV.CurrentRow;
-            if (selectedRow == null) return;
-            var row = staffDGV.Rows.IndexOf(selectedRow);
-            var selected = (int)staffDGV["staff_id", row].Value;
-            if (!Helpers.ConfirmedAction()) return;
-            var result = Helpers.DeleteStaff(selected);
-            if (result)
-            {
-                Helpers.PopulateDgv(staffDGV, "staff");
-            }
+            Helpers.PopulateDgv(staffDGV, "staff");
         }
     }
     private void UpdateStaffBtn_Click(object sender, EventArgs e)
@@ -53,11 +48,8 @@ public partial class Admin : Form
     #endregion
 
     #region Service Buttons
-    private void CreateServiceBtn_Click(object sender, EventArgs e)
-    {
-        var form = new AdminService();
-        form.ShowDialog();
-    }
+    private void CreateServiceBtn_Click(object sender, EventArgs e) =>
+        new AdminService().ShowDialog();
     private void RemoveServiceBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = serviceDGV.CurrentRow;
@@ -66,7 +58,7 @@ public partial class Admin : Form
         var selected = (int)serviceDGV["service_id", row].Value;
         if (!Helpers.ConfirmedAction()) return;
         var result = Helpers.DeleteService(selected);
-        if (result)
+        if (result) 
         {
             Helpers.PopulateDgv(serviceDGV, "service");
         }
@@ -88,11 +80,8 @@ public partial class Admin : Form
     #endregion
 
     #region Office Buttons
-    private void OfficeCreateBtn_Click(object sender, EventArgs e)
-    {
-        var form = new AdminOffice();
-        form.ShowDialog();
-    }
+    private void OfficeCreateBtn_Click(object sender, EventArgs e) => 
+        new AdminOffice().ShowDialog();
     private void OfficeRemoveBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = officeDGV.CurrentRow;
@@ -123,11 +112,9 @@ public partial class Admin : Form
     #endregion
 
     #region Address Buttons
-    private void CreateAddressBtn_Click(object sender, EventArgs e)
-    {
-        var addressForm = new AdminAddress();
-        addressForm.ShowDialog();
-    }
+    private void CreateAddressBtn_Click(object sender, EventArgs e) => 
+        new AdminAddress().ShowDialog();
+    
     private void RemoveAddressBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = addressDGV.CurrentRow;
@@ -169,13 +156,9 @@ public partial class Admin : Form
     #endregion
 
     #region Other Buttons
-    private void ChangePWbtn_Click(object sender, EventArgs e)
-    {
-        var pwForm = new AdminPw();
-        pwForm.ShowDialog();
-    }
-    private void BackBtn_Click(object sender, EventArgs e) => Close();
-
+    private void ChangePasswordBtn_Click(object sender, EventArgs e) => 
+        new AdminPw().ShowDialog();
+    private void BackBtn_Click(object sender, EventArgs e) => 
+        Close();
     #endregion
-
 }

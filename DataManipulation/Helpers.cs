@@ -586,8 +586,6 @@ public class Helpers
                 break;
             case DialogResult.Continue:
                 break;
-            default:
-                break;
         }
 
         return buttonPressed == "Yes";
