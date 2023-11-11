@@ -1,5 +1,4 @@
-﻿using System.Data;
-using RepoDb;
+﻿using RepoDb;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -10,8 +9,18 @@ public partial class Main : Form
     public Main()
     {
         InitializeComponent();
+        ApptSearchTip();
         Helpers.PopulateDgv(apptsDataGridView, "appointment");
         Helpers.PopulateDgv(cxDataGridView, "customer");
+    }
+
+    private void ApptSearchTip()
+    {
+        var apptTip = new ToolTip();
+        apptTip.ToolTipTitle = "Appt Search Tip";
+        apptsDataGridView.ShowCellToolTips = true;
+        apptTip.Tag = apptsDataGridView;
+        apptTip.SetToolTip(apptsDataGridView, "Use the customer search section to find a customer Id for this search.");
     }
 
 

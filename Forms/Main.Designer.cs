@@ -59,7 +59,7 @@ namespace ZenoBook.Forms
             // 
             // logoutBtn
             // 
-            logoutBtn.Location = new Point(672, 440);
+            logoutBtn.Location = new Point(672, 491);
             logoutBtn.Name = "logoutBtn";
             logoutBtn.Size = new Size(100, 44);
             logoutBtn.TabIndex = 1;
@@ -71,7 +71,7 @@ namespace ZenoBook.Forms
             // 
             CxLabel.AutoSize = true;
             CxLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            CxLabel.Location = new Point(32, 244);
+            CxLabel.Location = new Point(32, 317);
             CxLabel.Name = "CxLabel";
             CxLabel.Size = new Size(85, 21);
             CxLabel.TabIndex = 2;
@@ -79,7 +79,7 @@ namespace ZenoBook.Forms
             // 
             // CreateCxBtn
             // 
-            CreateCxBtn.Location = new Point(266, 438);
+            CreateCxBtn.Location = new Point(266, 511);
             CreateCxBtn.Margin = new Padding(3, 2, 3, 2);
             CreateCxBtn.Name = "CreateCxBtn";
             CreateCxBtn.Size = new Size(82, 22);
@@ -90,7 +90,7 @@ namespace ZenoBook.Forms
             // 
             // UpdateCxBtn
             // 
-            UpdateCxBtn.Location = new Point(350, 438);
+            UpdateCxBtn.Location = new Point(350, 511);
             UpdateCxBtn.Margin = new Padding(3, 2, 3, 2);
             UpdateCxBtn.Name = "UpdateCxBtn";
             UpdateCxBtn.Size = new Size(82, 22);
@@ -101,7 +101,7 @@ namespace ZenoBook.Forms
             // 
             // RemoveCxBtn
             // 
-            RemoveCxBtn.Location = new Point(435, 438);
+            RemoveCxBtn.Location = new Point(435, 511);
             RemoveCxBtn.Margin = new Padding(3, 2, 3, 2);
             RemoveCxBtn.Name = "RemoveCxBtn";
             RemoveCxBtn.Size = new Size(82, 22);
@@ -156,10 +156,10 @@ namespace ZenoBook.Forms
             // Logo
             // 
             Logo.Image = Properties.Resources.Zenobia_Transparent;
-            Logo.Location = new Point(684, 0);
+            Logo.Location = new Point(664, 0);
             Logo.Margin = new Padding(3, 2, 3, 2);
             Logo.Name = "Logo";
-            Logo.Size = new Size(100, 100);
+            Logo.Size = new Size(120, 120);
             Logo.SizeMode = PictureBoxSizeMode.StretchImage;
             Logo.TabIndex = 10;
             Logo.TabStop = false;
@@ -178,6 +178,7 @@ namespace ZenoBook.Forms
             apptsDataGridView.RowHeadersWidth = 51;
             apptsDataGridView.RowTemplate.Height = 29;
             apptsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            apptsDataGridView.ShowCellErrors = false;
             apptsDataGridView.ShowEditingIcon = false;
             apptsDataGridView.Size = new Size(485, 141);
             apptsDataGridView.TabIndex = 11;
@@ -187,7 +188,7 @@ namespace ZenoBook.Forms
             cxDataGridView.AllowUserToAddRows = false;
             cxDataGridView.AllowUserToDeleteRows = false;
             cxDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            cxDataGridView.Location = new Point(32, 293);
+            cxDataGridView.Location = new Point(32, 366);
             cxDataGridView.Margin = new Padding(3, 2, 3, 2);
             cxDataGridView.Name = "cxDataGridView";
             cxDataGridView.ReadOnly = true;
@@ -196,12 +197,13 @@ namespace ZenoBook.Forms
             cxDataGridView.RowTemplate.Height = 29;
             cxDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             cxDataGridView.ShowCellErrors = false;
+            cxDataGridView.ShowEditingIcon = false;
             cxDataGridView.Size = new Size(485, 141);
             cxDataGridView.TabIndex = 12;
             // 
             // cxSearchTB
             // 
-            cxSearchTB.Location = new Point(32, 267);
+            cxSearchTB.Location = new Point(32, 340);
             cxSearchTB.Margin = new Padding(2, 1, 2, 1);
             cxSearchTB.MaxLength = 64;
             cxSearchTB.Name = "cxSearchTB";
@@ -232,7 +234,7 @@ namespace ZenoBook.Forms
             // 
             // cxSearchBtn
             // 
-            cxSearchBtn.Location = new Point(305, 267);
+            cxSearchBtn.Location = new Point(305, 340);
             cxSearchBtn.Margin = new Padding(0);
             cxSearchBtn.Name = "cxSearchBtn";
             cxSearchBtn.Size = new Size(81, 22);
@@ -296,7 +298,7 @@ namespace ZenoBook.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = logoutBtn;
-            ClientSize = new Size(784, 495);
+            ClientSize = new Size(784, 561);
             Controls.Add(monthApptsBtn);
             Controls.Add(weekApptsBtn);
             Controls.Add(tomorrowApptsBtn);

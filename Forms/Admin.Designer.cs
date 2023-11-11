@@ -111,7 +111,7 @@ namespace ZenoBook.Forms
             // 
             serviceDGV.AllowUserToAddRows = false;
             serviceDGV.AllowUserToDeleteRows = false;
-            serviceDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            serviceDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             serviceDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             serviceDGV.Location = new Point(15, 291);
             serviceDGV.Margin = new Padding(3, 2, 3, 2);
@@ -296,7 +296,7 @@ namespace ZenoBook.Forms
             // 
             officeDGV.AllowUserToAddRows = false;
             officeDGV.AllowUserToDeleteRows = false;
-            officeDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            officeDGV.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             officeDGV.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             officeDGV.Location = new Point(400, 65);
             officeDGV.Margin = new Padding(3, 2, 3, 2);

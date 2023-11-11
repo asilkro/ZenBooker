@@ -1,12 +1,13 @@
-﻿using System.Data;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.ComponentModel;
 using log4net;
 using Microsoft.VisualBasic;
 using MySqlConnector;
 using RepoDb;
-using RepoDb.Extensions;
+using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 using ZenoBook.Classes;
+using ZenoBook.Forms;
 
 namespace ZenoBook.DataManipulation;
 
@@ -67,7 +68,7 @@ public class Helpers
         StringBuilder builder = new();
         foreach (var t in bytes)
         {
-            builder.Append(t.ToString("x2")); 
+            builder.Append(t.ToString("x2"));
             // Format string to match DB; could be changed in future
             // if changes to the hashes in the DB is desired.
         }
@@ -99,6 +100,7 @@ public class Helpers
                         AddApptToRows(appointmentsDataTable, appointments);
                         dgv.DataSource = appointmentsDataTable;
                     }
+                    
                     break;
 
                 case "customer":
@@ -168,71 +170,71 @@ public class Helpers
                 var searchType = SearchType(searchQuery);
                 if (searchType == "unknown")
                 {
-                    MessageBox.Show("There was a problem parsing your input. Check your entry and try again.","Error: Unable to parse entry.");
+                    MessageBox.Show("There was an issue parsing your input. Check your entry and try again.", "Error: Unable to parse entry.");
                     return;
                 }
                 var sql = "";
                 MySqlDataAdapter? dataAdapter;
                 switch (tableName)
-                { 
+                {
                     case "appointment":
-                    {
-                        sql = searchType switch
                         {
-                            "datetime" => "SELECT * FROM appointment WHERE DATE(start) like '%@VALUE%' order by start;",
-                            "integer" => "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;",
-                            _ => sql
-                        };
-                        sql = sql.Replace("@VALUE", searchQuery);
-                        dataAdapter = new MySqlDataAdapter(sql, connection);
-                        using (dataAdapter)
-                        {
-                            var appointments = ApptToDataTable(dataAdapter, out var appointmentsDataTable);
-                            AddApptToRows(appointmentsDataTable, appointments);
-                            dgv.DataSource = appointmentsDataTable;
+                            sql = searchType switch
+                            {
+                                "datetime" => "SELECT * FROM appointment WHERE DATE(start) like '%@VALUE%' order by start;",
+                                "integer" => "SELECT * FROM appointment WHERE customer_id = '@VALUE' order by start;",
+                                _ => sql
+                            };
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            dataAdapter = new MySqlDataAdapter(sql, connection);
+                            using (dataAdapter)
+                            {
+                                var appointments = ApptToDataTable(dataAdapter, out var appointmentsDataTable);
+                                AddApptToRows(appointmentsDataTable, appointments);
+                                dgv.DataSource = appointmentsDataTable;
+                            }
+                            break;
                         }
-                        break;
-                    }
                     case "customer":
-                    {
-                        sql = searchType switch
                         {
-                            "email" => "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;",
-                            "integer" => "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;",
-                            "name" =>
-                                "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';",
-                            _ => sql
-                        };
-                        sql = sql.Replace("@VALUE", searchQuery);
-                        dataAdapter = new MySqlDataAdapter(sql, connection);
-                        using (dataAdapter)
-                        {
-                            var customers = CxToDataTable(dataAdapter, out var customerDataTable);
-                            AddCxToRows(customerDataTable, customers);
-                            dgv.DataSource = customerDataTable;
-                        }
+                            sql = searchType switch
+                            {
+                                "email" => "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;",
+                                "integer" => "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;",
+                                "name" =>
+                                    "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';",
+                                _ => sql
+                            };
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            dataAdapter = new MySqlDataAdapter(sql, connection);
+                            using (dataAdapter)
+                            {
+                                var customers = CxToDataTable(dataAdapter, out var customerDataTable);
+                                AddCxToRows(customerDataTable, customers);
+                                dgv.DataSource = customerDataTable;
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
                     case "service":
-                    {
-                        sql = searchType switch
                         {
-                            "name" => "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;",
-                            "integer" => "SELECT * FROM service WHERE service_id LIKE '@VALUE';",
-                            _ => sql
-                        };
-                        sql = sql.Replace("@VALUE", searchQuery);
-                        dataAdapter = new MySqlDataAdapter(sql, connection);
-                        using (dataAdapter)
-                        {
-                            var services = ServiceToDataTable(dataAdapter, out var serviceDataTable);
-                            AddServiceToRows(serviceDataTable, services);
-                            dgv.DataSource = serviceDataTable;
-                        }
+                            sql = searchType switch
+                            {
+                                "name" => "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;",
+                                "integer" => "SELECT * FROM service WHERE service_id LIKE '@VALUE';",
+                                _ => sql
+                            };
+                            sql = sql.Replace("@VALUE", searchQuery);
+                            dataAdapter = new MySqlDataAdapter(sql, connection);
+                            using (dataAdapter)
+                            {
+                                var services = ServiceToDataTable(dataAdapter, out var serviceDataTable);
+                                AddServiceToRows(serviceDataTable, services);
+                                dgv.DataSource = serviceDataTable;
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
                     case "staff":
                         sql = searchType switch
                         {
@@ -360,12 +362,12 @@ public class Helpers
         customers.AddRange(customerDataTable.Rows.Cast<DataRow>()
             .Select(row => new Customer
             {
-                customer_id = (int) row["Customer_Id"],
+                customer_id = (int)row["Customer_Id"],
                 first = row["First"].ToString() ?? string.Empty,
                 last = row["Last"].ToString() ?? string.Empty,
                 phone = row["Phone"].ToString() ?? string.Empty,
                 email = row["Email"].ToString() ?? string.Empty,
-                preferred_office = Convert.IsDBNull(row["Preferred_Office"]) ? 1 : (int) row["Preferred_Office"]
+                preferred_office = Convert.IsDBNull(row["Preferred_Office"]) ? 1 : (int)row["Preferred_Office"]
             }));
     }
 
@@ -387,18 +389,18 @@ public class Helpers
     private static void AddApptToRows(DataTable dataTable, List<UnifiedApptData> unifiedApptDatas)
     {
         unifiedApptDatas.AddRange(from DataRow row in dataTable.Rows
-            select new UnifiedApptData
-            {
-                appointment_id = (int) row["appointment_id"], // Set the correct property names
-                customer_id = (int) row["customer_id"],
-                staff_id = (int) row["staff_id"],
-                service_id = (int) row["service_id"],
-                start = (DateTime) row["start"],
-                end = (DateTime) row["end"],
-                office_id = (int) row["office_id"],
-                service_address_id = (int) row["service_address_id"],
-                inhomeservice = (sbyte) (int) row["inhomeservice"]
-            });
+                                  select new UnifiedApptData
+                                  {
+                                      appointment_id = (int)row["appointment_id"], // Set the correct property names
+                                      customer_id = (int)row["customer_id"],
+                                      staff_id = (int)row["staff_id"],
+                                      service_id = (int)row["service_id"],
+                                      start = (DateTime)row["start"],
+                                      end = (DateTime)row["end"],
+                                      office_id = (int)row["office_id"],
+                                      service_address_id = (int)row["service_address_id"],
+                                      inhomeservice = (sbyte)(int)row["inhomeservice"]
+                                  });
     }
 
     private static List<Staff> StaffToDataTable(MySqlDataAdapter dataAdapter, out DataTable staffDataTable)
@@ -417,16 +419,17 @@ public class Helpers
 
     private static void AddStaffToRows(DataTable staffDataTable, List<Staff> staff)
     {
-        staff.AddRange(from DataRow row in staffDataTable.Rows select new Staff
-            {
-                staff_id = (int) row["staff_id"],
-                name = row["name"].ToString() ?? string.Empty,
-                email = row["email"].ToString() ?? string.Empty,
-                office_id = (int) row["office_id"],
-                phone = row["phone"].ToString() ?? string.Empty,
-                user_id = (int)row["user_id"],
+        staff.AddRange(from DataRow row in staffDataTable.Rows
+                       select new Staff
+                       {
+                           staff_id = (int)row["staff_id"],
+                           name = row["name"].ToString() ?? string.Empty,
+                           email = row["email"].ToString() ?? string.Empty,
+                           office_id = (int)row["office_id"],
+                           phone = row["phone"].ToString() ?? string.Empty,
+                           user_id = (int)row["user_id"],
 
-        });
+                       });
     }
     private static List<Service> ServiceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
     {
@@ -467,15 +470,15 @@ public class Helpers
     private static void AddAddressToRows(DataTable dataTable, List<Address> addresses)
     {
         addresses.AddRange(from DataRow row in dataTable.Rows
-            select new Address
-            {
-                address_id = (int)row["address_id"], // Set the correct property names
-                address1 = row["address1"].ToString() ?? string.Empty,
-                address2 = row["address2"].ToString() ?? string.Empty,
-                city = row["city"].ToString() ?? string.Empty,
-                state = row["state"].ToString() ?? string.Empty,
-                country = row["country"].ToString() ?? string.Empty,
-            });
+                           select new Address
+                           {
+                               address_id = (int)row["address_id"], // Set the correct property names
+                               address1 = row["address1"].ToString() ?? string.Empty,
+                               address2 = row["address2"].ToString() ?? string.Empty,
+                               city = row["city"].ToString() ?? string.Empty,
+                               state = row["state"].ToString() ?? string.Empty,
+                               country = row["country"].ToString() ?? string.Empty,
+                           });
     }
 
     private static void AddServiceToRows(DataTable serviceDataTable, List<Service> services)
@@ -483,7 +486,7 @@ public class Helpers
         services.AddRange(serviceDataTable.Rows.Cast<DataRow>()
             .Select(row => new Service
             {
-                service_id = (int) row["service_id"],
+                service_id = (int)row["service_id"],
                 service_name = row["service_name"].ToString() ?? string.Empty,
                 service_description = row["service_description"].ToString() ?? string.Empty
             }));
@@ -509,10 +512,10 @@ public class Helpers
         var containsSlash = searchValue.Contains(slash);
         var containsDash = searchValue.Contains(dash);
         var containsAtSign = searchValue.Contains(atSign);
-        
+
         var chars = searchValue.ToCharArray();
         var result = "unknown";
-        
+
         switch (chars.All(char.IsDigit))
         {
             case true:
@@ -546,9 +549,12 @@ public class Helpers
                                                 break;
                                         }
                                         break;
-                                }break;
-                        }break;
-                }break;
+                                }
+                                break;
+                        }
+                        break;
+                }
+                break;
         }
         return result;
     }
@@ -610,7 +616,7 @@ public class Helpers
     public static bool ConfirmedAction()
     {
         var buttonPressed = "No";
-        var confirmResult = MessageBox.Show("Click yes to confirm your action.", "Confirmation Required", MessageBoxButtons.YesNo,MessageBoxIcon.None,MessageBoxDefaultButton.Button2);
+        var confirmResult = MessageBox.Show("Click yes to confirm your action.", "Confirmation Required", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2);
         switch (confirmResult)
         {
             case DialogResult.Yes:
@@ -1119,27 +1125,27 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-                if (connection.State != ConnectionState.Open)
-                {
-                    connection.Open();
-                }
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
 
-                var fields = Field.Parse<UnifiedApptData>(e => new
-                {
-                    e.appointment_id,
-                    e.customer_id,
-                    e.staff_id,
-                    e.office_id,
-                    e.service_id,
-                    e.start,
-                    e.end,
-                    e.inhomeservice,
-                    e.service_address_id
-                });
-                var sql = "SELECT * FROM appointment WHERE appointment_id = @appt_id";
-                sql = sql.Replace("@appt_id", apptId.ToString());
-                appt = connection.ExecuteQuery<UnifiedApptData>(sql).FirstOrDefault();
-                return appt;
+            var fields = Field.Parse<UnifiedApptData>(e => new
+            {
+                e.appointment_id,
+                e.customer_id,
+                e.staff_id,
+                e.office_id,
+                e.service_id,
+                e.start,
+                e.end,
+                e.inhomeservice,
+                e.service_address_id
+            });
+            var sql = "SELECT * FROM appointment WHERE appointment_id = @appt_id";
+            sql = sql.Replace("@appt_id", apptId.ToString());
+            appt = connection.ExecuteQuery<UnifiedApptData>(sql).FirstOrDefault();
+            return appt;
         }
         catch (Exception e)
         {
@@ -1190,7 +1196,7 @@ public class Helpers
         {
             {
                 var id = connection.Insert(entity: appt,
-                    fields: fields,tableName:"appointment");
+                    fields: fields, tableName: "appointment");
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " created.", "Appointment Created");
             }
             return true;
@@ -1204,7 +1210,7 @@ public class Helpers
     public static bool UpdateAppt(UnifiedApptData appt)
     {
         using var connection = new Builder().Connect();
-        
+
         var fields = Field.Parse<UnifiedApptData>(e => new
         {
             appt.appointment_id,
@@ -1220,7 +1226,7 @@ public class Helpers
         try
         {
             {
-                var count = connection.Update(entity:appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
+                var count = connection.Update(entity: appt, fields: fields, where: e => e.appointment_id == appt.appointment_id);
                 MessageBox.Show(count + " appointment with Id: " + appt.appointment_id + " updated.", "Appointment Updated");
             }
             return true;

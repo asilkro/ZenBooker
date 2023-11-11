@@ -45,7 +45,7 @@ public partial class FormCustomer : Form
 
     private void validateBtn_Click(object sender, EventArgs e)
     {
-        if(!IsThereAProblem())
+        if (!IsThereAProblem())
         {
             validToggle(true);
             return;

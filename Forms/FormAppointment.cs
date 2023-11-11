@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using log4net;
+﻿using log4net;
 using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
@@ -48,7 +47,7 @@ public partial class FormAppointment : Form
                 break;
         }
         UpdateTbs(appt);
-        dateCalendar.SetSelectionRange(start,end);
+        dateCalendar.SetSelectionRange(start, end);
         startDtPicker.Value = start;
         endDtPicker.Value = end;
         apptIdTB.Text = apptIdTB.Text.IsNullOrEmpty() switch
