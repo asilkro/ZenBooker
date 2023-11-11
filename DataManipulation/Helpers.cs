@@ -586,6 +586,8 @@ public class Helpers
                 break;
             case DialogResult.Continue:
                 break;
+            default:
+                break;
         }
 
         return buttonPressed == "Yes";
@@ -729,7 +731,6 @@ public class Helpers
     public static Staff? ReturnStaff(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        const char atSign = '@';
         if (searchTerm.Contains(atSign))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.email == searchTerm).FirstOrDefault();
@@ -810,7 +811,6 @@ public class Helpers
     {
         using var connection = new Builder().Connect();
         const char space = ' ';
-        const char atSign = '@';
 
         if (searchTerm.Contains(space))
         {
@@ -917,7 +917,7 @@ public class Helpers
         try
         {
             connection.Insert("office", office);
-            MessageBox.Show("Office" + " created.", "Office Created");
+            MessageBox.Show("Office " + office.office_id + " created.", "Office Created");
             return true;
         }
         catch (Exception e)

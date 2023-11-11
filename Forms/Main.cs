@@ -36,16 +36,13 @@ public partial class Main : Form
 
     private void LogoutBtn_Click(object sender, EventArgs e)
     {
-        var newLogin = new Login();
-        newLogin.Show();
+        var newLogin = new Login(); 
+        newLogin.Show(); 
         Close();
     }
 
-    private void CreateApptBtn_Click(object sender, EventArgs e)
-    {
-        var apptForm = new FormAppointment();
-        apptForm.ShowDialog();
-    }
+    private void CreateApptBtn_Click(object sender, EventArgs e) => 
+        new FormAppointment().ShowDialog();
 
     private void UpdateApptBtn_Click(object sender, EventArgs e)
     {
@@ -79,11 +76,8 @@ public partial class Main : Form
         }
     }
 
-    private void CreateCxBtnClick(object sender, EventArgs e)
-    {
-        var cxForm = new FormCustomer();
-        cxForm.ShowDialog();
-    }
+    private void CreateCxBtnClick(object sender, EventArgs e) =>
+        new FormCustomer().ShowDialog();
 
     private void UpdateCxBtn_Click(object sender, EventArgs e)
     {
