@@ -85,15 +85,12 @@ public partial class AdminService : Form
                         {
                             Close();
                         }
-
                         break;
                 }
             }
             catch (Exception ex)
             {
-
                 LogManager.GetLogger("LoggingRepo").Warn(e, ex);
-
             }
         }
 

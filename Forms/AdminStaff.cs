@@ -6,14 +6,17 @@ namespace ZenoBook.Forms;
 
 public partial class AdminStaff : Form
 {
+    private readonly bool _existing;
     public AdminStaff()
     {
+        _existing = false;
         InitializeComponent();
         staffIdTB.Text = Helpers.AutoIncrementId("staff");
     }
 
     public AdminStaff(Staff staff)
     {
+        _existing = true;
         InitializeComponent();
         PopulateStaffDetails(staff);
     }
@@ -23,7 +26,6 @@ public partial class AdminStaff : Form
     {
         var staff = new Staff
         {
-            staff_id = int.Parse(staffIdTB.Text),
             user_id = int.Parse(userIdTB.Text),
             office_id = int.Parse(officeIdTB.Text),
             name = staffNameTB.Text,
@@ -83,24 +85,29 @@ public partial class AdminStaff : Form
             var staff = MakeStaffObject();
             try
             {
-                if (Helpers.ReturnStaff(staffNameTB.Text) != null || Helpers.ReturnStaff(staffEmailTB.Text) != null)
-                {
-                    Helpers.UpdateStaff(staff);
-                    Close();
-                }
-                else
-                {
-                    Helpers.InsertStaff(staff);
-                    Close();
-                }
+                switch (_existing)
+            {
+                case true:
+                    staff.staff_id = int.Parse(staffIdTB.Text);
+                    if (Helpers.UpdateStaff(staff))
+                    {
+                        Close();
+                    }
+                    break;
+                case false:
+                    if (Helpers.InsertStaff(staff))
+                    {
+                        Close();
+                    }
+                    break;
+
+            } 
             }
             catch (Exception ex)
             {
                 LogManager.GetLogger("LoggingRepo").Warn(e, ex);
             }
         }
-
     }
-
     #endregion
 }

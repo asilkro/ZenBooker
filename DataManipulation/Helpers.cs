@@ -309,9 +309,9 @@ public class Helpers
                     selectQuery =
                         "SELECT * FROM appointment WHERE DATE(start) = CURDATE() ORDER BY start, inhomeservice;";
                     break;
-                case "tomorrow":
+                case "tomorrow": //uses MySQL server sysdate
                     selectQuery =
-                        "SELECT * FROM appointment WHERE DATE(start) = DATE_ADD(CURDATE(), interval 1 day) ORDER BY start, inhomeservice;";
+                        "SELECT * FROM appointment WHERE DATE_FORMAT(start, '%Y-%m-%d') = date_sub(DATE_FORMAT(SYSDATE(), '%Y-%m-%d'), INTERVAL 1 DAY) ORDER BY start, inhomeservice;";
                     break;
                 case "week":
                     selectQuery =

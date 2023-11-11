@@ -73,6 +73,7 @@
             saveBtn.TabIndex = 6;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // backBtn
             // 
@@ -83,6 +84,7 @@
             backBtn.TabIndex = 5;
             backBtn.Text = "Back";
             backBtn.UseVisualStyleBackColor = true;
+            backBtn.Click += BackBtn_Click;
             // 
             // AdminOffice
             // 

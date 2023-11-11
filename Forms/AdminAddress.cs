@@ -10,7 +10,6 @@ namespace ZenoBook.Forms
         {
             _existing = false;
             InitializeComponent();
-
             addressIdTB.Text = Helpers.AutoIncrementId("address");
         }
 
@@ -36,20 +35,23 @@ namespace ZenoBook.Forms
             var addyToSave = Helpers.MakeAddress(address1Tb.Text, address2Tb.Text,
                 cityTb.Text, stateTb.Text, countryTb.Text);
 
-            if (_existing)
+            switch (_existing)
             {
-                addyToSave.address_id = int.Parse(addressIdTB.Text);
-                if (Helpers.UpdateAddress(addyToSave))
-                {
-                    Close();
-                }
-            }
-            else
-            {
-                if (Helpers.InsertAddress(addyToSave, out int _))
-                {
-                    Close();
-                }
+                case true:
+                    addyToSave.address_id = int.Parse(addressIdTB.Text);
+                    if (Helpers.UpdateAddress(addyToSave))
+                    {
+                        Close();
+                    }
+
+                    break;
+                case false:
+                    if (Helpers.InsertAddress(addyToSave, out int _))
+                    {
+                        Close();
+                    }
+
+                    break;
             }
         }
 
