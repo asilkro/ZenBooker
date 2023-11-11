@@ -2,20 +2,20 @@
 
 namespace ZenoBook.Forms;
 
-public partial class AdminPW : Form
+public partial class AdminPw : Form
 {
-    public AdminPW()
+    public AdminPw()
     {
         InitializeComponent();
     }
 
 
-    private void backBtn_Click(object sender, EventArgs e)
+    private void BackBtn_Click(object sender, EventArgs e)
     {
         Close();
     }
 
-    private void saveBtn_Click(object sender, EventArgs e)
+    private void SaveBtn_Click(object sender, EventArgs e)
     {
         if (!Helpers.ValidateLogin(userTb.Text, oldPwTB.Text)) return;
         if (!Helpers.DoTheyMatch(newPwTB1.Text, newPwTB2.Text))

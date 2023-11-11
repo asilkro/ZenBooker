@@ -12,7 +12,6 @@ public partial class FormAppointment : Form
     private static readonly DateTime DefaultStart = new(TomorrowDate.Year, TomorrowDate.Month, TomorrowDate.Day, NowHours, 00, 00);
     private static readonly DateTime DefaultEnd = DefaultStart.AddHours(1);
 
-
     public FormAppointment()
     {
         InitializeComponent();
@@ -212,7 +211,7 @@ public partial class FormAppointment : Form
 
     private void SaveAppointmentData()
     {
-        if (this.Controls.OfType<TextBox>().Any(tb => !Helpers.NoProhibitedContent(tb.Text)))
+        if (Controls.OfType<TextBox>().Any(tb => !Helpers.NoProhibitedContent(tb.Text)))
         {
             return;
         }
@@ -460,7 +459,7 @@ public partial class FormAppointment : Form
 
     private void SaveBtn_Click(object sender, EventArgs e)
     {
-        if (!(homeRadioBtn.Checked) && !(officeRadioBtn.Checked))
+        if (!homeRadioBtn.Checked && !officeRadioBtn.Checked)
         {
             MessageBox.Show("Select an appointment type to continue", "Appointment type required.");
         }

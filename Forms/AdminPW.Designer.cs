@@ -2,7 +2,7 @@
 
 namespace ZenoBook.Forms
 {
-    partial class AdminPW
+    partial class AdminPw
     {
         /// <summary>
         /// Required designer variable.
@@ -122,7 +122,7 @@ namespace ZenoBook.Forms
             backBtn.TabIndex = 32;
             backBtn.Text = "Back";
             backBtn.UseVisualStyleBackColor = true;
-            backBtn.Click += backBtn_Click;
+            backBtn.Click += BackBtn_Click;
             // 
             // saveBtn
             // 
@@ -132,7 +132,7 @@ namespace ZenoBook.Forms
             saveBtn.TabIndex = 33;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = true;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // AdminPW
             // 
@@ -150,7 +150,7 @@ namespace ZenoBook.Forms
             Controls.Add(currentPwLBL);
             Controls.Add(oldPwTB);
             Controls.Add(userTb);
-            Name = "AdminPW";
+            Name = "AdminPw";
             StartPosition = FormStartPosition.CenterParent;
             Text = "AdminPW";
             ResumeLayout(false);

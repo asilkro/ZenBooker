@@ -37,6 +37,9 @@ internal partial class Builder
             case ConnectionState.Broken:
                 connection.Dispose();
                 break;
+            case ConnectionState.Connecting:
+            case ConnectionState.Executing:
+            case ConnectionState.Fetching:
             default:
                 connection.Open();
                 break;

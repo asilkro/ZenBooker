@@ -248,7 +248,7 @@ namespace ZenoBook.Forms
             changePWbtn.TabIndex = 32;
             changePWbtn.Text = "Change Password";
             changePWbtn.UseVisualStyleBackColor = false;
-            changePWbtn.Click += changePWbtn_Click;
+            changePWbtn.Click += ChangePWbtn_Click;
             // 
             // OfficesLbl
             // 

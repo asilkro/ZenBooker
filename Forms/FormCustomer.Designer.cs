@@ -60,7 +60,7 @@ namespace ZenoBook.Forms
             saveBtn.TabIndex = 2;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = false;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // tbFirstName
             // 
@@ -116,7 +116,7 @@ namespace ZenoBook.Forms
             validateBtn.TabIndex = 9;
             validateBtn.Text = "Validate";
             validateBtn.UseVisualStyleBackColor = false;
-            validateBtn.Click += validateBtn_Click;
+            validateBtn.Click += ValidateBtn_Click;
             // 
             // cxIdTB
             // 

@@ -5,15 +5,18 @@ namespace ZenoBook.Forms;
 
 public partial class FormCustomer : Form
 {
+    private readonly bool _existing;
     public FormCustomer()
     {
+        _existing = false;
         InitializeComponent();
-        validToggle(false);
+        ValidToggle(false);
         cxIdTB.Text = Helpers.AutoIncrementId("customer");
     }
 
     public FormCustomer(Customer customer)
     {
+        _existing = true;
         InitializeComponent();
         tbFirstName.Text = customer.first;
         tbLastName.Text = customer.last;
@@ -21,10 +24,10 @@ public partial class FormCustomer : Form
         tbEmail.Text = customer.email;
         tbOffice.Text = customer.preferred_office.ToString();
         cxIdTB.Text = customer.customer_id.ToString();
-        validToggle(false);
+        ValidToggle(false);
     }
 
-    private void validToggle(bool valid)
+    private void ValidToggle(bool valid)
     {
         switch (valid)
         {
@@ -43,16 +46,16 @@ public partial class FormCustomer : Form
         }
     }
 
-    private void validateBtn_Click(object sender, EventArgs e)
+    private void ValidateBtn_Click(object sender, EventArgs e)
     {
         if (!IsThereAProblem())
         {
-            validToggle(true);
+            ValidToggle(true);
             return;
         }
         if (IsThereAProblem())
         {
-            validToggle(false);
+            ValidToggle(false);
         }
     }
 
@@ -67,13 +70,13 @@ public partial class FormCustomer : Form
                     !string.IsNullOrEmpty(c.Text))
                 {
                     result = false;
-                    break;
                 }
-        }
 
-        if (int.TryParse(cxIdTB.Text, out _))
-        {
-            result = false;
+            if (c is not TextBox) continue;
+            if (Helpers.NoProhibitedContent(c.Text))
+            {
+                result = false;
+            }
         }
 
         if (int.TryParse(tbPhone.Text, out _))
@@ -84,31 +87,31 @@ public partial class FormCustomer : Form
         return result;
     }
 
-    private void saveBtn_Click(object sender, EventArgs e)
+    private void SaveBtn_Click(object sender, EventArgs e)
     {
         var cx = new Customer
         {
-            customer_id = int.Parse(cxIdTB.Text),
             first = tbFirstName.Text,
             last = tbLastName.Text,
             phone = tbPhone.Text,
             email = tbEmail.Text,
             preferred_office = int.Parse(tbOffice.Text)
         };
-
-        if (Helpers.DoesThisCxExist(cx))
+        switch (_existing)
         {
-            if (Helpers.UpdateCustomer(cx))
-            {
-                Close();
-            }
-        }
-        else
-        {
-            if (Helpers.InsertCustomer(cx))
-            {
-                Close();
-            }
+            case true:
+                cx.customer_id = int.Parse(cxIdTB.Text);
+                if (Helpers.UpdateCustomer(cx))
+                {
+                    Close();
+                }
+                break;
+            case false:
+                if (Helpers.InsertCustomer(cx))
+                {
+                    Close();
+                }
+                break;
         }
     }
 }

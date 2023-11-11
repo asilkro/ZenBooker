@@ -16,10 +16,18 @@ public partial class Main : Form
 
     private void ApptSearchTip()
     {
-        var apptTip = new ToolTip();
-        apptTip.ToolTipTitle = "Appt Search Tip";
+        var apptTip = new ToolTip
+        {
+            ToolTipTitle = "Appt Search Tip",
+            Active = true,
+            AutomaticDelay = 700,
+            AutoPopDelay = 7000,
+            InitialDelay = 500,
+            IsBalloon = true,
+            Tag = apptsDataGridView
+        };
         apptsDataGridView.ShowCellToolTips = true;
-        apptTip.Tag = apptsDataGridView;
+        apptTip.SetToolTip(apptSearchTB, "Use the customer search section to find a customer Id for this search.");
         apptTip.SetToolTip(apptsDataGridView, "Use the customer search section to find a customer Id for this search.");
     }
 
@@ -49,7 +57,7 @@ public partial class Main : Form
         {
             connection.Open();
 
-            Helpers.GetAppointment(selected, out UnifiedApptData? uAppt);
+            Helpers.GetAppointment(selected, out var uAppt);
             if (uAppt == null) return;
             new FormAppointment(uAppt).ShowDialog();
         }
@@ -63,13 +71,11 @@ public partial class Main : Form
         var row = apptsDataGridView.Rows.IndexOf(selectedRow);
 
         var selected = (int)apptsDataGridView["Appointment_id", row].Value;
-        if (Helpers.ConfirmedAction())
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.RemoveAppointment(selected);
+        if (result)
         {
-            var result = Helpers.RemoveAppointment(selected);
-            if (result)
-            {
-                Helpers.PopulateDgv(apptsDataGridView, "appointment");
-            }
+            Helpers.PopulateDgv(apptsDataGridView, "appointment");
         }
     }
 
@@ -97,18 +103,14 @@ public partial class Main : Form
     private void RemoveCxBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = cxDataGridView.CurrentRow;
-        if (selectedRow != null)
+        if (selectedRow == null) return;
+        var row = cxDataGridView.Rows.IndexOf(selectedRow);
+        var selected = (int)cxDataGridView["customer_id", row].Value;
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.DeleteCustomer(selected);
+        if (result)
         {
-            var row = cxDataGridView.Rows.IndexOf(selectedRow);
-            var selected = (int)cxDataGridView["customer_id", row].Value;
-            if (Helpers.ConfirmedAction())
-            {
-                var result = Helpers.DeleteCustomer(selected);
-                if (result)
-                {
-                    Helpers.PopulateDgv(cxDataGridView, "customer");
-                }
-            }
+            Helpers.PopulateDgv(cxDataGridView, "customer");
         }
     }
 

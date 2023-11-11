@@ -50,25 +50,17 @@ public partial class AdminStaff : Form
         for (var index = 0; index < Controls.Count; index++)
         {
             var c = Controls[index];
-            if (c is TextBox)
-                if (!string.IsNullOrWhiteSpace(c.Text) &&
-                    !string.IsNullOrEmpty(c.Text))
-                {
-                    problem = false;
-                    break;
-                }
+            if (c is not TextBox) continue;
+            if (string.IsNullOrWhiteSpace(c.Text) ||
+                string.IsNullOrEmpty(c.Text)) continue;
+            problem = false;
+            break;
         }
 
-        if (int.TryParse(staffIdTB.Text, out _))
-        {
-            if (int.TryParse(officeIdTB.Text, out _))
-            {
-                if (int.TryParse(userIdTB.Text, out _))
-                {
-                    problem = false;
-                }
-            }
-        }
+        if (!int.TryParse(staffIdTB.Text, out _)) return problem;
+        if (!int.TryParse(officeIdTB.Text, out _)) return problem;
+        if (!int.TryParse(userIdTB.Text, out _)) return problem;
+        problem = false;
 
         return problem;
     }
@@ -80,12 +72,11 @@ public partial class AdminStaff : Form
 
     private void SaveBtn_Click(object sender, EventArgs e)
     {
-        if (!IsThereAProblem())
+        if (IsThereAProblem()) return;
+        var staff = MakeStaffObject();
+        try
         {
-            var staff = MakeStaffObject();
-            try
-            {
-                switch (_existing)
+            switch (_existing)
             {
                 case true:
                     staff.staff_id = int.Parse(staffIdTB.Text);
@@ -102,11 +93,10 @@ public partial class AdminStaff : Form
                     break;
 
             } 
-            }
-            catch (Exception ex)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, ex);
-            }
+        }
+        catch (Exception ex)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, ex);
         }
     }
     #endregion

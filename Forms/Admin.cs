@@ -25,9 +25,9 @@ public partial class Admin : Form
     {
         {
             var selectedRow = staffDGV.CurrentRow;
+            if (selectedRow == null) return;
             var row = staffDGV.Rows.IndexOf(selectedRow);
             var selected = (int)staffDGV["staff_id", row].Value;
-            if (selectedRow == null) return;
             if (!Helpers.ConfirmedAction()) return;
             var result = Helpers.DeleteStaff(selected);
             if (result)
@@ -61,9 +61,9 @@ public partial class Admin : Form
     private void RemoveServiceBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = serviceDGV.CurrentRow;
+        if (selectedRow == null) return;
         var row = serviceDGV.Rows.IndexOf(selectedRow);
         var selected = (int)serviceDGV["service_id", row].Value;
-        if (selectedRow == null) return;
         if (!Helpers.ConfirmedAction()) return;
         var result = Helpers.DeleteService(selected);
         if (result)
@@ -169,9 +169,9 @@ public partial class Admin : Form
     #endregion
 
     #region Other Buttons
-    private void changePWbtn_Click(object sender, EventArgs e)
+    private void ChangePWbtn_Click(object sender, EventArgs e)
     {
-        var pwForm = new AdminPW();
+        var pwForm = new AdminPw();
         pwForm.ShowDialog();
     }
     private void BackBtn_Click(object sender, EventArgs e) => Close();

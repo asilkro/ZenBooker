@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using log4net;
+﻿using log4net;
 using Microsoft.VisualBasic;
 using MySqlConnector;
 using RepoDb;
@@ -7,14 +6,12 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using ZenoBook.Classes;
-using ZenoBook.Forms;
 
 namespace ZenoBook.DataManipulation;
 
 public class Helpers
 {
     #region Constants
-    private const char space = ' ';
     private const char atSign = '@';
     private const char slash = '/';
     private const char dash = '-';
@@ -23,21 +20,11 @@ public class Helpers
 
     private static bool OnlyLettersDigitsSpaces(string s)
     {
-        foreach (char c in s)
-        {
-            if (!Char.IsLetterOrDigit(c) && c != ' ')
-                return false;
-        }
-        return true;
+        return s.All(c => char.IsLetterOrDigit(c) || c == ' ');
     }
     private static bool OnlyLettersSpaces(string s)
     {
-        foreach (char c in s)
-        {
-            if (!Char.IsLetter(c) && c != ' ')
-                return false;
-        }
-        return true;
+        return s.All(c => char.IsLetter(c) || c == ' ');
     }
 
     #endregion
@@ -427,8 +414,7 @@ public class Helpers
                            email = row["email"].ToString() ?? string.Empty,
                            office_id = (int)row["office_id"],
                            phone = row["phone"].ToString() ?? string.Empty,
-                           user_id = (int)row["user_id"],
-
+                           user_id = (int)row["user_id"]
                        });
     }
     private static List<Service> ServiceToDataTable(MySqlDataAdapter dataAdapter, out DataTable serviceDataTable)
@@ -477,7 +463,7 @@ public class Helpers
                                address2 = row["address2"].ToString() ?? string.Empty,
                                city = row["city"].ToString() ?? string.Empty,
                                state = row["state"].ToString() ?? string.Empty,
-                               country = row["country"].ToString() ?? string.Empty,
+                               country = row["country"].ToString() ?? string.Empty
                            });
     }
 
@@ -557,48 +543,6 @@ public class Helpers
                 break;
         }
         return result;
-    }
-
-
-    public static string WhatIsBeingSearched(string valueToCheck)
-    {
-        var containsSlash = valueToCheck.Contains(slash);
-        var containsDash = valueToCheck.Contains(dash);
-        var chars = valueToCheck.ToCharArray();
-
-        var result = "default";
-        if (!NoProhibitedContent(valueToCheck)) return "error"; // Reject bad input
-
-        if (containsDash || containsSlash)
-        {
-            result = "datetime";
-            return result; // If it parses as a date, treat as date
-        }
-
-        if (int.TryParse(valueToCheck, out _))
-        {
-            result = "integer";
-            return result; // If it parses as a number, treat as an ID
-        }
-
-        if (valueToCheck.Contains(atSign))
-        {
-            result = "email";
-            return result; // If it has an @ sign, treat as an email address
-        }
-
-
-        if (valueToCheck.Contains(space) && chars.All(char.IsAsciiLetterOrDigit))
-        {
-            result = "address";
-            return result;
-        }
-
-        if (!valueToCheck.Contains(space) && !chars.All(char.IsAsciiLetter)) return result;
-        result = "name";
-        return result; // If it has a whitespace or is all letters, treat as a name
-
-
     }
     public static Address MakeAddress(string address1, string address2, string city, string state, string country)
     {
@@ -692,13 +636,9 @@ public class Helpers
         };
         try
         {
-            var commandText = "UPDATE password = @password FROM user WHERE ([login] = @login);";
+            const string commandText = "UPDATE password = @password FROM user WHERE ([login] = @login);";
             var affectedRows = connection.ExecuteNonQuery(commandText, param);
-            if (affectedRows > 0)
-            {
-                return true;
-            }
-            return false;
+            return affectedRows > 0;
         }
         catch (Exception e)
         {
@@ -793,32 +733,17 @@ public class Helpers
         if (searchTerm.Contains(atSign))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.email == searchTerm).FirstOrDefault();
-            if (eStaff == null)
-            {
-                return null;
-            }
-
-            return eStaff;
+            return eStaff ?? null;
         }
 
-        if (int.TryParse(searchTerm, out int i))
+        if (int.TryParse(searchTerm, out var i))
         {
             var eStaff = connection.Query<Staff>("staff", e => e.staff_id == i).FirstOrDefault();
-            if (eStaff == null)
-            {
-                return null;
-            }
-
-            return eStaff;
+            return eStaff ?? null;
         }
 
         var staff = connection.Query<Staff>("staff", e => e.name == searchTerm).FirstOrDefault();
-        if (staff == null)
-        {
-            return null;
-        }
-
-        return staff;
+        return staff ?? null;
     }
     public static bool InsertStaff(Staff staff)
     {
@@ -910,7 +835,7 @@ public class Helpers
             }
         }
 
-        if (int.TryParse(searchTerm, out var i))
+        if (!int.TryParse(searchTerm, out var i)) return null;
         {
             var iCustomer = connection.Query<Customer>("customer", e => e.customer_id == i)
                 .FirstOrDefault();
@@ -975,7 +900,7 @@ public class Helpers
     public static Office? ReturnOffice(string searchTerm)
     {
         using var connection = new Builder().Connect();
-        if (int.TryParse(searchTerm, out int i))
+        if (int.TryParse(searchTerm, out var i))
         {
             var iOffice = connection.Query<Office>("office", e => e.office_id == i)
                 .FirstOrDefault();
@@ -991,7 +916,7 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Insert("office", office);
+            connection.Insert("office", office);
             MessageBox.Show("Office" + " created.", "Office Created");
             return true;
         }
@@ -1006,7 +931,7 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("office", officeId);
+            connection.Delete("office", officeId);
             MessageBox.Show("Office id " + officeId + " removed.", "Office Removed");
             return true;
         }
@@ -1022,7 +947,7 @@ public class Helpers
         try
         {
             {
-                var updatedOffice = connection.Update("office", office);
+                connection.Update("office", office);
                 MessageBox.Show("Office id " + office.office_id + " updated.", "Office Updated");
             }
             return true;
@@ -1130,7 +1055,7 @@ public class Helpers
                 connection.Open();
             }
 
-            var fields = Field.Parse<UnifiedApptData>(e => new
+            Field.Parse<UnifiedApptData>(e => new
             {
                 e.appointment_id,
                 e.customer_id,
@@ -1195,7 +1120,7 @@ public class Helpers
         try
         {
             {
-                var id = connection.Insert(entity: appt,
+                connection.Insert(entity: appt,
                     fields: fields, tableName: "appointment");
                 MessageBox.Show("Appointment with Id: " + appt.appointment_id + " created.", "Appointment Created");
             }
@@ -1287,16 +1212,9 @@ public class Helpers
             return success;
         }
     }
-
     #endregion
 
     #region Conversions
-    public static string DateTimeAsString(DateTime value)
-    {
-        return value.ToString("yyyy/MM/dd HH:mm:ss:ffff");
-    }
-
-
     public static UnifiedApptData HomeToUnified(HomeAppointment appt)
     {
         var convertedAppt = new UnifiedApptData
@@ -1332,7 +1250,7 @@ public class Helpers
             start = appt.start,
             end = appt.end,
             inhomeservice = 0, // Corresponds to binary
-            service_address_id = serviceAddressId,
+            service_address_id = serviceAddressId
         };
 
         return convertedAppt;

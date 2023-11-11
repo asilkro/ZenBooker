@@ -31,22 +31,14 @@ public partial class AdminService : Form
 
     private bool IsThereAProblem()
     {
-        var problem = true;
+        var problem = false;
         for (var index = 0; index < Controls.Count; index++)
         {
             var c = Controls[index];
-            if (c is TextBox)
-                if (!string.IsNullOrWhiteSpace(c.Text) &&
-                    !string.IsNullOrEmpty(c.Text))
-                {
-                    problem = false;
-                    break;
-                }
-        }
-
-        if (int.TryParse(serviceIdTB.Text, out _))
-        {
-            problem = false;
+            if (c is not TextBox) continue;
+            if (string.IsNullOrWhiteSpace(c.Text) ||
+                string.IsNullOrEmpty(c.Text)) problem = true;
+            break;
         }
 
         return problem;
@@ -66,32 +58,30 @@ public partial class AdminService : Form
             service_name = serviceNameTB.Text,
             service_description = serviceDescTB.Text
         };
-        if (!IsThereAProblem())
+        if (IsThereAProblem()) return;
+        try
         {
-            try
+            switch (_existing)
             {
-                switch (_existing)
-                {
-                    case true:
-                        svc.service_id = int.Parse(serviceIdTB.Text);
-                        if (Helpers.UpdateService(svc))
-                        {
-                            Close();
-                        }
+                case true:
+                    svc.service_id = int.Parse(serviceIdTB.Text);
+                    if (Helpers.UpdateService(svc))
+                    {
+                        Close();
+                    }
 
-                        break;
-                    case false:
-                        if (Helpers.InsertService(svc))
-                        {
-                            Close();
-                        }
-                        break;
-                }
+                    break;
+                case false:
+                    if (Helpers.InsertService(svc))
+                    {
+                        Close();
+                    }
+                    break;
             }
-            catch (Exception ex)
-            {
-                LogManager.GetLogger("LoggingRepo").Warn(e, ex);
-            }
+        }
+        catch (Exception ex)
+        {
+            LogManager.GetLogger("LoggingRepo").Warn(e, ex);
         }
 
     }
