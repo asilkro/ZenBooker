@@ -32,7 +32,7 @@ public partial class AdminStaff : Form
         }
         var staff = new Staff
         {
-            user_id = int.Parse(userIdTB.Text),
+            staff_id = int.Parse(staffIdTB.Text),
             office_id = officeId,
             name = staffNameTB.Text,
             email = staffEmailTB.Text,
