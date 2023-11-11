@@ -1,4 +1,5 @@
 ﻿using log4net;
+using RepoDb.Extensions;
 using ZenoBook.Classes;
 using ZenoBook.DataManipulation;
 
@@ -24,10 +25,15 @@ public partial class AdminStaff : Form
     #region Methods
     private Staff MakeStaffObject()
     {
+        int.TryParse(officeIdTB.Text, out var officeId);
+        if (officeIdTB.Text.IsNullOrEmpty())
+        {
+            officeId = 1;
+        }
         var staff = new Staff
         {
             user_id = int.Parse(userIdTB.Text),
-            office_id = int.Parse(officeIdTB.Text),
+            office_id = officeId,
             name = staffNameTB.Text,
             email = staffEmailTB.Text,
             phone = staffPhoneTB.Text
@@ -36,9 +42,14 @@ public partial class AdminStaff : Form
     }
     private void PopulateStaffDetails(Staff staff)
     {
+        int.TryParse(staff.office_id.ToString(),out var officeId);
+        if (officeIdTB.Text.IsNullOrEmpty())
+        {
+            officeId = 1;
+        }
         staffIdTB.Text = staff.staff_id.ToString();
         userIdTB.Text = staff.user_id.ToString();
-        officeIdTB.Text = staff.office_id.ToString();
+        officeIdTB.Text = officeId.ToString();
         staffNameTB.Text = staff.name;
         staffEmailTB.Text = staff.email;
         staffPhoneTB.Text = staff.phone;
