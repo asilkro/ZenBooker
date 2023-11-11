@@ -7,13 +7,6 @@ public partial class Login : Form
     public Login()
     {
         InitializeComponent();
-        DebugLogin(); //TODO: REMOVE ME
-    }
-
-    public void DebugLogin() //TODO: REMOVE ME
-    {
-        loginTB.Text = "DarthVader";
-        pwTB.Text = "DeathStar77";
     }
 
     #region Buttons
