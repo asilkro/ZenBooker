@@ -64,15 +64,36 @@ public partial class AdminStaff : Form
             if (c is not TextBox) continue;
             if (string.IsNullOrWhiteSpace(c.Text) ||
                 string.IsNullOrEmpty(c.Text)) continue;
-            problem = false;
+            if (!Helpers.NoProhibitedContent(c.Text)) return problem;
             break;
         }
 
-        if (!int.TryParse(staffIdTB.Text, out _)) return problem;
-        if (!int.TryParse(officeIdTB.Text, out _)) return problem;
-        if (!int.TryParse(userIdTB.Text, out _)) return problem;
+        switch (userIdTB.Text)
+        {
+            case null:
+                break;
+            default:
+                if(!int.TryParse(userIdTB.Text, out _)) return problem;
+                break;
+        }
+        switch (staffIdTB.Text)
+        {
+            case null:
+                return problem;
+            default:
+                if (!int.TryParse(staffIdTB.Text, out _)) return problem;
+                break;
+        }
+        switch (officeIdTB.Text)
+        {
+            case null:
+                officeIdTB.Text = 1.ToString();
+                break;
+            default:
+                if (!int.TryParse(officeIdTB.Text, out _)) return problem;
+                break;
+        }
         problem = false;
-
         return problem;
     }
     #endregion
@@ -102,8 +123,7 @@ public partial class AdminStaff : Form
                         Close();
                     }
                     break;
-
-            } 
+            }
         }
         catch (Exception ex)
         {
