@@ -248,6 +248,7 @@ namespace ZenoBook.Forms
             changePWbtn.TabIndex = 32;
             changePWbtn.Text = "Change Password";
             changePWbtn.UseVisualStyleBackColor = false;
+            changePWbtn.Click += changePWbtn_Click;
             // 
             // OfficesLbl
             // 
@@ -328,7 +329,7 @@ namespace ZenoBook.Forms
             officeSearchBtn.TabIndex = 29;
             officeSearchBtn.Text = "Search";
             officeSearchBtn.UseVisualStyleBackColor = true;
-            officeSearchBtn.Click += officeSearchBtn_Click;
+            officeSearchBtn.Click += OfficeSearchBtn_Click;
             // 
             // addressDGV
             // 
@@ -379,7 +380,7 @@ namespace ZenoBook.Forms
             createAddressBtn.TabIndex = 34;
             createAddressBtn.Text = "Create";
             createAddressBtn.UseVisualStyleBackColor = true;
-            createAddressBtn.Click += createAddressBtn_Click;
+            createAddressBtn.Click += CreateAddressBtn_Click;
             // 
             // searchAddressBtn
             // 
@@ -390,6 +391,7 @@ namespace ZenoBook.Forms
             searchAddressBtn.TabIndex = 39;
             searchAddressBtn.Text = "Search";
             searchAddressBtn.UseVisualStyleBackColor = true;
+            searchAddressBtn.Click += SearchAddressBtn_Click;
             // 
             // addressSearchTB
             // 

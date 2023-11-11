@@ -6,14 +6,17 @@ namespace ZenoBook.Forms;
 
 public partial class AdminService : Form
 {
+    private readonly bool _existing;
     public AdminService()
     {
+        _existing = false;
         InitializeComponent();
         serviceIdTB.Text = Helpers.AutoIncrementId("service");
     }
 
     public AdminService(Service svc)
     {
+        _existing = true;
         InitializeComponent();
         PopulateServiceFields(svc);
     }
@@ -58,25 +61,32 @@ public partial class AdminService : Form
 
     private void SaveBtn_Click(object sender, EventArgs e)
     {
+        var svc = new Service
+        {
+            service_name = serviceNameTB.Text,
+            service_description = serviceDescTB.Text
+        };
         if (!IsThereAProblem())
         {
-            var svc = new Service
-            {
-                service_name = serviceNameTB.Text,
-                service_description = serviceDescTB.Text
-            };
             try
             {
-                if (Helpers.DoesThisServiceExist(svc))
+                switch (_existing)
                 {
-                    svc.service_id = int.Parse(serviceIdTB.Text);
-                    Helpers.UpdateService(svc);
-                    Close();
-                }
-                else
-                {
-                    Helpers.InsertService(svc);
-                    Close();
+                    case true:
+                        svc.service_id = int.Parse(serviceIdTB.Text);
+                        if (Helpers.UpdateService(svc))
+                        {
+                            Close();
+                        }
+
+                        break;
+                    case false:
+                        if (Helpers.InsertService(svc))
+                        {
+                            Close();
+                        }
+
+                        break;
                 }
             }
             catch (Exception ex)

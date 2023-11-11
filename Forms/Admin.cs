@@ -15,8 +15,12 @@ public partial class Admin : Form
         Helpers.PopulateDgv(addressDGV, "address");
     }
 
-    private void BackBtn_Click(object sender, EventArgs e) => Close();
-
+    #region Staff Buttons
+    private void CreateStaffBtn_Click(object sender, EventArgs e)
+    {
+        var form = new AdminStaff();
+        form.ShowDialog();
+    }
     private void RemoveStaffBtn_Click(object sender, EventArgs e)
     {
         {
@@ -32,33 +36,6 @@ public partial class Admin : Form
             }
         }
     }
-
-    private void RemoveServiceBtn_Click(object sender, EventArgs e)
-    {
-        var selectedRow = serviceDGV.CurrentRow;
-        var row = serviceDGV.Rows.IndexOf(selectedRow);
-        var selected = (int)serviceDGV["service_id", row].Value;
-        if (selectedRow == null) return;
-        if (!Helpers.ConfirmedAction()) return;
-        var result = Helpers.DeleteService(selected);
-        if (result)
-        {
-            Helpers.PopulateDgv(serviceDGV, "service");
-        }
-    }
-
-    private void CreateStaffBtn_Click(object sender, EventArgs e)
-    {
-        var form = new AdminStaff();
-        form.ShowDialog();
-    }
-
-    private void CreateServiceBtn_Click(object sender, EventArgs e)
-    {
-        var form = new AdminService();
-        form.ShowDialog();
-    }
-
     private void UpdateStaffBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = staffDGV.CurrentRow;
@@ -73,7 +50,27 @@ public partial class Admin : Form
             staffForm.ShowDialog();
         }
     }
+    #endregion
 
+    #region Service Buttons
+    private void CreateServiceBtn_Click(object sender, EventArgs e)
+    {
+        var form = new AdminService();
+        form.ShowDialog();
+    }
+    private void RemoveServiceBtn_Click(object sender, EventArgs e)
+    {
+        var selectedRow = serviceDGV.CurrentRow;
+        var row = serviceDGV.Rows.IndexOf(selectedRow);
+        var selected = (int)serviceDGV["service_id", row].Value;
+        if (selectedRow == null) return;
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.DeleteService(selected);
+        if (result)
+        {
+            Helpers.PopulateDgv(serviceDGV, "service");
+        }
+    }
     private void UpdateServiceBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = serviceDGV.CurrentRow;
@@ -88,17 +85,27 @@ public partial class Admin : Form
             serviceForm.ShowDialog();
         }
     }
+    #endregion
 
-    private void StaffSearchBtn_Click(object sender, EventArgs e) => Helpers.SearchDgv(staffDGV, "staff", staffSearchTB.Text);
-
-    private void ServicesSearchBtn_Click(object sender, EventArgs e) => Helpers.SearchDgv(serviceDGV, "services", servicesSearchTB.Text);
-
+    #region Office Buttons
     private void OfficeCreateBtn_Click(object sender, EventArgs e)
     {
         var form = new AdminOffice();
         form.ShowDialog();
     }
-
+    private void OfficeRemoveBtn_Click(object sender, EventArgs e)
+    {
+        var selectedRow = officeDGV.CurrentRow;
+        if (selectedRow == null) return;
+        var row = officeDGV.Rows.IndexOf(selectedRow);
+        var selected = (int)officeDGV["office_id", row].Value;
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.DeleteOffice(selected);
+        if (result)
+        {
+            Helpers.PopulateDgv(officeDGV, "office");
+        }
+    }
     private void OfficeUpdateBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = officeDGV.CurrentRow;
@@ -113,30 +120,27 @@ public partial class Admin : Form
             officeForm.ShowDialog();
         }
     }
+    #endregion
 
-    private void OfficeRemoveBtn_Click(object sender, EventArgs e)
-    {
-        var selectedRow = officeDGV.CurrentRow;
-        if (selectedRow == null) return;
-        var row = officeDGV.Rows.IndexOf(selectedRow);
-        var selected = (int)officeDGV["office_id", row].Value;
-        if (!Helpers.ConfirmedAction()) return;
-        var result = Helpers.DeleteOffice(selected);
-        if (result)
-        {
-            Helpers.PopulateDgv(officeDGV, "office");
-        }
-    }
-
-    private void officeSearchBtn_Click(object sender, EventArgs e) =>
-        Helpers.SearchDgv(officeDGV, "office", officeSearchTB.Text);
-
-    private void createAddressBtn_Click(object sender, EventArgs e)
+    #region Address Buttons
+    private void CreateAddressBtn_Click(object sender, EventArgs e)
     {
         var addressForm = new AdminAddress();
         addressForm.ShowDialog();
     }
-
+    private void RemoveAddressBtn_Click(object sender, EventArgs e)
+    {
+        var selectedRow = addressDGV.CurrentRow;
+        if (selectedRow == null) return;
+        var row = addressDGV.Rows.IndexOf(selectedRow);
+        var selected = (int)addressDGV["address_id", row].Value;
+        if (!Helpers.ConfirmedAction()) return;
+        var result = Helpers.DeleteAddress(selected);
+        if (result)
+        {
+            Helpers.PopulateDgv(addressDGV, "address");
+        }
+    }
     private void UpdateAddressBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = addressDGV.CurrentRow;
@@ -151,18 +155,27 @@ public partial class Admin : Form
             addressForm.ShowDialog();
         }
     }
+    #endregion
 
-    private void RemoveAddressBtn_Click(object sender, EventArgs e)
+    #region Search Buttons
+    private void StaffSearchBtn_Click(object sender, EventArgs e) =>
+        Helpers.SearchDgv(staffDGV, "staff", staffSearchTB.Text);
+    private void ServicesSearchBtn_Click(object sender, EventArgs e) =>
+        Helpers.SearchDgv(serviceDGV, "service", servicesSearchTB.Text);
+    private void OfficeSearchBtn_Click(object sender, EventArgs e) =>
+        Helpers.SearchDgv(officeDGV, "office", officeSearchTB.Text);
+    private void SearchAddressBtn_Click(object sender, EventArgs e) =>
+        Helpers.SearchDgv(addressDGV, "address", addressSearchTB.Text);
+    #endregion
+
+    #region Other Buttons
+    private void changePWbtn_Click(object sender, EventArgs e)
     {
-        var selectedRow = addressDGV.CurrentRow;
-        if (selectedRow == null) return;
-        var row = addressDGV.Rows.IndexOf(selectedRow);
-        var selected = (int)addressDGV["address_id", row].Value;
-        if (!Helpers.ConfirmedAction()) return;
-        var result = Helpers.DeleteAddress(selected);
-        if (result)
-        {
-            Helpers.PopulateDgv(addressDGV, "address");
-        }
+        var pwForm = new AdminPW();
+        pwForm.ShowDialog();
     }
+    private void BackBtn_Click(object sender, EventArgs e) => Close();
+
+    #endregion
+
 }

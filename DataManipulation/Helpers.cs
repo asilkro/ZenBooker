@@ -199,10 +199,10 @@ public class Helpers
                         {
                             sql = searchType switch
                             {
-                                "email" => "SELECT * FROM customer WHERE email like '@VALUE' order by customer_id;",
-                                "integer" => "SELECT * FROM customer WHERE phone like '@VALUE%' order by customer_id;",
+                                "email" => "SELECT *, concat_ws(' ', first, last) AS Name FROM customer WHERE email like '@VALUE%' order by customer_id;",
+                                "integer" => "SELECT *, concat_ws(' ', first, last) AS Name FROM customer WHERE phone like '@VALUE%' order by customer_id;",
                                 "name" =>
-                                    "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '@VALUE';",
+                                    "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '%@VALUE%';",
                                 _ => sql
                             };
                             sql = sql.Replace("@VALUE", searchQuery);
@@ -239,7 +239,7 @@ public class Helpers
                         sql = searchType switch
                         {
                             "email" => "SELECT * FROM staff WHERE email like '@VALUE%';",
-                            "name" => "SELECT * FROM staff WHERE name like '@VALUE%';",
+                            "name" => "SELECT * FROM staff WHERE name like '%@VALUE%';",
                             _ => sql
                         };
 
@@ -270,23 +270,23 @@ public class Helpers
                             dgv.DataSource = officeDataTable;
                         }
                         break;
-                    case "address": //TODO: FINISH
+                    case "address":
                         sql = searchType switch
                         {
                             "address" => "SELECT * FROM address WHERE address1 like '@VALUE%' ORDER BY city, address_id;",
                             "integer" =>
                                 "SELECT * FROM address WHERE address_id like '@VALUE%' ORDER BY address1, city, state;",
                             "name" =>
-                                "SELECT * FROM address WHERE city like '@VALUE%' ORDER BY address1, state,;",
+                                "SELECT * FROM address WHERE city like '@VALUE%' ORDER BY address1, state;",
                             _ => sql
                         };
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
                         using (dataAdapter)
                         {
-                            var office = OfficeToDataTable(dataAdapter, out var officeDataTable);
-                            AddOfficeToRows(officeDataTable, office);
-                            dgv.DataSource = officeDataTable;
+                            var addresses = AddressToDataTable(dataAdapter, out var addressDataTable);
+                            AddAddressToRows(addressDataTable, addresses);
+                            dgv.DataSource = addressDataTable;
                         }
                         break;
                 }
