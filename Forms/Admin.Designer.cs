@@ -351,7 +351,7 @@ namespace ZenoBook.Forms
             // 
             // removeAddressBtn
             // 
-            removeAddressBtn.Location = new Point(671, 436);
+            removeAddressBtn.Location = new Point(670, 439);
             removeAddressBtn.Margin = new Padding(3, 2, 3, 2);
             removeAddressBtn.Name = "removeAddressBtn";
             removeAddressBtn.Size = new Size(82, 22);
@@ -362,7 +362,7 @@ namespace ZenoBook.Forms
             // 
             // updateAddressBtn
             // 
-            updateAddressBtn.Location = new Point(583, 436);
+            updateAddressBtn.Location = new Point(583, 439);
             updateAddressBtn.Margin = new Padding(3, 2, 3, 2);
             updateAddressBtn.Name = "updateAddressBtn";
             updateAddressBtn.Size = new Size(82, 22);
@@ -373,7 +373,7 @@ namespace ZenoBook.Forms
             // 
             // createAddressBtn
             // 
-            createAddressBtn.Location = new Point(495, 436);
+            createAddressBtn.Location = new Point(495, 439);
             createAddressBtn.Margin = new Padding(3, 2, 3, 2);
             createAddressBtn.Name = "createAddressBtn";
             createAddressBtn.Size = new Size(82, 22);

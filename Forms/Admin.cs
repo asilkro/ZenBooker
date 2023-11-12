@@ -16,10 +16,10 @@ public partial class Admin : Form
     }
 
     #region Staff Buttons
-    private void CreateStaffBtn_Click(object sender, EventArgs e) => 
+    private void CreateStaffBtn_Click(object sender, EventArgs e) =>
         new AdminStaff().ShowDialog();
     private void RemoveStaffBtn_Click(object sender, EventArgs e)
-    { 
+    {
         var selectedRow = staffDGV.CurrentRow;
         if (selectedRow == null) return;
         var row = staffDGV.Rows.IndexOf(selectedRow);
@@ -58,7 +58,7 @@ public partial class Admin : Form
         var selected = (int)serviceDGV["service_id", row].Value;
         if (!Helpers.ConfirmedAction()) return;
         var result = Helpers.DeleteService(selected);
-        if (result) 
+        if (result)
         {
             Helpers.PopulateDgv(serviceDGV, "service");
         }
@@ -80,7 +80,7 @@ public partial class Admin : Form
     #endregion
 
     #region Office Buttons
-    private void OfficeCreateBtn_Click(object sender, EventArgs e) => 
+    private void OfficeCreateBtn_Click(object sender, EventArgs e) =>
         new AdminOffice().ShowDialog();
     private void OfficeRemoveBtn_Click(object sender, EventArgs e)
     {
@@ -112,9 +112,9 @@ public partial class Admin : Form
     #endregion
 
     #region Address Buttons
-    private void CreateAddressBtn_Click(object sender, EventArgs e) => 
+    private void CreateAddressBtn_Click(object sender, EventArgs e) =>
         new AdminAddress().ShowDialog();
-    
+
     private void RemoveAddressBtn_Click(object sender, EventArgs e)
     {
         var selectedRow = addressDGV.CurrentRow;
@@ -156,9 +156,9 @@ public partial class Admin : Form
     #endregion
 
     #region Other Buttons
-    private void ChangePasswordBtn_Click(object sender, EventArgs e) => 
+    private void ChangePasswordBtn_Click(object sender, EventArgs e) =>
         new AdminPw().ShowDialog();
-    private void BackBtn_Click(object sender, EventArgs e) => 
+    private void BackBtn_Click(object sender, EventArgs e) =>
         Close();
     #endregion
 }

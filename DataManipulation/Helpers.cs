@@ -636,7 +636,9 @@ public class Helpers
         };
         try
         {
-            const string commandText = "UPDATE password = @password FROM user WHERE ([login] = @login);";
+            var commandText = "UPDATE user SET `password` = '@password' WHERE `login` = '@login';";
+            commandText = commandText.Replace("@login", userName);
+            commandText = commandText.Replace("@password", maskedPassword);
             var affectedRows = connection.ExecuteNonQuery(commandText, param);
             return affectedRows > 0;
         }
@@ -682,7 +684,7 @@ public class Helpers
         try
         {
             var result = connection.Insert("service", service);
-            MessageBox.Show("Service id: " + result + " created.", "Service Created");
+            MessageBox.Show("Service id: " + service.service_id + " created.", "Service Created");
             return true;
         }
         catch (Exception e)
@@ -713,7 +715,7 @@ public class Helpers
         {
             {
                 var updatedService = connection.Update("service", service);
-                MessageBox.Show("Service id: " + updatedService + " updated.", "Service Updated");
+                MessageBox.Show("Service id: " + service.service_id + " updated.", "Service Updated");
             }
             return true;
         }
@@ -764,8 +766,8 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Delete("staff", staffId);
-            MessageBox.Show("Staff id " + id + " removed.", "Staff Removed");
+            connection.Delete("staff", staffId);
+            MessageBox.Show("Staff id " + staffId + " removed.", "Staff Removed");
             return true;
         }
         catch (Exception e)
