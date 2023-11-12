@@ -190,7 +190,7 @@ public class Helpers
                                 "integer" => "SELECT *, concat_ws(' ', first, last) AS Name FROM customer WHERE phone like '@VALUE%' order by customer_id;",
                                 "name" =>
                                     "SELECT *, concat_ws(' ', first, last) AS Name FROM customer HAVING Name LIKE '%@VALUE%';",
-                                _ => sql
+                                _ => "SELECT * FROM customer;"
                             };
                             sql = sql.Replace("@VALUE", searchQuery);
                             dataAdapter = new MySqlDataAdapter(sql, connection);
@@ -209,7 +209,7 @@ public class Helpers
                             {
                                 "name" => "SELECT * FROM service WHERE service_name LIKE '@VALUE%' ORDER BY service_name;",
                                 "integer" => "SELECT * FROM service WHERE service_id LIKE '@VALUE';",
-                                _ => sql
+                                _ => "SELECT * FROM service;"
                             };
                             sql = sql.Replace("@VALUE", searchQuery);
                             dataAdapter = new MySqlDataAdapter(sql, connection);
@@ -227,7 +227,7 @@ public class Helpers
                         {
                             "email" => "SELECT * FROM staff WHERE email like '@VALUE%';",
                             "name" => "SELECT * FROM staff WHERE name like '%@VALUE%';",
-                            _ => sql
+                            _ => "SELECT * FROM staff;"
                         };
 
                         sql = sql.Replace("@VALUE", searchQuery);
@@ -246,7 +246,7 @@ public class Helpers
                                 "SELECT * FROM office WHERE office_id like '@VALUE%' ORDER BY office_name, office_id;",
                             "name" =>
                                 "SELECT * FROM office WHERE office_name like '@VALUE%' ORDER BY office_name, office_id;",
-                            _ => sql
+                            _ => "SELECT * FROM office;"
                         };
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
@@ -265,7 +265,7 @@ public class Helpers
                                 "SELECT * FROM address WHERE address_id like '@VALUE%' ORDER BY address1, city, state;",
                             "name" =>
                                 "SELECT * FROM address WHERE city like '@VALUE%' ORDER BY address1, state;",
-                            _ => sql
+                            _ => "SELECT * FROM address;"
                         };
                         sql = sql.Replace("@VALUE", searchQuery);
                         dataAdapter = new MySqlDataAdapter(sql, connection);
@@ -749,8 +749,8 @@ public class Helpers
         using var connection = new Builder().Connect();
         try
         {
-            var id = connection.Insert("staff", staff);
-            MessageBox.Show("Staff id " + id + " created.", "Staff Created");
+            connection.Insert<Staff>("staff",staff);
+            MessageBox.Show("Staff id " + staff.staff_id + " created.", "Staff Created");
             return true;
         }
         catch (Exception e)
@@ -774,14 +774,18 @@ public class Helpers
             return false;
         }
     }
-    public static bool UpdateStaff(Staff staff)
+    public static bool UpdateStaff(Staff? staff)
     {
         using var connection = new Builder().Connect();
         try
         {
             {
-                var updatedStaff = connection.Update("staff", staff);
-                MessageBox.Show("Staff id " + updatedStaff + " updated.", "Staff Updated");
+                if (staff != null)
+                {
+                    connection.Update("staff", staff);
+                    MessageBox.Show("Staff id " + staff.staff_id + " updated.", "Staff Updated");
+                }
+                
             }
             return true;
         }

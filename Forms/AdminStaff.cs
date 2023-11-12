@@ -25,15 +25,10 @@ public partial class AdminStaff : Form
     #region Methods
     private Staff MakeStaffObject()
     {
-        int.TryParse(officeIdTB.Text, out var officeId);
-        if (officeIdTB.Text.IsNullOrEmpty())
-        {
-            officeId = 1;
-        }
         var staff = new Staff
         {
             staff_id = int.Parse(staffIdTB.Text),
-            office_id = officeId,
+            office_id = int.Parse(officeIdTB.Text),
             name = staffNameTB.Text,
             email = staffEmailTB.Text,
             phone = staffPhoneTB.Text
@@ -58,14 +53,17 @@ public partial class AdminStaff : Form
     private bool IsThereAProblem()
     {
         var problem = true;
-        for (var index = 0; index < Controls.Count; index++)
+        var strings = new List<string>();
+        var staffId = staffIdTB.Text;
+        var officeId = officeIdTB.Text;
+        var userId = userIdTB.Text;
+        strings.AddIfNotNull(staffId);
+        strings.AddIfNotNull(officeId);
+        strings.AddIfNotNull(userId);
+
+        if (strings.Any(s => !Helpers.NoProhibitedContent(s)))
         {
-            var c = Controls[index];
-            if (c is not TextBox) continue;
-            if (string.IsNullOrWhiteSpace(c.Text) ||
-                string.IsNullOrEmpty(c.Text)) continue;
-            if (!Helpers.NoProhibitedContent(c.Text)) return problem;
-            break;
+            return problem;
         }
 
         switch (userIdTB.Text)
@@ -73,15 +71,13 @@ public partial class AdminStaff : Form
             case null:
                 break;
             default:
-                if(!int.TryParse(userIdTB.Text, out _)) return problem;
-                break;
-        }
-        switch (staffIdTB.Text)
-        {
-            case null:
-                return problem;
-            default:
-                if (!int.TryParse(staffIdTB.Text, out _)) return problem;
+                if (!userIdTB.Text.IsNullOrEmpty())
+                {
+                    if (!int.TryParse(userIdTB.Text, out _))
+                    {
+                        return problem;
+                    }
+                }
                 break;
         }
         switch (officeIdTB.Text)
@@ -90,7 +86,13 @@ public partial class AdminStaff : Form
                 officeIdTB.Text = 1.ToString();
                 break;
             default:
-                if (!int.TryParse(officeIdTB.Text, out _)) return problem;
+                if (!officeIdTB.Text.IsNullOrEmpty())
+                {
+                    if (!int.TryParse(officeIdTB.Text, out _))
+                    {
+                        return problem;
+                    }
+                }
                 break;
         }
         problem = false;
@@ -105,24 +107,32 @@ public partial class AdminStaff : Form
     private void SaveBtn_Click(object sender, EventArgs e)
     {
         if (IsThereAProblem()) return;
-        var staff = MakeStaffObject();
+        
+        var staffObject = new Staff
+        {
+            name = staffNameTB.Text,
+            email = staffEmailTB.Text,
+            phone = staffPhoneTB.Text,
+            staff_id = int.Parse(staffIdTB.Text),
+        };
+        staffObject.user_id = !int.TryParse(userIdTB.Text, out _) ? 1 : int.Parse(userIdTB.Text);
+        staffObject.office_id = !int.TryParse(officeIdTB.Text, out _) ? 1 : int.Parse(officeIdTB.Text);
+
         try
         {
-            switch (_existing)
+            if (_existing)
             {
-                case true:
-                    staff.staff_id = int.Parse(staffIdTB.Text);
-                    if (Helpers.UpdateStaff(staff))
-                    {
-                        Close();
-                    }
-                    break;
-                case false:
-                    if (Helpers.InsertStaff(staff))
-                    {
-                        Close();
-                    }
-                    break;
+                if (Helpers.UpdateStaff(staffObject))
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                if (Helpers.InsertStaff(staffObject))
+                {
+                    Close();
+                }
             }
         }
         catch (Exception ex)
